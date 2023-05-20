@@ -1,3 +1,3 @@
-# Code for the Teensy 4.1
+# Code for the ESP32
 
-The Teensy is used as the CPU of the robot: it handles all the processing from the sensors to the decision
+The ESP32 is used to communicate with the Raspberry.
