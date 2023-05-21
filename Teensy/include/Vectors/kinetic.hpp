@@ -1,8 +1,7 @@
 #ifndef KINETIC_HPP
 #define KINETIC_HPP
 
-#include <logger.hpp>
-#include <vectors.hpp>
+#include <Vectors/vector_oriented.hpp>
 
 /**
  * Classe definissant la cinetique du robot c'est a dire sa situation en positionnement et en vitesse

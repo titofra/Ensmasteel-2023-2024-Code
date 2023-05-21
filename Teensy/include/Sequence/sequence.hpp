@@ -2,7 +2,7 @@
 #define SEQUENCE_HPP
 
 #include <Vector>
-#include <action.hpp>
+#include <Sequence/action.hpp>
 
 class Sequence {
     public :

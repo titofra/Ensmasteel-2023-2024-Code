@@ -1,11 +1,10 @@
 #ifndef ROBOT_HPP
 #define ROBOT_HPP
 
-#include <motor.hpp>
+#include <Motor/motor.hpp>
 #include <communication.hpp>
 #include <message.hpp>
-#include <kinetic.hpp>
-#include <utils.hpp>
+#include <Vectors/kinetic.hpp>
 
 typedef struct {
     float x_init;

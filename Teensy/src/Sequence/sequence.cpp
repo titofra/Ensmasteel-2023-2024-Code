@@ -1,4 +1,4 @@
-#include <sequencer.hpp>
+#include <Sequence/sequencer.hpp>
 
 Sequence::Sequence () {
     currentStep = 0;

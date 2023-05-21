@@ -1,4 +1,4 @@
-#include <action.hpp>
+#include <Sequence/action.hpp>
 
 Action::Action (action_kind kind) :
     kind (kind)

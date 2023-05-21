@@ -2,7 +2,7 @@
 #define ACTION_HPP
 
 #include <robot.hpp>
-#include <kinetic.hpp>
+#include <Vectors/kinetic.hpp>
 
 typedef struct {
     MOVEMENT_ACT,
