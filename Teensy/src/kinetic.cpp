@@ -2,29 +2,30 @@
 
 //----------Kinetic Class----------//
 
-Kinetic::Kinetic(float x, float y, float th, float v, float w):VectorOriented(x,y,th){
-    this->v=v;
-    this->w=w;
+Kinetic::Kinetic (float x, float y, float th, float v, float w) :
+    VectorOriented(x, y, theta),
+    v (v),
+    w (w) {
 }
 
-bool Kinetic::operator==(Kinetic const &other){
-    return VectorOriented::operator==(other) && abs(v-other.v)<1e-6 && abs(w-other.w)<1e-6;
+bool Kinetic::operator== (Kinetic const &other){
+    return VectorOriented::operator== (other) && abs(v-other.v) < 1e-6 && abs(w-other.w) < 1e-6;
 }
 
-float Kinetic::getTranslationSpeed(){
+float Kinetic::getTranslationSpeed (){
     return v;
 }
 
-void Kinetic::setTranslationSpeed(float ts){
-    v=ts;
+void Kinetic::setTranslationSpeed (float v) :
+    v (v) {
 }
 
-float Kinetic::getRotationSpeed(){
+float Kinetic::getRotationSpeed (){
     return w;
 }
 
-void Kinetic::setRotationSpeed(float rs){
-    w=rs;
+void Kinetic::setRotationSpeed(float w) :
+    w (w) {
 }
 
 void Kinetic::printDebug(const String& prefix)

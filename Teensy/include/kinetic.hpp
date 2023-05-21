@@ -13,23 +13,23 @@ class Kinetic : public VectorOriented{
          * Constructeur de la classe Kinetic 
          * @param x : float, Position en x
          * @param y : float, Position en y
-         * @param th : float : Angle d'orientation
+         * @param theta : float : Angle d'orientation
          * @param v : float, Vitesse de translation du robot
          * @param w : float, Vitesse de rotation du robot 
          */
-        Kinetic(float x=0.0, float y=0.0, float th=0.0, float v=0.0, float w=0.0);
+        Kinetic (float x = 0.0f, float y = 0.0f, float theta = 0.0f, float v = 0.0f, float w = 0.0f);
 
-        bool operator==(Kinetic const &other);
+        bool operator== (Kinetic const &other);
 
         /**
          * @return Vitesse de translation du robot
          */
-        float getTranslationSpeed();
+        float getTranslationSpeed ();
 
         /**
-         * @param ts : Nouvelle vitesse de translation
+         * @param v : Nouvelle vitesse de translation
          */
-        void setTranslationSpeed(float ts);
+        void setTranslationSpeed(float v);
 
             /**
          * @return Vitesse de rotation du robot
@@ -37,9 +37,9 @@ class Kinetic : public VectorOriented{
         float getRotationSpeed();
 
         /**
-         * @param rs : Nouvelle vitesse de rotation
+         * @param w : Nouvelle vitesse de rotation
          */
-        void setRotationSpeed(float rs);
+        void setRotationSpeed(float w);
 
         /**
          * Prints in Serial consol kinetic parameters :
@@ -51,9 +51,6 @@ class Kinetic : public VectorOriented{
     private :
         float v; //Vitesse de translation du robot
         float w; //Vitesse de rotation du robot
-
-
-    
 };
 
 #endif  // KINETIC_HPP

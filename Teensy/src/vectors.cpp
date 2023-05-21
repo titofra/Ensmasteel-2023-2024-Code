@@ -1,72 +1,59 @@
 #include <vectors.h>
-#include <Arduino.h>
-
-float normalizeAngle(float angle)
-{
-    float out;
-    out = angle - (2 * PI) * ((int)(angle / (2 * PI)));
-    if (out > PI)
-        return (out - 2 * PI);
-    else if (out <= -PI)
-        return (out + 2 * PI);
-
-    return out;
-}
 
 //----------Vector Class----------//
 
-Vector::Vector(float x, float y){
-    _x=x;
-    _y=y;
-};
+Vector::Vector(float x, float y) :
+    x (x),
+    y (y) {
+}
 
 Vector Vector::operator+(const Vector &other){
-    return Vector(_x + other._x, _y + other._y);
+    return Vector(x + other.x, y + other.y);
 }
 
 Vector Vector::operator-(const Vector &other){
-    return Vector(_x - other._x, _y - other._y);
+    return Vector(x - other.x, y - other.y);
 }
 
 Vector Vector::operator*(float scalaire){
-    return Vector(_x * scalaire, _y * scalaire);
+    return Vector(x * scalaire, y * scalaire);
 }
 
 void Vector::operator+=(const Vector &other){
-    _x+=other._x;
-    _y+=other._y;
+    x+=other.x;
+    y+=other.y;
 }
 
 bool Vector::operator==(Vector const &other){
-    return (abs(_x - other._x) <= 1e-6) && (abs(_y - other._y) <= 1e-6);
+    return (abs(x - other.x) <= 1e-6) && (abs(y - other.y) <= 1e-6);
 }
 
 float Vector::norm(){
-    return sqrt(_x * _x + _y * _y);
+    return sqrt(x * x + y * y);
 }
 
 float Vector::angle(){
-    return atan2(_y,_x);
+    return atan2(y,x);
 }
 
 float Vector::distanceWith(Vector &other){
-    return sqrt( pow(_x - other._x , 2) + pow(_y - other._y , 2) );
+    return sqrt( pow(x - other.x , 2) + pow(y - other.y , 2) );
 }
 
 float Vector::getX(){
-    return _x;
+    return x;
 }
 
 float Vector::getY(){
-    return _y;
+    return y;
 }
 
 void Vector::setX(float x){
-    _x=x;
+    x=x;
 }
 
 void Vector::setY(float y){
-    _y=y;
+    y=y;
 }
 
 void Vector::printDebug(const String& prefix)
@@ -83,16 +70,17 @@ void Vector::printDebug(const String& prefix)
 
 //----------Vector Oriented Class----------//
 
-VectorOriented::VectorOriented(float x, float y,float th):Vector(x,y){
-    theta=th;
+VectorOriented::VectorOriented(float x, float y,float theta) :
+    Vector (x,y),
+    theta (theta) {
 }
 
 bool VectorOriented::operator==(VectorOriented const &other){
-    return Vector::operator==(other) && abs(theta - other.theta) <=1e-6;
+    return Vector::operator==(other) && abs(theta - other.theta) <= 1e-6;
 }
 
 VectorOriented VectorOriented::operator-(VectorOriented const &other){
-    Vector vect = Vector::operator-(other);
+    Vector vect = Vector::operator- (other);
     return VectorOriented(vect.getX(),vect.getY(), theta - other.theta); 
 }
 
@@ -100,17 +88,15 @@ float VectorOriented::getTheta(){
     return theta;
 }
 
-void VectorOriented::setTheta(float th){
-    theta=th;
+void VectorOriented::setTheta(float theta) :
+    theta (theta) {
 }
 
-void VectorOriented::normalizeTheta()
-{
-    theta = normalizeAngle(theta);
+void VectorOriented::normalizeTheta() {
+    theta = normalizeAngle (theta);
 }
 
-void VectorOriented::printDebug(const String& prefix)
-{
+void VectorOriented::printDebug(const String& prefix) {
     Serial.println(">" + prefix+" x :" + String(getX(),3));
     Serial.println(">" + prefix+" y :" + String(getY(), 3));
     Serial.println(">" + prefix+" Th :" + String(getTheta(), 3));
