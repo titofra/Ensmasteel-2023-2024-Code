@@ -22,7 +22,7 @@ class Robot {
     private :
         Kinetic kineticCurrent, kineticNext;
         Motor motorL, motorR;
-        Communication *arduino
+        Communication *arduino;
 
 };
 
