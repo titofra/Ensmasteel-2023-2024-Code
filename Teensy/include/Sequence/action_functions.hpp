@@ -4,10 +4,10 @@
 #include <Vectors/kinetic.hpp>
 
 
-/* MOVEMENT */
-using movement_fn = Kinetic(*)(float);
+/* TRAJECTORY */
+using trajectory_fn = Kinetic(*)(float);
 
-movement_fn linear (Kinetic beginKinetic, Kinetic endKinetic, float beginTime, float endTime) {
+trajectory_fn linear (Kinetic beginKinetic, Kinetic endKinetic, float beginTime, float endTime) {
     return (
         [](float t) { return (endKinetic - beginKinetic) * (t - beginTime) / (endTime - beginTime) + beginKinetic; }
     );

@@ -6,9 +6,9 @@ Action::Action (action_kind kind) :
     isDone = false;
 }
 
-Action::Action (action_kind kind, Kinetic movement (float t), float time_distortion (float t)) :
+Action::Action (action_kind kind, Kinetic trajectory (float t), float time_distortion (float t)) :
     kind (kind),
-    movement (movement),
+    trajectory (trajectory),
     time_distortion (time_distortion),
     endTime (endTime)
 {
@@ -19,7 +19,7 @@ void Action::run (float timer, float dt, Robot *robot) {
     switch (kind) {
         case MOVEMENT_ACT:
             robot->goTo (                           // goto
-                movement (                          // the kinetic at t = timer + dt
+                trajectory (                        // the kinetic at timer + dt
                     time_distortion (timer + dt)    // but the instant timer + dt is disturbed by time_distortion ()
                 ), dt                               // do it in dt
             );

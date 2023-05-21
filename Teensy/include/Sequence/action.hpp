@@ -13,7 +13,7 @@ typedef struct {
 class Action {
     public :
         Action (action_kind kind);
-        Action (action_kind kind, Kinetic movement (float t), float time_distortion (float t), float endTime);
+        Action (action_kind kind, Kinetic trajectory (float t), float time_distortion (float t), float endTime);
 
         void run (float timer, float dt, Robot *robot);
 
@@ -22,7 +22,7 @@ class Action {
         bool isDone;
 
         /* for movements only */
-        Kinetic movement (float t);         // time-function that returns the Kinetic over linear time
+        Kinetic trajectory (float t);         // time-function that returns the Kinetic over linear time
         float time_distortion (float t); // time-function that returns the local time refering to the global ones. This enable us to modify over the time the robot's accemeration/velocity
         float endTime;
 

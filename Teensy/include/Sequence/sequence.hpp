@@ -12,8 +12,10 @@ class Sequence {
         Action pop ();
         void reset ();
 
-        void run (float timer, float dt);
+        void run (float timer, float dt, Robot *robot);
         void goTo (int istep);
+
+        bool isDone ();
 
     private :
         std::vector<Action> steps;
