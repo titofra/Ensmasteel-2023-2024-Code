@@ -5,6 +5,7 @@
 #include <communication.hpp>
 #include <message.hpp>
 #include <kinetic.hpp>
+#include <utils.hpp>
 
 typedef struct {
     float x_init;
@@ -75,7 +76,6 @@ class Robot {
             bool orientation_codeuseR
         );
         Robot (robot_setup setup);
-        ~Robot (){};
 
         /* SENSORS & COMMUNICATIONS UPDATES : should be called in specific threads. EXCEPT Codeuses */
         void updateComArduino ();
