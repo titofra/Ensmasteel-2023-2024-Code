@@ -1,7 +1,5 @@
 #include <kinetic.hpp>
 
-//----------Kinetic Class----------//
-
 Kinetic::Kinetic (float x, float y, float th, float v, float w) :
     VectorOriented(x, y, theta),
     v (v),
@@ -37,7 +35,3 @@ void Kinetic::printDebug(const String& prefix)
     Serial.println(">" + prefix+" v :" + String(getTranslationSpeed(), 3));
     Serial.println(">" + prefix+" w :" + String(getRotationSpeed(), 3));
 }
-
-
-
-//----------End Kinetic Class----------//
