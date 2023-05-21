@@ -5,7 +5,6 @@
 #include <communication.hpp>
 #include <message.hpp>
 #include <kinetic.hpp>
-#include <asservissement.hpp>
 
 typedef struct {
     float x_init;
@@ -78,7 +77,7 @@ class Robot {
         Robot (robot_setup setup);
         ~Robot (){};
 
-        /* SENSORS & COMMUNICATIONS UPDATES : should be called in specific threads. EXCEPT Codeuses*/
+        /* SENSORS & COMMUNICATIONS UPDATES : should be called in specific threads. EXCEPT Codeuses */
         void updateComArduino ();
         void updateComEsp32 ();
 
@@ -90,8 +89,8 @@ class Robot {
 
         /* KINETIC */
         void updateKinetic ();
-        void goTo (float x, float y, float theta, float v, float w);
-        void goTo (Kinetic goal);
+        void goTo (Kinetic goal, float dt); // goto goal in dt
+        void goTo (float x, float y, float theta, float v, float w, float dt);
         Kinetic getKinetic ();
         
         // TODO: add some func such as freeWheels etc

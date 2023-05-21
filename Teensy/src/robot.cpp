@@ -97,10 +97,23 @@ void updateKinetic (float dt) {
     );
 }
 
-void goTo (float x, float y, float theta, float v, float w) {
-    goTo (Kinetic (x, y, theta, v, w));
+void goTo (float x, float y, float theta, float v, float w, float dt) {
+    goTo (Kinetic (x, y, theta, v, w), dt);
 }
 
-void goTo (Kinetic goal) {
-    
+void goTo (Kinetic goal, float dt) {
+    // kinetic error
+    updateKinetic ();
+    Kinetic error = goal - kinetic;
+
+    // global error
+    float dforward = error.norm ();
+    float dtheta = error.getTheta ();
+
+    // specific error
+    float dwheelR = dforward + dtheta;
+    float dwheelL = dforward - dtheta;
+
+    motorR.setMovement (dwheelR, dt);
+    motorL.setMovement (dwheelL, dt);
 }

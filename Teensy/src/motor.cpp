@@ -1,6 +1,6 @@
 #include <motor.hpp>
 
-Motor::Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t pinIN2, uint8_t numberBitsPWM){
+Motor::Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t pinIN2, uint8_t numberBitsPWM, float kp, float ki, float kd) {
     pinMode(pinPWM,OUTPUT);
     pinMode(pinIN1,OUTPUT);
     pinMode(pinIN2, OUTPUT);
@@ -9,9 +9,11 @@ Motor::Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t pinIN2, uint8_t numberBitsP
     analogWriteFrequency(pinPWM, idealFrequency(numberBitsPWM));
 
     maxPWM = (uint16_t) round(pow(2,numberBitsPWM)) - 1;
+
+    asservissement = Asservissement (kp, ki, kd);
 }
 
-void Motor::setPWM(int pwm){
+void Motor::setPWM (int pwm){
     if (pwm > maxPWM) {
         pwm = maxPWM;
     } else {
@@ -23,16 +25,21 @@ void Motor::setPWM(int pwm){
     analogWrite(pinPWM, pwm);
 
     if(pwm > 0){
-        digitalWrite(pinIN1, HIGH); // cf datasheet of motor driver
-        digitalWrite(pinIN2, LOW);
+        digitalWrite (pinIN1, HIGH); // cf datasheet of motor driver
+        digitalWrite (pinIN2, LOW);
     }
     else{
-        digitalWrite(pinIN1, LOW); // cf datasheet of motor driver
-        digitalWrite(pinIN2, HIGH);
+        digitalWrite (pinIN1, LOW); // cf datasheet of motor driver
+        digitalWrite (pinIN2, HIGH);
     }
 }
 
-double Motor::idealFrequency(uint8_t numberBitsPWM){
+void setMovement (float distance, float dt) {
+    int pwm = (int) asservissement.compute (distance, dt);
+    setPWM (pwm);
+}
+
+double Motor::idealFrequency (uint8_t numberBitsPWM){
 
     double frequency;
     switch (numberBitsPWM)

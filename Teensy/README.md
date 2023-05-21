@@ -4,8 +4,7 @@ The Teensy is used as the CPU of the robot: it handles all the processing from t
 
 # TODO
 
-- [ ] asservissement to **redo**
-_ [ ] Odometry::updateOdometry to review
+- [x] asservissement to **redo**
 - [x] robot to review/redo
 - [x] vectors to review/redo
 - [x] kinetic to review/redo
