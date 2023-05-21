@@ -1,3 +1,6 @@
+#ifndef SETUP_HPP
+#define SETUP_HPP
+
 /* INLCUDES */
 
 
@@ -31,3 +34,5 @@ void threadComRaspberry () {
 bool TirettePresente () {
 
 }
+
+#endif  // SETUP_HPP

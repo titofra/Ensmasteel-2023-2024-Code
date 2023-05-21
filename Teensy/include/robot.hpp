@@ -1,53 +1,28 @@
 #ifndef ROBOT_HPP
 #define ROBOT_HPP
 
-#include "Vector.h"
-#include "Ghost.h"
-#include "Asservissement.h"
-#include "Motor.h"
-#include "pinSetup.h"
-#include "Odometry.h"
+#include <motor.hpp>
+#include <communication.hpp>
+#include <message.hpp>
 
-class Robot{
-
+class Robot {
     public :
+        Robot (float x_init, float y_init, float theta_init, Communication *Arduino, int pin_motorL_pwm, int pin_motorL_in1, int pin_motorL_in2, int pin_motorR_pwm, int pin_motorR_in1, int pin_motorR_in2);
+        ~Robot (){};
 
-        Robot(float x_ini, float y_ini, float theta_ini);
-        Robot(){};
+        void setPWM_MotorL (int pwm);
+        void setPWM_MotorR (int pwm);
+        void openClaws ();
+        void closeClaws ();
+        Kinetic* getKinetic ();
+        void setNextKinetic (float x, float y, float theta, float v, float w);
+        
+        // TODO: add some func such as freeWheels etc
 
-        bool getInMove(){return inMove;};
-        void updateMovement();
-        void startMovement(VectorOriented nextDest,bool isOnlyRotation,bool isBackward);
-        /*void startMovementBackwardDepot(VectorOriented nextDest);
-        void startMovementRecallageRotation(VectorOriented nextDest);*/
-        bool endMovement();
-        void stopMovement();
-        void resumeMotor();
-        void roueLibreMovement();
-
-        Kinetic kineticCurrent, kineticNext;
-        Ghost ghost;
-
-        Odometry odometry;
     private :
-
-        //Kinetic kineticCurrent, kineticNext;
-        
-        Asservissement controller;
-        Codeuse codeuseL, codeuseR;
-        Switch switchL,switchR;
-
-        bool inMove = false;
-
-
-        Motor motorL,motorR;
-        VectorOriented vectIni;
-
-        float translationOrder, rotationOrder;
-        
-
-        float startActionMillis;
-
+        Kinetic kineticCurrent, kineticNext;
+        Motor motorL, motorR;
+        Communication *arduino
 
 };
 

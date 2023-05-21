@@ -6,8 +6,10 @@ The Teensy is used as the CPU of the robot: it handles all the processing from t
 
 - [ ] asservissement to **redo**
 _ [ ] Odometry::updateOdometry to review
-- [ ] robot to review/redo
+- [x] robot to review/redo
 - [ ] vectors to review/redo
 - [ ] kinetic to review/redo
-- [ ] motor to review/redo
-- [ ] setup.cpp or setup.hpp?
+- [x] motor to review/redo
+- [x] setup.cpp or setup.hpp?
+- [ ] do sequencer
+- [ ] do sequencer manager
