@@ -5,4 +5,4 @@ The Arduino Mega is dedicated to handle the *physical* actions
 # TODO
 
 - [ ] steeper must be reviewed
-- [ ] sequencer? Actuator manager as previously done?
+- [ ] add some well known actuators
