@@ -6,11 +6,6 @@
 #ifndef MAILBOX_H
 #define MAILBOX_H
 
-#include <cstdint>
-#include <cstdbool>
-#include <cstdlib>
-#include <cstdio>
-
 template <typename T>
 class Mailbox {
     public:
