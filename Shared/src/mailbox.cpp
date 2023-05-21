@@ -1,11 +1,13 @@
 #include <mailbox.hpp>
 
-void Mailbox::Mailbox (size_t N_max, bool overwrite): 
+template <typename T>
+void Mailbox<T>::Mailbox (size_t N_max, bool overwrite): 
     N_max (N_max),
     overwrite (overwrite) {
 }
 
-bool Mailbox::send (void* mail) {
+template <typename T>
+bool Mailbox<T>::send (T mail) {
     if (box.size () < N_max || N_max == 0) {
         // The box is not full, let's add the mail
         box.push_back (mail);
@@ -24,7 +26,8 @@ bool Mailbox::send (void* mail) {
     return true;
 }
 
-bool Mailbox::retrieve (void** mail) {
+template <typename T>
+bool Mailbox<T>::retrieve (T *mail) {
     if (box.size () > 0) {
         // There is at least one mail, let's remove it
         *mail = box [0];
@@ -39,6 +42,7 @@ bool Mailbox::retrieve (void** mail) {
     }
 }
 
-size_t Mailbox::getNbMail () {
+template <typename T>
+size_t Mailbox<T>::getNbMail () {
     return box.size ();
 }

@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <cstdio>
 
+template <typename T>
 class Mailbox {
     public:
         /**
@@ -25,14 +26,14 @@ class Mailbox {
          * @param void* mail, The element
          * @return true if the element has been added, else false
          */
-        bool send (void* mail);
+        bool send (T mail);
 
         /**
          * @brief Retrieve the first element
          * @param void** mail, The first element if the mail box is not empty
          * @return bool, true if there is an element, false if not
          */
-        bool retrieve (void** mail);
+        bool retrieve (T *mail);
 
         /**
          * @bried Get the number of elements

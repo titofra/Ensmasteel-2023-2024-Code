@@ -70,11 +70,11 @@ Kinetic getKinetic () {
 }
 
 void updateComArduino () {
-    arduino.receive (sizeof (com_ardtee));
+    arduino.receive ();
 }
 
 void updateComEsp32 (){
-    esp32.receive (sizeof (com_esptee));
+    esp32.receive ();
 }
 
 void updateKinetic (float dt) {

@@ -8,7 +8,7 @@ typedef enum {
 
 typedef struct {
     ardtee_msg_id id;
-} com_ardtee;
+} msg_ardtee;
 
 typedef enum {
     NOTHING,
@@ -21,6 +21,6 @@ typedef enum {
 
 typedef struct {
     esptee_msg_id id;
-} com_esptee;
+} msg_esptee;
 
 #endif  // MESSAGE_HPP

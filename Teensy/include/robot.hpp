@@ -100,7 +100,8 @@ class Robot {
         Kinetic kinetic;
         Motor motorL, motorR;
         Codeuse codeuseL, codeuseR;
-        Communication *arduino, *esp32;
+        Communication<msg_ardtee> *arduino
+        Communication<msg_esptee> *esp32;
         float codeuses_spacing;
 
 };
