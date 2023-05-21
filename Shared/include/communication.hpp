@@ -1,10 +1,10 @@
 #ifndef COMMUNICATION_HPP
 #define COMMUNICATION_HPP
 
-#include <Mailbox.hpp>
+#include <mailbox.hpp>
 #include <Arduino.h>
 #include <Stream.h>
-#include <Message.hpp>
+#include <message.hpp>
 
 class Communication {
     public:
