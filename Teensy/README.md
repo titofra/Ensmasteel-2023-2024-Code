@@ -10,5 +10,5 @@ The Teensy is used as the CPU of the robot: it handles all the processing from t
 - [x] kinetic to review/redo
 - [x] motor to review/redo
 - [x] setup.cpp or setup.hpp?
-- [ ] do sequencer
+- [x] do sequencer
 - [ ] do sequencer manager
