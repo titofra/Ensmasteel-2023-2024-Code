@@ -95,6 +95,8 @@ void updateKinetic (float dt) {
         dforward / dt,
         dtheta / dt
     );
+
+    kinetic.normalizeTheta ();
 }
 
 void goTo (float x, float y, float theta, float v, float w, float dt) {
