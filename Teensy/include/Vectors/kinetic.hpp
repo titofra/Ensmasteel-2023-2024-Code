@@ -18,6 +18,8 @@ class Kinetic : public VectorOriented{
          */
         Kinetic (float x = 0.0f, float y = 0.0f, float theta = 0.0f, float v = 0.0f, float w = 0.0f);
 
+        Kinetic (Kinetic kine);
+
         bool operator== (Kinetic const &other);
 
         /**

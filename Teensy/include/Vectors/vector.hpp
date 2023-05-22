@@ -2,6 +2,13 @@
 #define VECTOR_HPP
 
 /**
+ * Normalisation d'un angle.
+ * @param angle : float, angle en radian.
+ * @return : float, angle en radian entre -PI et PI.
+ */
+float normalizeAngle (float angle);
+
+/**
  * Classe definissant un vecteur-coordonnee de base (x,y)
 */
 class Vector {
@@ -12,6 +19,8 @@ class Vector {
           * @param y : float, y-coordonnee
           */
         Vector (float x = 0.0f, float y = 0.0f);
+
+        Vector (Vector vect);
 
         //Surcharges des operateurs +, +=, -, *, ==
         Vector operator+ (const Vector &other);
@@ -35,6 +44,12 @@ class Vector {
           * @param other : Vector, le deuxieme vecteur
           */
         float distanceWith(Vector &other);
+
+        /**
+          * @return Angle entre deux vecteurs-coordonnees
+          * @param other : Vector, le deuxieme vecteur
+          */
+        float angleWith(Vector &other);
 
         /**
           * @return Coordonnee x

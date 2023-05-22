@@ -6,6 +6,14 @@ Kinetic::Kinetic (float x, float y, float th, float v, float w) :
     w (w) {
 }
 
+Kinetic::Kinetic (Kinetic kinetic) :
+    VectorOriented (VectorOriented)
+{
+    v = kinetic.getTranslationSpeed ();
+    w = kinetic.getTranslationSpeed ();
+}
+
+
 bool Kinetic::operator== (Kinetic const &other){
     return VectorOriented::operator== (other) && abs(v-other.v) < 1e-6 && abs(w-other.w) < 1e-6;
 }

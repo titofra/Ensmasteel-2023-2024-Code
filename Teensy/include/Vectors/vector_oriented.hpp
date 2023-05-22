@@ -4,13 +4,6 @@
 #include <Vectors/vector.hpp>
 
 /**
- * Normalisation d'un angle.
- * @param angle : float, angle en radian.
- * @return : float, angle en radian entre -PI et PI.
- */
-float normalizeAngle (float angle);
-
-/**
  *Classe etendu de la classe Vector : Rajout d'un angle d'orientation du robot
 */
 class VectorOriented : public Vector {
@@ -22,6 +15,8 @@ class VectorOriented : public Vector {
          * @param theta : float, orientation du robot
          */
         VectorOriented(float x = 0.0f, float y = 0.0f, float theta = 0.0f);
+
+        VectorOriented (VectorOriented vo);
 
         bool operator== (VectorOriented const &other);
         VectorOriented operator- (VectorOriented const &other);
