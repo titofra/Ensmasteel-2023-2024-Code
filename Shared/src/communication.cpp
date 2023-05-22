@@ -1,4 +1,4 @@
-#include <communication.hpp>
+#include "communication.hpp"
 
 template <typename T>
 Communication<T>::Communication (Stream* port) : port (port) {

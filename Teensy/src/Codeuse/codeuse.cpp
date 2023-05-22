@@ -1,4 +1,4 @@
-#include <Codeuse/codeuse.hpp>
+#include "Codeuse/codeuse.hpp"
 
 Codeuse::Codeuse(uint8_t pinCodA, uint8_t pinCodB, int32_t ticksPerRound, float wDiam, bool orientation) :
     ticksPerRound (ticksPerRound),

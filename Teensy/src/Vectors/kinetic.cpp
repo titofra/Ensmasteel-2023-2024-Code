@@ -1,4 +1,4 @@
-#include <Vectors/kinetic.hpp>
+#include "Vectors/kinetic.hpp"
 
 Kinetic::Kinetic (float x, float y, float th, float v, float w) :
     VectorOriented(x, y, theta),

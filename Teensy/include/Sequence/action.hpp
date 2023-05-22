@@ -1,8 +1,8 @@
 #ifndef ACTION_HPP
 #define ACTION_HPP
 
-#include <robot.hpp>
-#include <Vectors/kinetic.hpp>
+#include "robot.hpp"
+#include "kinetic.hpp"
 
 typedef struct {
     MOVEMENT_ACT,

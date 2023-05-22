@@ -1,7 +1,7 @@
 #ifndef ACTION_FUNCTIONS_HPP
 #define ACTION_FUNCTIONS_HPP
 
-#include <Vectors/kinetic.hpp>
+#include "kinetic.hpp"
 
 
 /* TRAJECTORY */

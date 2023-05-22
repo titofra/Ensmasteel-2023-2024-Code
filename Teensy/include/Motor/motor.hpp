@@ -2,6 +2,7 @@
 #define MOTOR_HPP
 
 #include <Arduino.h>
+#include "asservissement.hpp"
 
 class Motor {
     public : 

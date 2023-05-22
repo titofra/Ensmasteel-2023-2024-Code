@@ -1,4 +1,4 @@
-#include "setup.cpp"
+#include "setup.hpp"
 
 void setup () {
     // Actuators
@@ -11,15 +11,15 @@ void setup () {
 
 
     // Wait until the begin of the match
-    while (TirettePresente ()) {}
+    //while (TirettePresente ()) {}
 
 }
 
 void loop () {
-    if (timer > 90000) {
+    /*if (timer > 90000) {
         // The match is almost done
 
         while (1) {}    // stop the movement
-    }
+    }*/
 
 }

@@ -2,7 +2,7 @@
 #define Coder_HPP
 
 #include <Arduino.h>
-#include <Codeuse/encoder.h>
+#include "encoder.h"
 
 /**
  * @brief Classe définissant les codeuses

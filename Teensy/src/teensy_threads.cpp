@@ -22,7 +22,7 @@
  *
  *******************
  */
-#include <teensy_threads.h>
+#include "teensy_threads.h"
 #include <Arduino.h>
 #include <string.h>
 

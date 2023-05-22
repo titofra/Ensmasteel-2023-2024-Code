@@ -1,10 +1,10 @@
 #ifndef COMMUNICATION_HPP
 #define COMMUNICATION_HPP
 
-#include <mailbox.hpp>
+#include "mailbox.hpp"
 #include <Arduino.h>
 #include <Stream.h>
-#include <message.hpp>
+#include "message.hpp"
 
 template <typename T>
 class Communication {

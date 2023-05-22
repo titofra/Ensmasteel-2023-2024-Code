@@ -1,7 +1,7 @@
 #ifndef VECTOR_ORIENTED_HPP
 #define VECTOR_ORIENTED_HPP
 
-#include <Vectors/vector.hpp>
+#include "vector.hpp"
 
 /**
  *Classe etendu de la classe Vector : Rajout d'un angle d'orientation du robot
