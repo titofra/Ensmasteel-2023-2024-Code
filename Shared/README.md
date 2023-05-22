@@ -6,3 +6,4 @@ Those libraries are shared among the systems
 
 - [ ] logger may be reviewed
 - [ ] communication may be tested/reviewed
+- [ ] mutex on mailbox in communication?
