@@ -7,9 +7,30 @@
 /* TRAJECTORY */
 using trajectory_fn = Kinetic(*)(float);
 
-trajectory_fn linear (Kinetic beginKinetic, Kinetic endKinetic, float beginTime, float endTime) {
+trajectory_fn linear (Kinetic beginKinetic, Kinetic endKinetic, float beginTime, float endTime, const float dt) {
+    const float theta_toface = ret.angleWith (endKinetic);
     return (
-        [](float t) { return (endKinetic - beginKinetic) * (t - beginTime) / (endTime - beginTime) + beginKinetic; }
+        [](float t) {
+            Kinetic ret;
+
+            if (t - dt < beginTime) {
+                // this is the first call, the first dt
+                // we rotate the robot in order to face the goal
+                ret = Kinetic (beginKinetic);
+                ret.setTheta (theta_toface);
+            } else {
+                if (t + dt > endTime) {
+                    // this is the last call, the last dt
+                    // we rotate the robot in order to reach the goals's theta
+                    ret = Kinetic (endKinetic);
+                } else {
+                    ret = (endKinetic - beginKinetic) * (t - beginTime) / (endTime - beginTime) + beginKinetic;
+                    ret.setTheta (theta_toface);    // we still have to face the end didn't reach the end
+                }
+            }
+
+            return ret;
+        }
     );
 }
 
