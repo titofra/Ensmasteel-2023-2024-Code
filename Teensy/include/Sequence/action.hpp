@@ -7,7 +7,8 @@
 typedef struct {
     MOVEMENT_ACT,
     OPEN_CLAWS_ACT,
-    CLOSE_CLAWS_ACT
+    CLOSE_CLAWS_ACT,
+    DELAY
 } action_kind;
 
 class Action {
