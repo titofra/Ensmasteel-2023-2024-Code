@@ -5,47 +5,62 @@
 #include "communication.hpp"
 #include "message.hpp"
 #include "Vectors/kinetic.hpp"
+#include "codeuse.hpp"
 
 typedef struct {
     float x_init;
     float y_init;
     float theta_init;
 
-    struct communications {
+    struct Communications {
         Communication<msg_ardtee> *arduino;
         Communication<msg_esptee> *esp32;
     };
+    Communications communications;
 
-    struct motors {
-        struct L {
-            int pin_pwm;
-            int pin_in1;
-            int pin_in2;
+    struct Motors {
+        struct l {
+            uint8_t pin_pwm;
+            uint8_t pin_in1;
+            uint8_t pin_in2;
+            float kp;
+            float ki;
+            float kd;
         };
-        struct R {
-            int pin_pwm;
-            int pin_in1;
-            int pin_in2;
+        struct r {
+            uint8_t pin_pwm;
+            uint8_t pin_in1;
+            uint8_t pin_in2;
+            float kp;
+            float ki;
+            float kd;
         };
+        l L;
+        r R;
     };
+    Motors motors;
 
-    struct codeuses {
+    struct Codeuses {
         float spacing;
-        struct L {
+        struct l {
             uint8_t pin_A;
             uint8_t pin_B; 
             int32_t ticksPerRound;
             float wheel_diameter;
             bool orientation;
         };
-        struct R {
+        struct r {
             uint8_t pin_A;
             uint8_t pin_B; 
             int32_t ticksPerRound;
             float wheel_diameter;
             bool orientation;
         };
+        l L;
+        r R;
     };
+    Codeuses codeuses;
+
 } robot_setup;
 
 class Robot {
@@ -56,12 +71,18 @@ class Robot {
             float theta_init,
             Communication<msg_ardtee> *arduino,
             Communication<msg_esptee> *esp32,
-            int pin_pwm_motorL,
-            int pin_in1_motorL,
-            int pin_in2_motorL,
-            int pin_pwm_motorR,
-            int pin_in1_motorR,
-            int pin_in2_motorR,
+            uint8_t pin_pwm_motorL,
+            uint8_t pin_in1_motorL,
+            uint8_t pin_in2_motorL,
+            float kp_motorL,
+            float ki_motorL,
+            float kd_motorL,
+            uint8_t pin_pwm_motorR,
+            uint8_t pin_in1_motorR,
+            uint8_t pin_in2_motorR,
+            float kp_motorR,
+            float ki_motorR,
+            float kd_motorR,
             float codeuses_spacing,
             uint8_t pin_A_codeuseL,
             uint8_t pin_B_codeuseL, 
@@ -87,7 +108,7 @@ class Robot {
         void closeClaws ();
 
         /* KINETIC */
-        void updateKinetic ();
+        void updateKinetic (float dt);
         void goTo (Kinetic goal, float dt); // goto goal in dt
         void goTo (float x, float y, float theta, float v, float w, float dt);
         Kinetic getKinetic ();
@@ -98,7 +119,7 @@ class Robot {
         Kinetic kinetic;
         Motor motorL, motorR;
         Codeuse codeuseL, codeuseR;
-        Communication<msg_ardtee> *arduino
+        Communication<msg_ardtee> *arduino;
         Communication<msg_esptee> *esp32;
         float codeuses_spacing;
 

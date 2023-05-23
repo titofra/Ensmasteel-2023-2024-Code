@@ -4,14 +4,21 @@ Robot::Robot (
     float x_init,
     float y_init,
     float theta_init,
-    Communication *arduino,
-    Communication *esp32,
-    int pin_pwm_motorL,
-    int pin_in1_motorL,
-    int pin_in2_motorL,
-    int pin_pwm_motorR,
-    int pin_in1_motorR,
-    int pin_in2_motorR,
+    Communication<msg_ardtee> *arduino,
+    Communication<msg_esptee> *esp32,
+    uint8_t pin_pwm_motorL,
+    uint8_t pin_in1_motorL,
+    uint8_t pin_in2_motorL,
+    float kp_motorL,
+    float ki_motorL,
+    float kd_motorL,
+    uint8_t pin_pwm_motorR,
+    uint8_t pin_in1_motorR,
+    uint8_t pin_in2_motorR,
+    float kp_motorR,
+    float ki_motorR,
+    float kd_motorR,
+    float codeuses_spacing,
     uint8_t pin_A_codeuseL,
     uint8_t pin_B_codeuseL, 
     int32_t ticksPerRound_codeuseL,
@@ -23,66 +30,65 @@ Robot::Robot (
     float wheel_diameter_codeuseR,
     bool orientation_codeuseR
 ) :
+    kinetic (Kinetic (x_init, y_init, theta_init, 0.0f, 0.0f)),
+    motorL (Motor (pin_pwm_motorL, pin_in1_motorL, pin_in2_motorL, (uint8_t) 12, kp_motorL, ki_motorL, kd_motorL)),
+    motorR (Motor (pin_pwm_motorR, pin_in1_motorR, pin_in2_motorR, (uint8_t) 12, kp_motorR, ki_motorR, kd_motorR)),
+    codeuseL (Codeuse (pin_A_codeuseL, pin_B_codeuseL, ticksPerRound_codeuseL, wheel_diameter_codeuseL, orientation_codeuseL)),
+    codeuseR (Codeuse (pin_A_codeuseR, pin_B_codeuseR, ticksPerRound_codeuseR, wheel_diameter_codeuseR, orientation_codeuseR)),
     arduino (arduino),
     esp32 (esp32),
-    codeuses_spacing (codeuses_spacing)
-{
-    kinetic = Kinetic (x_init, y_init, theta_init, 0.0f, 0.0f);
-    motorL = Motor (pin_motorL_pwm, pin_motorL_in1, pin_motorL_in2, 12);
-    motorR = Motor (pin_motorR_pwm, pin_motorR_in1, pin_motorR_in2, 12);
-    codeuseL = Codeuse (pin_A_codeuseL, pin_B_codeuseL, ticksPerRound_codeuseL, orientation_codeuseL);
-    codeuseR = Codeuse (pin_A_codeuseR, pin_B_codeuseR, ticksPerRound_codeuseR, orientation_codeuseR);
+    codeuses_spacing (codeuses_spacing) {
 }
 
-Robot::Robot (robot_setup setup) {
-    arduino = setup.communications.arduino;
-    esp32 = setup.communications.esp32;
-    codeuses_spacing = setup.codeuses.spacing;
-    kinetic = Kinetic (setup.x_init, setup.y_init, setup.theta_init, 0.0f, 0.0f);
-    motorL = Motor (setup.motors.L.pin_pwm, setup.motors.L.pin_in1, setup.motors.L.pin_in2, 12);
-    motorR = Motor (setup.motors.R.pin_pwm, setup.motors.R.pin_in1, setup.motors.R.pin_in2, 12);
-    codeuseL = Codeuse (setup.codeuses.L.pin_A, setup.codeuses.L.pin_B, setup.codeuses.L.ticksPerRound, setup.codeuses.L.orientation);
-    codeuseR = Codeuse (setup.codeuses.R.pin_A, setup.codeuses.R.pin_B, setup.codeuses.R.ticksPerRound, setup.codeuses.R.orientation);
+Robot::Robot (robot_setup setup) :
+    kinetic (Kinetic (setup.x_init, setup.y_init, setup.theta_init, 0.0f, 0.0f)),
+    motorL (Motor (setup.motors.L.pin_pwm, setup.motors.L.pin_in1, setup.motors.L.pin_in2, (uint8_t) 12, setup.motors.L.kp, setup.motors.L.ki, setup.motors.L.kd)),
+    motorR (Motor (setup.motors.R.pin_pwm, setup.motors.R.pin_in1, setup.motors.R.pin_in2, (uint8_t) 12, setup.motors.R.kp, setup.motors.R.ki, setup.motors.R.kd)),
+    codeuseL (Codeuse (setup.codeuses.L.pin_A, setup.codeuses.L.pin_B, setup.codeuses.L.ticksPerRound, setup.codeuses.L.wheel_diameter, setup.codeuses.L.orientation)),
+    codeuseR (Codeuse (setup.codeuses.R.pin_A, setup.codeuses.R.pin_B, setup.codeuses.R.ticksPerRound, setup.codeuses.R.wheel_diameter, setup.codeuses.R.orientation)),
+    arduino (setup.communications.arduino),
+    esp32 (setup.communications.esp32),
+    codeuses_spacing (setup.codeuses.spacing) {
 }
 
-void setPWM_MotorL (int pwm) {
-    motorL.setPwm (pwm);
+void Robot::setPWM_MotorL (int pwm) {
+    motorL.setPWM (pwm);
 }
 
-void setPWM_MotorR (int pwm) {
-    motorR.setPwm (pwm);
+void Robot::setPWM_MotorR (int pwm) {
+    motorR.setPWM (pwm);
 }
 
-void openClaws () {
-    coms_ardtee msg;
+void Robot::openClaws () {
+    msg_ardtee msg;
     msg.id = OPEN_CLAWS;
-    arduino->send ((void*) msg_id);
+    arduino->send (msg);
 }
 
-void closeClaws () {
-    coms_ardtee msg;
+void Robot::closeClaws () {
+    msg_ardtee msg;
     msg.id = CLOSE_CLAWS;
-    arduino->send ((void*) msg_id);
+    arduino->send (msg);
 }
 
-Kinetic getKinetic () {
+Kinetic Robot::getKinetic () {
     return kinetic;
 }
 
-void updateComArduino () {
-    arduino.receive ();
+void Robot::updateComArduino () {
+    arduino->receive ();
 }
 
-void updateComEsp32 (){
-    esp32.receive ();
+void Robot::updateComEsp32 (){
+    esp32->receive ();
 }
 
-void updateKinetic (float dt) {
+void Robot::updateKinetic (float dt) {
     codeuseL.update ();
     codeuseR.update ();
 
-    float dforward_codeuseL = codeuseL.getdeltaAvance ();
-    float dforward_codeuseR = codeuseR.getdeltaAvance ();
+    float dforward_codeuseL = codeuseL.getDeltaAvance ();
+    float dforward_codeuseR = codeuseR.getDeltaAvance ();
     float theta = kinetic.getTheta ();
     
     float dforward = (dforward_codeuseR + dforward_codeuseL) / 2;
@@ -99,13 +105,13 @@ void updateKinetic (float dt) {
     kinetic.normalizeTheta ();
 }
 
-void goTo (float x, float y, float theta, float v, float w, float dt) {
+void Robot::goTo (float x, float y, float theta, float v, float w, float dt) {
     goTo (Kinetic (x, y, theta, v, w), dt);
 }
 
-void goTo (Kinetic goal, float dt) {
+void Robot::goTo (Kinetic goal, float dt) {
     // kinetic error
-    updateKinetic ();
+    updateKinetic (dt);
     Kinetic error = goal - kinetic;
 
     // global error

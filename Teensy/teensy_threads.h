@@ -235,9 +235,9 @@ public:
   // stack allocated on heap. Function "p" has form "void p(void *)".
   int addThread(ThreadFunction p, void * arg=0, int stack_size=-1, void *stack=0);
   // For: void f(int)
-  int addThread(ThreadFunctionInt p, int arg=0, int stack_size=-1, void *stack=0) {
+  /*int addThread(ThreadFunctionInt p, int arg=0, int stack_size=-1, void *stack=0) {
     return addThread((ThreadFunction)p, (void*)arg, stack_size, stack);
-  }
+  }*/ // TITOFRA VERSION
   // For: void f()
   int addThread(ThreadFunctionNone p, int arg=0, int stack_size=-1, void *stack=0) {
     return addThread((ThreadFunction)p, (void*)arg, stack_size, stack);

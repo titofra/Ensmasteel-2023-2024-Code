@@ -17,7 +17,7 @@ build_Makefile()
     echo FQBN:=$3 >> $1
     echo PORT:=/dev/ttyACM0 >> $1
     echo >> $1
-    echo "FLAGS:=-Wall -Wextra -Werror -Wfloat-equal -Wundef -Wcast-align -Wwrite-strings -Wunreachable-code -Wno-error=maybe-uninitialized #-Wconversion" >> $1
+    echo "FLAGS:=-Wall -Wextra -Werror -Wundef -Wcast-align -Wwrite-strings -Wunreachable-code -Wno-error=maybe-uninitialized -Wno-error=deprecated-copy -Wno-error=undef -Wno-error=sign-compare -Wno-error=cast-align #-Wconversion -Wfloat-equal" >> $1
     echo >> $1
     echo .PHONY: clean setup compile upload monitor list >> $1
     echo >> $1

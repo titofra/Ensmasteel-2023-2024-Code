@@ -7,6 +7,7 @@ class Asservissement{
          * @brief Construct a new Asservissement object
          */
         Asservissement (float kp, float ki, float kd);
+        Asservissement () {};
 
         /**
          * @brief Computes the control signals for the robotic system based on the PID controllers and desired setpoints

@@ -14,13 +14,14 @@ class Kinetic : public VectorOriented{
          * @param y : float, Position en y
          * @param theta : float : Angle d'orientation
          * @param v : float, Vitesse de translation du robot
-         * @param w : float, Vitesse de rotation du robot 
+         * @param w : float, Vitesse de rotation du robot
          */
         Kinetic (float x = 0.0f, float y = 0.0f, float theta = 0.0f, float v = 0.0f, float w = 0.0f);
 
         Kinetic (const Kinetic& kine);
 
         bool operator== (Kinetic const &other);
+        Kinetic operator- (Kinetic const &other);
 
         /**
          * @return Vitesse de translation du robot

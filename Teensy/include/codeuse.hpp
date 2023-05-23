@@ -2,7 +2,7 @@
 #define Coder_HPP
 
 #include <Arduino.h>
-#include "encoder.h"
+#include <Encoder.h>
 
 /**
  * @brief Classe définissant les codeuses
@@ -17,8 +17,9 @@ class Codeuse{
          * @param wDiam : diametre de la roue de la codeuse (en m)
          * @param orient : booleen, orientation de la codeuse
          */
-        Codeuse(uint8_t pinCodA, uint8_t pinCodB, int32_t ticksPerRound, float wheelDiameter, bool orientation);
-        Codeuse(){};
+        Codeuse (uint8_t pinCodA, uint8_t pinCodB, int32_t ticksPerRound, float wheelDiameter, bool orientation);
+        Codeuse () {};
+        ~Codeuse ();
 
         /**
          * @brief Fonction d'actualisation des valeurs de vitesse du robot en fonction du nombre de ticks depuis la derniere actualisation)
@@ -32,7 +33,7 @@ class Codeuse{
         float getDeltaAvance();
 
     private :
-        Encoder encoder; //Encoder de la codeuse permet les interruptions (je crois)
+        Encoder *encoder; //Encoder de la codeuse permet les interruptions (je crois)
         int32_t ticksPerRound; //Nombre de ticks en un tour de roue
         float wheelDiameter; //Diamètre de la roue sur laquelle la codeuse est
         int32_t prev_ticks; //sert à comparer combien de ticks on a effectué

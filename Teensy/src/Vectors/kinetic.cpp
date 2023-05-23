@@ -13,9 +13,13 @@ Kinetic::Kinetic (const Kinetic& kinetic) :
     w = kinetic.getTranslationSpeed ();
 }
 
-
 bool Kinetic::operator== (Kinetic const &other){
     return VectorOriented::operator== (other) && abs(v-other.v) < 1e-6 && abs(w-other.w) < 1e-6;
+}
+
+Kinetic Kinetic::operator-(Kinetic const &other){
+    VectorOriented vect = VectorOriented::operator- (other);
+    return Kinetic (vect.getX (),vect.getY (), vect.getTheta (), v - other.v, w - other.w); 
 }
 
 float Kinetic::getTranslationSpeed (){

@@ -497,7 +497,9 @@ int Threads::testStackMarkers(int *threadid)
   for (int i=0; i < MAX_THREADS; i++) {
     if (threadp[i] == NULL) continue;
     if (threadp[i]->flags == RUNNING) {
-      uint32_t *m = (uint32_t*)threadp[i]->stack;
+      // TITOFRA VERSION
+      uint32_t *m;
+      memcpy (m, threadp[i]->stack, sizeof (uint32_t));
       if (*m != thread_marker) {
         if (threadid) *threadid = i;
         return -1;
