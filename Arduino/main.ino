@@ -1,4 +1,4 @@
-#include "include/setup.hpp"
+#include "setup.hpp"
 
 Servo clawL, clawR;
 Communication<msg_ardtee> comTeensy (&Serial1);
