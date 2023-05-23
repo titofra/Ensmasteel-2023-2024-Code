@@ -20,7 +20,7 @@ class Vector {
           */
         Vector (float x = 0.0f, float y = 0.0f);
 
-        Vector (Vector vect);
+        Vector (const Vector& vect);
 
         //Surcharges des operateurs +, +=, -, *, ==
         Vector operator+ (const Vector &other);

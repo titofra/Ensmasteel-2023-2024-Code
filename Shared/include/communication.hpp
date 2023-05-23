@@ -10,9 +10,9 @@ template <typename T>
 class Communication {
     public:
         Communication (Stream* port);
-        void send (void* msg);
+        void send (T msg);
         void receive ();
-        bool retrieve (void* msg);
+        bool retrieve (T *msg);
 
     private:
         Stream* port;

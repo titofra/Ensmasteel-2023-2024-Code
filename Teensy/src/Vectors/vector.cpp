@@ -16,7 +16,7 @@ Vector::Vector(float x, float y) :
     y (y) {
 }
 
-Vector::Vector (Vector vect) {
+Vector::Vector (const Vector& vect) {
     x = vect.getX ();
     y = vect.getY ();
 }

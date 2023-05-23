@@ -6,6 +6,9 @@
 #ifndef MAILBOX_H
 #define MAILBOX_H
 
+#include <cstddef>
+#include <vector>
+
 template <typename T>
 class Mailbox {
     public:

@@ -5,7 +5,7 @@ VectorOriented::VectorOriented(float x, float y,float theta) :
     theta (theta) {
 }
 
-VectorOriented::VectorOriented (VectorOriented vo) :
+VectorOriented::VectorOriented (const VectorOriented& vo) :
     Vector (Vector)
 {
     theta = vo.getTheta ();

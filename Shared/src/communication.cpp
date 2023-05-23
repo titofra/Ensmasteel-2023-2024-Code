@@ -37,5 +37,5 @@ void Communication<T>::receive () {
 
 template <typename T>
 bool Communication<T>::retrieve (T *msg) {
-    return mb.retrieve (msg)
+    return mb.retrieve (msg);
 }

@@ -17,7 +17,7 @@ class Logger {
          * @param info : Booleen indiquant si le canal info est active
          * @param debug : Booleen indiquant si le canal debug est active
          */
-        static void setup(Print* infoSerial, Print* debugSerial, bool info = true, bool debug = true);
+        static void setup(Print* info_Serial, Print* debug_Serial, bool info = true, bool debug = true);
 
         /**
          * @brief Permet d'ecrire sur le canal info

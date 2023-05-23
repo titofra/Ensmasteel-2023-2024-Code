@@ -6,7 +6,7 @@ Kinetic::Kinetic (float x, float y, float th, float v, float w) :
     w (w) {
 }
 
-Kinetic::Kinetic (Kinetic kinetic) :
+Kinetic::Kinetic (const Kinetic& kinetic) :
     VectorOriented (VectorOriented)
 {
     v = kinetic.getTranslationSpeed ();

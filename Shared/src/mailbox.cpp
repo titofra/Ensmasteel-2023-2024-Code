@@ -1,7 +1,7 @@
 #include "mailbox.hpp"
 
 template <typename T>
-void Mailbox<T>::Mailbox (size_t N_max, bool overwrite): 
+Mailbox<T>::Mailbox (size_t N_max, bool overwrite): 
     N_max (N_max),
     overwrite (overwrite) {
 }

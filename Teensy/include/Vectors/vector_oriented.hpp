@@ -16,7 +16,7 @@ class VectorOriented : public Vector {
          */
         VectorOriented(float x = 0.0f, float y = 0.0f, float theta = 0.0f);
 
-        VectorOriented (VectorOriented vo);
+        VectorOriented (const VectorOriented& vo);
 
         bool operator== (VectorOriented const &other);
         VectorOriented operator- (VectorOriented const &other);

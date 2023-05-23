@@ -32,7 +32,7 @@ void threadComRaspberry () {
 
 /* FUNCTIONS */
 bool TirettePresente () {
-
+    return true;    // avoid warnings
 }
 
 #endif  // SETUP_HPP

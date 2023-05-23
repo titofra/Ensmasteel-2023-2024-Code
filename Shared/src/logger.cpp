@@ -2,18 +2,18 @@
 
 //----------Logger Class----------//
 
-Print* Logger::infoSerial;
+/*Print* Logger::infoSerial;
 Print* Logger::debugSerial;
 
-/*bool Logger::infoOpened;
+bool Logger::infoOpened;
 bool Logger::debugOpened;*/ // FORMER
 
-void Logger::setup(Print* infoSerial, Print* debugSerial, bool info, bool debug) :
-    infoSerial (infoSerial),
-    debugSerial (debugSerial),
-    infoOpened (info),
-    debugOpened (debug)
-{
+void Logger::setup(Print* info_Serial, Print* debug_Serial, bool info, bool debug) {
+    infoSerial = info_Serial;
+    debugSerial = debug_Serial;
+    infoOpened = info;
+    debugOpened = debug;
+
     if (infoOpened){
         infoSerial->println("Le canal Info est ouvert");
     }

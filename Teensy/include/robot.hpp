@@ -12,22 +12,22 @@ typedef struct {
     float theta_init;
 
     struct communications {
-        Communication *arduino;
-        Communication *esp32;
-    }
+        Communication<msg_ardtee> *arduino;
+        Communication<msg_esptee> *esp32;
+    };
 
     struct motors {
         struct L {
             int pin_pwm;
             int pin_in1;
             int pin_in2;
-        }
+        };
         struct R {
             int pin_pwm;
             int pin_in1;
             int pin_in2;
-        }
-    }
+        };
+    };
 
     struct codeuses {
         float spacing;
@@ -37,15 +37,15 @@ typedef struct {
             int32_t ticksPerRound;
             float wheel_diameter;
             bool orientation;
-        }
+        };
         struct R {
             uint8_t pin_A;
             uint8_t pin_B; 
             int32_t ticksPerRound;
             float wheel_diameter;
             bool orientation;
-        }
-    }
+        };
+    };
 } robot_setup;
 
 class Robot {
@@ -54,8 +54,8 @@ class Robot {
             float x_init,
             float y_init,
             float theta_init,
-            Communication *arduino,
-            Communication *esp32,
+            Communication<msg_ardtee> *arduino,
+            Communication<msg_esptee> *esp32,
             int pin_pwm_motorL,
             int pin_in1_motorL,
             int pin_in2_motorL,
