@@ -21,11 +21,11 @@ Execute `install_unix.sh <path to arduino-cli>` with `<path to arduino-cli>` as 
 
 ## Windows
 
-**Coming soon**
+*Coming soon*
 
 ## Mac
 
-**Coming soon**
+*Coming soon*
 
 ## TODO
 
