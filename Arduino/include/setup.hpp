@@ -1,6 +1,11 @@
 #ifndef SETUP_HPP
 #define SETUP_HPP
 
+#include <Arduino.h>
+#include <Servo.h>
+#include "communication.hpp"
+#include "message.hpp"
+
 //Right Claw Servo
 #define PIN_PWM_CLAW_L 2
 

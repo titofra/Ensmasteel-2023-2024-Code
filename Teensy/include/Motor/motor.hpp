@@ -15,7 +15,6 @@ class Motor {
          */
         Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t pinIN2, uint8_t numberBitsPWM, float kp, float ki, float kd);
         Motor () {};
-        ~Motor(){};
 
         void setPWM (int pwm);
         void setMovement (float distance, float dt);

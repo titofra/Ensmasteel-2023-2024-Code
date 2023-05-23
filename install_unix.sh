@@ -22,7 +22,7 @@ build_Makefile()
     echo .PHONY: clean setup compile upload monitor list >> $1
     echo >> $1
     echo compile: setup >> $1
-    echo "	\$(ARDUINO_CLI) compile --fqbn \$(FQBN) --warnings all --build-property \"build.flags.cpp=\$(FLAGS)\" --build-property \"build.flags.c=\$(FLAGS)\" \$(TMP_PATH)/\$(TARGET_NAME)/\$(TARGET_NAME).\$(TARGET_EXTENTION)" >> $1
+    echo "	\$(ARDUINO_CLI) compile --fqbn \$(FQBN) $4 --warnings all --build-property \"build.flags.cpp=\$(FLAGS)\" --build-property \"build.flags.c=\$(FLAGS)\" \$(TMP_PATH)/\$(TARGET_NAME)/\$(TARGET_NAME).\$(TARGET_EXTENTION)" >> $1
     echo >> $1
     echo upload: compile >> $1
     echo "	\$(ARDUINO_CLI) upload --fqbn \$(FQBN) -p \$(PORT) \$(TMP_PATH)/\$(TARGET_NAME)/\$(TARGET_NAME).\$(TARGET_EXTENTION)" >> $1
@@ -59,6 +59,11 @@ else
     $1 core update-index
     $1 core install teensy:avr
 
-    echo_color 2 "### Teensy/Makefile ###"
-    build_Makefile "./Teensy/Makefile" $1 "teensy:avr:teensy41" #:usb=serial,speed=600,opt=o2std,keys=en-us    # opt https://forum.arduino.cc/t/arduino-cli-teesnsy-notes-questions-documentation/1068881/2"
+    # Library install
+    $1 lib install Servo
+
+    build_Makefile "./Teensy/Makefile" $1 "teensy:avr:teensy41" "" #:usb=serial,speed=600,opt=o2std,keys=en-us    # opt https://forum.arduino.cc/t/arduino-cli-teesnsy-notes-questions-documentation/1068881/2"
+    echo_color 2 "Teensy's Makefile done!"
+    build_Makefile "./Arduino/Makefile" $1 "arduino:avr:mega:cpu=atmega2560" "--build-property compiler.cpp.extra_flags=-DUSE_ARDUINO_STD_VECTOR"
+    echo_color 2 "Arduino's Makefile done!"
 fi

@@ -1,14 +1,14 @@
 #include "mailbox.hpp"
 
 template <typename T>
-Mailbox<T>::Mailbox (size_t N_max, bool overwrite): 
+Mailbox<T>::Mailbox (int N_max, bool overwrite): 
     N_max (N_max),
     overwrite (overwrite) {
 }
 
 template <typename T>
 bool Mailbox<T>::send (T mail) {
-    if (box.size () < N_max || N_max == 0) {
+    if ((int) box.size () < N_max || N_max == 0) {
         // The box is not full, let's add the mail
         box.push_back (mail);
     } else {
@@ -43,6 +43,6 @@ bool Mailbox<T>::retrieve (T *mail) {
 }
 
 template <typename T>
-size_t Mailbox<T>::getNbMail () {
-    return box.size ();
+int Mailbox<T>::getNbMail () {
+    return (int) box.size ();
 }

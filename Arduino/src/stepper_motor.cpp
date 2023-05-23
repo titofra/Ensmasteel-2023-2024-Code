@@ -1,6 +1,6 @@
-#include <stepper_motor.hpp>
+#include "stepper_motor.hpp"
 
-StepperMotorJ::StepperMotor(int stepPin, int dirPin, int pinM0, int pinM1) :
+StepperMotor::StepperMotor(int stepPin, int dirPin, int pinM0, int pinM1) :
     stepPin (stepPin),
     dirPin (dirPin)
 {
@@ -13,7 +13,7 @@ StepperMotorJ::StepperMotor(int stepPin, int dirPin, int pinM0, int pinM1) :
     digitalWrite(pinM1, LOW);
 }
 
-void StepperMotor::move(int steps, int delay, bool up, bool holdPosition) {
+void StepperMotor::move(int steps, int delay, bool up) {
     digitalWrite(dirPin, up ? HIGH : LOW);
     for(int x = 0; x < steps; x++) {
         digitalWrite(stepPin,HIGH);

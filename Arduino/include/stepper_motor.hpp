@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-class StepperMotorJ {
+class StepperMotor {
     public:
 
         /**
@@ -20,11 +20,9 @@ class StepperMotorJ {
          * Method to make the motor move.
          * @param steps : number of steps that the stepper has to do.
          * @param delay : duration while the stepper should wait for the next action.
-         * @param up
-         * @param holdPosition : Bool, represent whether the stepper should wait in final position or go back to the
-         * initial one.
+         * @param up : rotation's direction
          */
-        void move(int steps, int delay, bool up, bool holdPosition);
+        void move(int steps, int delay, bool up);
 
     private:
         int stepPin;

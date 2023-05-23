@@ -1,11 +1,7 @@
-#include <Arduino.h>
-#include <Servo.h>
-#include <setup.hpp>
-#include <communication.hpp>
-#include <message.hpp>
+#include "include/setup.hpp"
 
 Servo clawL, clawR;
-Communication comTeensy = Communication (&Serial1);
+Communication<msg_ardtee> comTeensy (&Serial1);
 msg_ardtee msg;
 
 void setup () {
@@ -19,7 +15,7 @@ void setup () {
 }
 
 void loop () {
-    if(comTeensy.retrieve (msg)){
+    if(comTeensy.retrieve (&msg)){
         switch (msg.id) {
             case OPEN_CLAWS :
                 clawL.write(25);

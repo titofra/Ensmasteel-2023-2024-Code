@@ -39,4 +39,4 @@ class Logger {
 
 };
 
-#endif
+#endif  // LOGGER_HPP

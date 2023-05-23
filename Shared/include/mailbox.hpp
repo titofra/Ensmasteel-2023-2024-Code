@@ -3,21 +3,24 @@
  * @brief Mailbox can stores values, wich can be retrieve at any moment
  */
 
-#ifndef MAILBOX_H
-#define MAILBOX_H
+#ifndef MAILBOX_HPP
+#define MAILBOX_HPP
 
-#include <cstddef>
-#include <vector>
+#ifdef USE_ARDUINO_STD_VECTOR
+    #include "arduino_std_vector.hpp"
+#else
+    #include <vector>   // we are using teensy, where vector's library is available
+#endif
 
 template <typename T>
 class Mailbox {
     public:
         /**
          * @brief Constructor of the mailbox
-         * @param size_t N_max, Macimum number of elements in the mailbox, 0 for unlimited
+         * @param int N_max, Maximum number of elements in the mailbox, 0 for unlimited
          * @param bool overwrite, Should we replace elements when we want to insert a new element in a full mailbox? If true, first element is removed, else the new element is not accepted (Note: useless if N_max = 0)
          */
-        Mailbox (size_t N_max, bool overwrite = true);
+        Mailbox (int N_max, bool overwrite = true);
 
         /**
          * @brief Add a new element to the mailbox
@@ -37,11 +40,11 @@ class Mailbox {
          * @bried Get the number of elements
          * @return The number of elements
          */
-        size_t getNbMail ();
+        int getNbMail ();
     private:
-        std::vector<void*> box;
-        size_t N_max;
+        std::vector<T> box;
+        int N_max;
         bool overwrite;
 };
 
-#endif  // MAILBOX_H
+#endif  // MAILBOX_HPP
