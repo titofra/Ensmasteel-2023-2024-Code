@@ -17,7 +17,7 @@ build_Makefile()
     echo FQBN:=$3 >> $1
     echo PORT:=/dev/ttyACM0 >> $1
     echo >> $1
-    echo "FLAGS:=-Wall -Wextra -Werror -Wundef -Wcast-align -Wwrite-strings -Wunreachable-code -Wno-error=maybe-uninitialized -Wno-error=deprecated-copy -Wno-error=undef -Wno-error=sign-compare -Wno-error=cast-align #-Wconversion -Wfloat-equal" >> $1
+    echo "FLAGS:=-Wall -Wextra -Werror -Wundef -Wcast-align -Wwrite-strings -Wunreachable-code -Wno-error=maybe-uninitialized -Wno-error=deprecated-copy -Wno-error=undef -Wno-error=sign-compare -Wno-error=cast-align #-Wconversion -Wfloat-equal $5" >> $1
     echo >> $1
     echo .PHONY: clean setup compile upload monitor list >> $1
     echo >> $1
@@ -62,8 +62,8 @@ else
     # Library install
     $1 lib install Servo
 
-    build_Makefile "./Teensy/Makefile" $1 "teensy:avr:teensy41" "" #:usb=serial,speed=600,opt=o2std,keys=en-us    # opt https://forum.arduino.cc/t/arduino-cli-teesnsy-notes-questions-documentation/1068881/2"
+    build_Makefile "./Teensy/Makefile" $1 "teensy:avr:teensy41" "" "-Wno-error=cast-function-type" #:usb=serial,speed=600,opt=o2std,keys=en-us    # opt https://forum.arduino.cc/t/arduino-cli-teesnsy-notes-questions-documentation/1068881/2"
     echo_color 2 "Teensy's Makefile done!"
-    build_Makefile "./Arduino/Makefile" $1 "arduino:avr:mega:cpu=atmega2560" "--build-property compiler.cpp.extra_flags=-DUSE_ARDUINO_STD_VECTOR"
+    build_Makefile "./Arduino/Makefile" $1 "arduino:avr:mega:cpu=atmega2560" "--build-property compiler.cpp.extra_flags=-DUSE_ARDUINO_STD_VECTOR" ""
     echo_color 2 "Arduino's Makefile done!"
 fi
