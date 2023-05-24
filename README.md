@@ -19,11 +19,11 @@ Execute `install_unix.sh <path to arduino-cli>` with `<path to arduino-cli>` as 
 - `make clean`	: clean builds
 - `make list`	: list available boards
 
-## Windows
+### Windows
 
 *Coming soon*
 
-## Mac
+### Mac
 
 *Coming soon*
 
