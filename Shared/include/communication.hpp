@@ -12,56 +12,56 @@
 template <typename T>
 class Communication {
     public:
-        Communication (Stream* port);
+        Communication (Stream* serial);
 
         void send (T msg);
         void receive ();
         bool retrieve (T *msg);
 
     private:
-        Stream* port;
         Mailbox<T> mb;
-
+        Stream* serial;
 };
 
 
 /* IMPLEMENTATION */
 
 template <typename T>
-Communication<T>::Communication (Stream* port) :
-    port (port),
-    mb (Mailbox<T> (0)) // TODO: may not be unlimited
+Communication<T>::Communication (Stream* serial) :
+    mb (Mailbox<T> (0)), // TODO: may not be unlimited
+    serial (serial)
 {
-    /*while (port->available()>0){
-        port->read();
+    /*while (serial->available()>0){
+        serial->read();
     }*/ // FORMER
 }
 
 template <typename T>
 void Communication<T>::send (T msg){
-    const size_t out_len = ceil (sizeof (msg) / sizeof (uint8_t));   // TODO: verif taille, is strlen () better?
-
-    uint8_t out [out_len];
-    memcpy (out, &msg, sizeof (out));
-    for (int i = 0; i < out_len; i++){
-        port->write(out [i]);
+    if (serial->available() > 0) {
+        uint8_t *buf = (uint8_t*) &msg;
+        serial->print (*buf);
     }
 }
 
 template <typename T>
 void Communication<T>::receive () {
-    size_t in_len = ceil (sizeof (T) / sizeof (uint8_t));
+    /*int i = 0;
+    uint8_t in [sizeof (T)];
+    uint8_t inByte;
 
-    uint8_t in [in_len];
-    while (port->peek() != 255 && port->available() >= in_len) {
-        port->read();
+    while (serial->available() > 0 && (inByte = serial->read ()) > 0 && i < (int) sizeof (T)) {
+        in [i] = inByte;
+        i ++;
     }
-    for (int i = 0; i < in_len; i++){
-        in [i] = port->read();
-    }
+
     T msg;
-    memcpy (&msg, in, sizeof (in));
-    mb.send (msg);
+    memcpy (&msg, in, sizeof (in));*/
+    uint8_t buf [sizeof (T)];
+    if (serial->available() > 0 && serial->readBytes (buf, sizeof (T)) == sizeof (T)) {
+        T* msg = (T*) buf;
+        mb.send (*msg);
+    }
 }
 
 template <typename T>

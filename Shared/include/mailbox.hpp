@@ -44,6 +44,7 @@ class Mailbox {
          * @return The number of elements
          */
         int getNbMail ();
+
     private:
         std::vector<T> box;
         int N_max;
@@ -70,7 +71,8 @@ bool Mailbox<T>::send (T mail) {
             for (int i = 0; i < (int) box.size () - 1; i++) {
                 box [i] = box [i + 1];
             }
-            box.back () = mail;
+            box.pop_back ();    // TODO better to do than pop and push 
+            box.push_back (mail);
         } else {
             // The mail cannot be stored
             return false;
