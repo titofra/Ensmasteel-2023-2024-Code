@@ -2,7 +2,9 @@
 #define SETUP_HPP
 
 /* INLCUDES */
-
+#include <Arduino.h>
+#include "communication.hpp"
+#include "message.hpp"
 
 /* THREADS */
 void threadEvitement () {
