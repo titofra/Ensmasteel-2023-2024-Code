@@ -13,7 +13,14 @@ class Sequence {
         void reset ();
 
         void run (float timer, float dt, Robot *robot);
-        void goTo (int istep);
+        void monitor (float timer, float dt, action_kind *kind, Kinetic *goal);
+        void goToStep (int istep);
+
+        // save the monitoring ie goals at each dt, actions, etc
+        //void save_monitor (const std::string& path, float beginTime, float endTime, float dt);
+
+        // save the sequence
+        void save ();
 
         bool isDone ();
 

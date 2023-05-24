@@ -13,13 +13,18 @@ typedef struct {
 
 class Action {
     public :
-        Action (action_kind kind);
-        Action (action_kind kind, Kinetic trajectory (float t), float time_distortion (float t), float endTime);
+        Action (const action_kind kind);
+        Action (const action_kind kind, Kinetic trajectory (float t), float time_distortion (float t), float endTime);
 
         void run (float timer, float dt, Robot *robot);
 
+        // fake run to monitor the action
+        void monitor (float timer, float dt, action_kind *kind, Kinetic *goal);
+
+        void reset ();
+
     private :
-        action_kind kind;
+        const action_kind kind;
         bool isDone;
 
         /* for movements only */
