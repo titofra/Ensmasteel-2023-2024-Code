@@ -1,4 +1,4 @@
-#include "Motor/asservissement.hpp"
+#include "asservissement.hpp"
 
 Asservissement::Asservissement (float kp, float ki, float kd) :
     kp (kp),

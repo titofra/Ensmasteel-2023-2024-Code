@@ -1,8 +1,12 @@
-#include "Motor/motor.hpp"
+#include "motor.hpp"
 
-Motor::Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t pinIN2, uint8_t numberBitsPWM, float kp, float ki, float kd) {
-    pinMode(pinPWM,OUTPUT);
-    pinMode(pinIN1,OUTPUT);
+Motor::Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t pinIN2, uint8_t numberBitsPWM, float kp, float ki, float kd) :
+    pinPWM (pinPWM),
+    pinIN1 (pinIN1),
+    pinIN2 (pinIN2)
+{
+    pinMode(pinPWM, OUTPUT);
+    pinMode(pinIN1, OUTPUT);
     pinMode(pinIN2, OUTPUT);
 
     analogWriteResolution(numberBitsPWM);

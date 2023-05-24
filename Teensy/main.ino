@@ -23,10 +23,8 @@ void setup () {
 
 void loop () {
     mainMut.lock ();
-    /*if (timer > 90000) {
-        // The match is almost done
+    
+    
 
-        while (1) {}    // stop the movement
-    }*/
     mainMut.unlock ();
 }

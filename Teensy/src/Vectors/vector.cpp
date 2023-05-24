@@ -1,4 +1,4 @@
-#include "Vectors/vector.hpp"
+#include "vector.hpp"
 
 float normalizeAngle(float angle) {
     float out;

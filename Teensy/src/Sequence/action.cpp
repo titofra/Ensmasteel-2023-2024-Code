@@ -1,4 +1,4 @@
-#include "Sequence/action.hpp"
+#include "action.hpp"
 
 Action::Action (const action_kind kind) :
     kind (kind)

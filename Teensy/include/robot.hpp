@@ -1,10 +1,10 @@
 #ifndef ROBOT_HPP
 #define ROBOT_HPP
 
-#include "Motor/motor.hpp"
+#include "motor.hpp"
 #include "communication.hpp"
 #include "message.hpp"
-#include "Vectors/kinetic.hpp"
+#include "kinetic.hpp"
 #include "codeuse.hpp"
 
 typedef struct {

@@ -1,7 +1,7 @@
 #ifndef SEQUENCE_HPP
 #define SEQUENCE_HPP
 
-#include <Vector>
+#include <vector>
 #include "action.hpp"
 
 class Sequence {

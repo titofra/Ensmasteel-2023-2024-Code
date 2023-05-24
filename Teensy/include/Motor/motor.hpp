@@ -20,6 +20,9 @@ class Motor {
         void setMovement (float distance, float dt);
 
     private :
+        uint8_t pinPWM;
+        uint8_t pinIN1;
+        uint8_t pinIN2;
         uint16_t maxPWM;
         Asservissement asservissement;  // position
 
