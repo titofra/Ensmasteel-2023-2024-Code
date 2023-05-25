@@ -27,6 +27,9 @@ class Kinetic : public VectorOriented {
 
         bool operator== (Kinetic const &other);
         Kinetic operator- (Kinetic const &other);
+        Kinetic operator+ (Kinetic const &other);
+        Kinetic operator/ (float const &other);
+        Kinetic operator* (float const &other);
 
         /**
          * @return Vitesse de translation du robot

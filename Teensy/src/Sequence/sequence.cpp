@@ -17,7 +17,7 @@ void Sequence::reset () {
     currentStep = 0;
 }
 
-void Sequence::run (float timer, float dt, Robot *robot) {
+void Sequence::run (unsigned long timer, unsigned long dt, Robot *robot) {
     if (currentStep < (int) steps.size ()) {
         // sequence is not finished
 
@@ -29,7 +29,7 @@ void Sequence::run (float timer, float dt, Robot *robot) {
     }
 }
 
-void Sequence::monitor (float timer, float dt, action_kind *kind, Kinetic *goal) {
+void Sequence::monitor (unsigned long timer, unsigned long dt, action_kind *kind, Kinetic *goal) {
     if (currentStep < (int) steps.size ()) {
         // sequence is not finished
 

@@ -30,6 +30,7 @@ class Vector {
         Vector operator+ (const Vector &other);
         Vector operator- (const Vector &other);
         Vector operator* (const float scalaire);
+        Vector operator/ (const float scalaire);
         void operator+= (const Vector &other);
         bool operator== (const Vector &other);
 

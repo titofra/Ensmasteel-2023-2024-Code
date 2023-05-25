@@ -10,7 +10,7 @@ Asservissement::Asservissement (float kp, float ki, float kd) :
     derivativeError = 0.0f;
 }
 
-float Asservissement::compute (float error, float dt) {
+float Asservissement::compute (float error, unsigned long dt) {
     derivativeError = (error - previousError) / dt;
     integralError += error * dt;
     previousError = error;

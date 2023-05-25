@@ -83,7 +83,7 @@ void Robot::updateComEsp32 (){
     esp32->receive ();
 }
 
-void Robot::updateKinetic (float dt) {
+void Robot::updateKinetic (unsigned long dt) {
     codeuseL.update ();
     codeuseR.update ();
 
@@ -105,11 +105,11 @@ void Robot::updateKinetic (float dt) {
     kinetic.normalizeTheta ();
 }
 
-void Robot::goTo (float x, float y, float theta, float v, float w, float dt) {
+void Robot::goTo (float x, float y, float theta, float v, float w, unsigned long dt) {
     goTo (Kinetic (x, y, theta, v, w), dt);
 }
 
-void Robot::goTo (Kinetic goal, float dt) {
+void Robot::goTo (Kinetic goal, unsigned long dt) {
     // kinetic error
     updateKinetic (dt);
     Kinetic error = goal - kinetic;

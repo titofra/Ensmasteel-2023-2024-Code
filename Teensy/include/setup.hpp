@@ -6,6 +6,9 @@
 #include <TeensyThreads.h>
 #include "communication.hpp"
 #include "robot.hpp"
+#include "sequence.hpp"
+#include "action.hpp"
+#include "action_functions.hpp"
 #include "message.hpp"
 
 

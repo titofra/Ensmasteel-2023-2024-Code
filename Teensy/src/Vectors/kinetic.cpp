@@ -31,6 +31,21 @@ Kinetic Kinetic::operator-(Kinetic const &other){
     return Kinetic (vect.getX (),vect.getY (), vect.getTheta (), v - other.v, w - other.w); 
 }
 
+Kinetic Kinetic::operator+(Kinetic const &other){
+    VectorOriented vect = VectorOriented::operator- (other);
+    return Kinetic (vect.getX (),vect.getY (), vect.getTheta (), v + other.v, w + other.w); 
+}
+
+Kinetic Kinetic::operator/(float const &other){
+    VectorOriented vect = VectorOriented::operator/ (other);
+    return Kinetic (vect.getX (),vect.getY (), vect.getTheta (), v / other, w / other); 
+}
+
+Kinetic Kinetic::operator*(float const &other){
+    VectorOriented vect = VectorOriented::operator* (other);
+    return Kinetic (vect.getX (),vect.getY (), vect.getTheta (), v * other, w * other); 
+}
+
 float Kinetic::getTranslationSpeed (){
     return v;
 }

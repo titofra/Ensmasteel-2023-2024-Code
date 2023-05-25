@@ -38,7 +38,7 @@ void Motor::setPWM (int pwm){
     }
 }
 
-void Motor::setMovement (float distance, float dt) {
+void Motor::setMovement (float distance, unsigned long dt) {
     int pwm = (int) asservissement.compute (distance, dt);
     setPWM (pwm);
 }

@@ -22,6 +22,9 @@ class VectorOriented : public Vector {
 
         bool operator== (VectorOriented const &other);
         VectorOriented operator- (VectorOriented const &other);
+        VectorOriented operator+ (VectorOriented const &other);
+        VectorOriented operator/ (float const &other);
+        VectorOriented operator* (float const &other);
 
         VectorOriented& operator=(const VectorOriented& other);
 

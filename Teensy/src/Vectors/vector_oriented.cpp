@@ -21,11 +21,26 @@ VectorOriented VectorOriented::operator-(VectorOriented const &other){
     return VectorOriented(vect.getX(),vect.getY(), theta - other.theta); 
 }
 
+VectorOriented VectorOriented::operator+(VectorOriented const &other){
+    Vector vect = Vector::operator+ (other);
+    return VectorOriented(vect.getX(),vect.getY(), theta + other.theta); 
+}
+
 VectorOriented& VectorOriented::operator=(const VectorOriented& other) {
     x = other.x;
     y = other.y;
     theta = other.theta;
     return *this;
+}
+
+VectorOriented VectorOriented::operator/(float const &other){
+    Vector vect = Vector::operator/ (other);
+    return VectorOriented(vect.getX(),vect.getY(), theta / other); 
+}
+
+VectorOriented VectorOriented::operator*(float const &other){
+    Vector vect = Vector::operator* (other);
+    return VectorOriented(vect.getX(),vect.getY(), theta * other); 
 }
 
 float VectorOriented::getTheta(){

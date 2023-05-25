@@ -13,7 +13,7 @@ class Asservissement{
          * @brief Computes the control signals for the robotic system based on the PID controllers and desired setpoints
          * @param dt Time elapsed since the last control signal was computed
          */
-        float compute (float error, float dt);
+        float compute (float error, unsigned long dt);
     
     private:
         float kp;  // Proportional gain

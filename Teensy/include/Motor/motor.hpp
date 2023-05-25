@@ -17,7 +17,7 @@ class Motor {
         Motor () {};
 
         void setPWM (int pwm);
-        void setMovement (float distance, float dt);
+        void setMovement (float distance, unsigned long dt);
 
     private :
         uint8_t pinPWM;

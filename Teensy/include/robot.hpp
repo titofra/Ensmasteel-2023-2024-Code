@@ -108,9 +108,9 @@ class Robot {
         void closeClaws ();
 
         /* KINETIC */
-        void updateKinetic (float dt);
-        void goTo (Kinetic goal, float dt); // goto goal in dt
-        void goTo (float x, float y, float theta, float v, float w, float dt);
+        void updateKinetic (unsigned long dt);
+        void goTo (Kinetic goal, unsigned long dt); // goto goal in dt
+        void goTo (float x, float y, float theta, float v, float w, unsigned long dt);
         Kinetic getKinetic ();
         
         // TODO: add some func such as freeWheels etc

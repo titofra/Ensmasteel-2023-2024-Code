@@ -3,6 +3,7 @@
 
 #include "robot.hpp"
 #include "kinetic.hpp"
+#include <functional>
 
 enum action_kind {
     MOVEMENT_ACT,
@@ -11,28 +12,31 @@ enum action_kind {
     DELAY
 };
 
+using trajectory_fn = std::function<Kinetic (unsigned long)>;
+using time_distortion_fn = std::function<unsigned long (unsigned long)>;
+
 class Action {
     public :
-        Action (const action_kind kind);
-        Action (const action_kind kind, Kinetic (*trajectory) (float t), float (*time_distortion) (float t), float endTime);
+        Action (action_kind kind, trajectory_fn trajectory, time_distortion_fn time_distortion, unsigned long endTime);
+        Action (action_kind kind, unsigned long endTime);
 
-        void run (float timer, float dt, Robot *robot);
+        void run (unsigned long timer, unsigned long dt, Robot *robot);
 
         // fake run to monitor the action
-        void monitor (float timer, float dt, action_kind *actionKind, Kinetic *goal);
+        void monitor (unsigned long, unsigned long dt, action_kind *actionKind, Kinetic *goal);
 
         bool isDone ();
 
         void reset ();
 
     private :
-        const action_kind kind;
+        action_kind kind;
         bool isFinished;
 
         /* for movements only */
-        Kinetic (*trajectory) (float t);         // time-function that returns the Kinetic over linear time
-        float (*time_distortion) (float t); // time-function that returns the local time refering to the global ones. This enable us to modify over the time the robot's accemeration/velocity
-        float endTime;
+        trajectory_fn trajectory;         // time-function that returns the Kinetic over linear time
+        time_distortion_fn time_distortion; // time-function that returns the local time refering to the global ones. This enable us to modify over the time the robot's accemeration/velocity
+        unsigned long endTime;
 
 };
 

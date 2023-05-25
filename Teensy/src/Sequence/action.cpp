@@ -1,12 +1,6 @@
 #include "action.hpp"
 
-Action::Action (const action_kind kind) :
-    kind (kind)
-{
-    isFinished = false;
-}
-
-Action::Action (const action_kind kind, Kinetic trajectory (float t), float time_distortion (float t), float endTime) :
+Action::Action (action_kind kind, trajectory_fn trajectory, time_distortion_fn time_distortion, unsigned long endTime) :
     kind (kind),
     trajectory (trajectory),
     time_distortion (time_distortion),
@@ -15,7 +9,14 @@ Action::Action (const action_kind kind, Kinetic trajectory (float t), float time
     isFinished = false;
 }
 
-void Action::run (float timer, float dt, Robot *robot) {
+Action::Action (action_kind kind, unsigned long endTime) :
+    kind (kind),
+    endTime (endTime)
+{
+    isFinished = false;
+}
+
+void Action::run (unsigned long timer, unsigned long dt, Robot *robot) {
     switch (kind) {
         case MOVEMENT_ACT:
             robot->goTo (                           // goto
@@ -43,7 +44,7 @@ void Action::run (float timer, float dt, Robot *robot) {
     }
 }
 
-void Action::monitor (float timer, float dt, action_kind *actionKind, Kinetic *goal) {
+void Action::monitor (unsigned long timer, unsigned long dt, action_kind *actionKind, Kinetic *goal) {
     *actionKind = kind;
 
     switch (kind) {

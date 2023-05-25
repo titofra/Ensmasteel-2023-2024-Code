@@ -34,6 +34,10 @@ Vector Vector::operator*(float scalaire){
     return Vector(x * scalaire, y * scalaire);
 }
 
+Vector Vector::operator/(float scalaire){
+    return Vector(x / scalaire, y / scalaire);
+}
+
 void Vector::operator+=(const Vector &other){
     x+=other.x;
     y+=other.y;
