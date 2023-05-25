@@ -6,6 +6,7 @@ void setup () {
 
     // SENSORS
     pinMode (PIN_ARRET_URGENCE, INPUT_PULLDOWN);
+    pinMode (PIN_TIRETTE, INPUT_PULLDOWN);
 
     // Actuators
 
@@ -13,11 +14,13 @@ void setup () {
 
     // Threads
     threads.setMicroTimer(10);
-    threads.setDefaultTimeSlice(1);
-    threads.addThread(threadUrgence);
+    threads.setDefaultTimeSlice (1);
+    threads.addThread (threadUrgence);
 
     // Wait until the beggining of the match
     //Wait_While_Tirette ();
+
+    //
 
 }
 
