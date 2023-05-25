@@ -17,14 +17,12 @@ void setup () {
     threads.addThread(threadUrgence);
 
     // Wait until the beggining of the match
-    //while (TirettePresente ()) {}
+    //Wait_While_Tirette ();
 
 }
 
 void loop () {
     mainMut.lock ();
-    
-    
 
     mainMut.unlock ();
 }

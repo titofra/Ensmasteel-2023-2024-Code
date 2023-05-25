@@ -65,11 +65,12 @@ Robot robot (
     true
 );
 
-Threads::Mutex mainMut;
+Threads::Mutex mainMut; // mutex used to stop the main loop
 
 /* FUNCTIONS */
-bool TirettePresente () {
-    return true;    // avoid warnings
+void Wait_While_Tirette () {
+    while (digitalRead(PIN_TIRETTE) == LOW) {}
+    while (digitalRead(PIN_TIRETTE) == HIGH) {}
 }
 
 
