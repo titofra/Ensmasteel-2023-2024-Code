@@ -3,16 +3,16 @@
 Action::Action (const action_kind kind) :
     kind (kind)
 {
-    isDone = false;
+    isFinished = false;
 }
 
-Action::Action (const action_kind kind, Kinetic trajectory (float t), float time_distortion (float t)) :
+Action::Action (const action_kind kind, Kinetic trajectory (float t), float time_distortion (float t), float endTime) :
     kind (kind),
     trajectory (trajectory),
     time_distortion (time_distortion),
     endTime (endTime)
 {
-    isDone = false;
+    isFinished = false;
 }
 
 void Action::run (float timer, float dt, Robot *robot) {
@@ -24,22 +24,27 @@ void Action::run (float timer, float dt, Robot *robot) {
                 ), dt                               // do it in dt
             );
             if (timer + dt >= endTime) {
-                isDone = true;   // the action is done
+                isFinished = true;   // the action is done
             }
             break;
-        case OPEN_CLAWS_ACT;
+        case OPEN_CLAWS_ACT:
             robot->openClaws ();
-            isDone = true;   // the action is almost instant, so it is done
+            isFinished = true;   // the action is almost instant, so it is done
             break;
-        case CLOSE_CLAWS_ACT;
+        case CLOSE_CLAWS_ACT:
             robot->closeClaws ();
-            isDone = true;   // the action is almost instant, so it is done
+            isFinished = true;   // the action is almost instant, so it is done
+            break;
+        case DELAY:
+            if (timer + dt >= endTime) {
+                isFinished = true;   // the action is done
+            }   // else we do nothing
             break;
     }
 }
 
-void Action::monitor (float timer, float dt, action_kind *kind, Kinetic *goal) {
-    *kind = kind;
+void Action::monitor (float timer, float dt, action_kind *actionKind, Kinetic *goal) {
+    *actionKind = kind;
 
     switch (kind) {
         case MOVEMENT_ACT:
@@ -47,18 +52,28 @@ void Action::monitor (float timer, float dt, action_kind *kind, Kinetic *goal) {
                 time_distortion (timer + dt)    // but the instant timer + dt is disturbed by time_distortion ()
             );
             if (timer + dt >= endTime) {
-                isDone = true;   // the action is done
+                isFinished = true;   // the action is done
             }
             break;
-        case OPEN_CLAWS_ACT;
-            isDone = true;   // the action is almost instant, so it is done
+        case OPEN_CLAWS_ACT:
+            isFinished = true;   // the action is almost instant, so it is done
             break;
-        case CLOSE_CLAWS_ACT;
-            isDone = true;   // the action is almost instant, so it is done
+        case CLOSE_CLAWS_ACT:
+            isFinished = true;   // the action is almost instant, so it is done
+            break;
+        case DELAY:
+            if (timer + dt >= endTime) {
+                isFinished = true;   // the action is done
+            }
             break;
     }
 }
 
+bool Action::isDone () {
+    return isFinished;
+}
+
+
 void Action::reset () {
-    isDone = false;
+    isFinished = false;
 }

@@ -8,8 +8,8 @@ void Sequence::add (Action action) {
     steps.push_back (action);
 }
 
-Action Sequence::pop () {
-    return steps.pop_back ()
+void Sequence::pop () {
+    steps.pop_back ();
 }
 
 void Sequence::reset () {
@@ -23,7 +23,7 @@ void Sequence::run (float timer, float dt, Robot *robot) {
 
         steps [currentStep].run (timer, dt, robot);
 
-        if (steps [currentStep].isDone) {
+        if (steps [currentStep].isDone ()) {
             currentStep ++;
         }
     }
@@ -35,7 +35,7 @@ void Sequence::monitor (float timer, float dt, action_kind *kind, Kinetic *goal)
 
         steps [currentStep].monitor (timer, dt, kind, goal);
 
-        if (steps [currentStep].isDone) {
+        if (steps [currentStep].isDone ()) {
             currentStep ++;
         }
     }
@@ -59,6 +59,6 @@ void save_monitor (const std::string& path, float beginTime, float endTime, floa
     }
 }*/
 
-void Sequence::isDone () {
+bool Sequence::isDone () {
     return currentStep < (int) steps.size ();
 }

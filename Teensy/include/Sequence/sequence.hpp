@@ -9,7 +9,7 @@ class Sequence {
         Sequence ();
 
         void add (Action action);
-        Action pop ();
+        void pop ();
         void reset ();
 
         void run (float timer, float dt, Robot *robot);
@@ -27,6 +27,6 @@ class Sequence {
     private :
         std::vector<Action> steps;
         int currentStep;
-}
+};
 
 #endif // SEQUENCE_HPP

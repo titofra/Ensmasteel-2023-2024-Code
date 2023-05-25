@@ -10,7 +10,7 @@ Motor::Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t pinIN2, uint8_t numberBitsP
     pinMode(pinIN2, OUTPUT);
 
     analogWriteResolution(numberBitsPWM);
-    analogWriteFrequency(pinPWM, idealFrequency(numberBitsPWM));
+    analogWriteFrequency(pinPWM, idealFrequency (numberBitsPWM));
 
     maxPWM = (uint16_t) round(pow(2,numberBitsPWM)) - 1;
 
@@ -38,7 +38,7 @@ void Motor::setPWM (int pwm){
     }
 }
 
-void setMovement (float distance, float dt) {
+void Motor::setMovement (float distance, float dt) {
     int pwm = (int) asservissement.compute (distance, dt);
     setPWM (pwm);
 }
@@ -73,6 +73,7 @@ double Motor::idealFrequency (uint8_t numberBitsPWM){
         frequency = 4577.64;
         break;
     default:
+        frequency = -1.0;   // here to avoid warning
         break;
     }
     return frequency;

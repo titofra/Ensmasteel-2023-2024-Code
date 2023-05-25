@@ -1,6 +1,9 @@
 #ifndef VECTOR_ORIENTED_HPP
 #define VECTOR_ORIENTED_HPP
 
+#include <string>
+#include <Arduino.h>
+#include <Stream.h>
 #include "vector.hpp"
 
 /**
@@ -14,12 +17,13 @@ class VectorOriented : public Vector {
          * @param y : float, y-coordonnee
          * @param theta : float, orientation du robot
          */
-        VectorOriented(float x = 0.0f, float y = 0.0f, float theta = 0.0f);
-
-        VectorOriented (const VectorOriented& vo);
+        VectorOriented (float x = 0.0f, float y = 0.0f, float th = 0.0f);
+        VectorOriented (VectorOriented& vo);
 
         bool operator== (VectorOriented const &other);
         VectorOriented operator- (VectorOriented const &other);
+
+        VectorOriented& operator=(const VectorOriented& other);
 
         /**
          * @return Angle d'orientation theta
@@ -29,7 +33,7 @@ class VectorOriented : public Vector {
         /**
          * @param theta : Nouvel angle theta
          */
-        void setTheta (float theta);
+        void setTheta (float value);
 
         /**
          * Normalisation de l'angle theta (mise en radian entre 0 et 2PI)
@@ -37,9 +41,9 @@ class VectorOriented : public Vector {
          */
         void normalizeTheta ();
 
-        void printDebug (const String& prefix);
+        void printDebug (const char *prefix, Stream *serial);
 
-    private :
+    protected :
         float theta;
 };
 

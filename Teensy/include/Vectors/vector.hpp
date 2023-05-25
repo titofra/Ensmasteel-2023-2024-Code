@@ -1,6 +1,11 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
+#include <string>
+#include <Arduino.h>
+#include <Stream.h>
+#include <math.h>
+
 /**
  * Normalisation d'un angle.
  * @param angle : float, angle en radian.
@@ -19,8 +24,7 @@ class Vector {
           * @param y : float, y-coordonnee
           */
         Vector (float x = 0.0f, float y = 0.0f);
-
-        Vector (const Vector& vect);
+        Vector (Vector& vect);
 
         //Surcharges des operateurs +, +=, -, *, ==
         Vector operator+ (const Vector &other);
@@ -28,6 +32,8 @@ class Vector {
         Vector operator* (const float scalaire);
         void operator+= (const Vector &other);
         bool operator== (const Vector &other);
+
+        Vector& operator=(const Vector& other);
 
         /**
           * @return Norme du vecteur-coordonnee
@@ -64,16 +70,16 @@ class Vector {
             /**
           * @param x : Nouvelle coordonnee x
           */
-        void setX(float x);  
+        void setX(float value);  
 
         /**
           * @param y : Nouvelle coordonnee y
           */
-        void setY(float y);
+        void setY(float value);
 
-        void printDebug(const String& prefix);
+        void printDebug(const char *prefix, Stream *serial);
 
-    private :
+    protected :
         float x, y;
 };
 

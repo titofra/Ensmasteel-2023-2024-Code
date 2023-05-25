@@ -1,12 +1,15 @@
 #ifndef KINETIC_HPP
 #define KINETIC_HPP
 
+#include <string>
+#include <Arduino.h>
+#include <Stream.h>
 #include "vector_oriented.hpp"
 
 /**
  * Classe definissant la cinetique du robot c'est a dire sa situation en positionnement et en vitesse
 */
-class Kinetic : public VectorOriented{
+class Kinetic : public VectorOriented {
     public :
         /**
          * Constructeur de la classe Kinetic 
@@ -17,8 +20,10 @@ class Kinetic : public VectorOriented{
          * @param w : float, Vitesse de rotation du robot
          */
         Kinetic (float x = 0.0f, float y = 0.0f, float theta = 0.0f, float v = 0.0f, float w = 0.0f);
+        Kinetic (Kinetic& kine);
+        Kinetic () {};
 
-        Kinetic (const Kinetic& kine);
+        Kinetic& operator=(const Kinetic& other);
 
         bool operator== (Kinetic const &other);
         Kinetic operator- (Kinetic const &other);
@@ -31,7 +36,7 @@ class Kinetic : public VectorOriented{
         /**
          * @param v : Nouvelle vitesse de translation
          */
-        void setTranslationSpeed(float v);
+        void setTranslationSpeed(float value);
 
             /**
          * @return Vitesse de rotation du robot
@@ -41,14 +46,14 @@ class Kinetic : public VectorOriented{
         /**
          * @param w : Nouvelle vitesse de rotation
          */
-        void setRotationSpeed(float w);
+        void setRotationSpeed(float value);
 
         /**
          * Prints in Serial consol kinetic parameters :
          * x, y, Theta, v, w
          * @param prefix : string being printed in serial monitor
          */
-        void printDebug(const String& prefix);
+        void printDebug(const char *prefix, Stream *serial);
 
     private :
         float v; //Vitesse de translation du robot

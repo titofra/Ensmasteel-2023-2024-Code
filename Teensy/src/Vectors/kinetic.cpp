@@ -1,16 +1,25 @@
 #include "kinetic.hpp"
 
-Kinetic::Kinetic (float x, float y, float th, float v, float w) :
+Kinetic::Kinetic (float x, float y, float theta, float v, float w) :
     VectorOriented(x, y, theta),
     v (v),
     w (w) {
 }
 
-Kinetic::Kinetic (const Kinetic& kinetic) :
-    VectorOriented (VectorOriented)
+Kinetic::Kinetic (Kinetic& kinetic) :
+    VectorOriented (kinetic.getX (), kinetic.getY (), kinetic.getTheta ())
 {
     v = kinetic.getTranslationSpeed ();
     w = kinetic.getTranslationSpeed ();
+}
+
+Kinetic& Kinetic::operator=(const Kinetic& other) {
+    x = other.x;
+    y = other.y;
+    theta = other.theta;
+    v = other.v;
+    w = other.w;
+    return *this;
 }
 
 bool Kinetic::operator== (Kinetic const &other){
@@ -26,24 +35,40 @@ float Kinetic::getTranslationSpeed (){
     return v;
 }
 
-void Kinetic::setTranslationSpeed (float v) :
-    v (v) {
+void Kinetic::setTranslationSpeed (float value) {
+    v = value;
 }
 
 float Kinetic::getRotationSpeed (){
     return w;
 }
 
-void Kinetic::setRotationSpeed(float w) :
-    w (w) {
+void Kinetic::setRotationSpeed(float value) {
+    w = value;
 }
 
-void Kinetic::printDebug(const String& prefix)
-{
-    Serial.println(">" + prefix+" x :" + String(getX(),3));
-    Serial.println(">" + prefix+" y :" + String(getY(), 3));
-    Serial.println(">" + prefix + " xy :" + String(getX(),3) + ":" + String(getY(),3) + "|xy");
-    Serial.println(">" + prefix+" Th :" + String(getTheta(), 3));
-    Serial.println(">" + prefix+" v :" + String(getTranslationSpeed(), 3));
-    Serial.println(">" + prefix+" w :" + String(getRotationSpeed(), 3));
+void Kinetic::printDebug(const char *prefix, Stream *serial) {
+    char buf [8];   // 6 digits, take care of '.' and '\0'!
+
+    serial->print(prefix);
+
+    serial->print(" x ");
+    dtostrf (getX (), 1, 3, buf);
+    serial->print(buf);
+
+    serial->print("   y ");
+    dtostrf (getY (), 1, 3, buf);
+    serial->print(buf);
+
+    serial->print("   theta ");
+    dtostrf (getTheta (), 1, 3, buf);
+    serial->print(buf);
+
+    serial->print("   v ");
+    dtostrf (v, 1, 3, buf);
+    serial->print(buf);
+
+    serial->print("   w ");
+    dtostrf (w, 1, 3, buf);
+    serial->println(buf);
 }
