@@ -33,7 +33,7 @@ build_Makefile()
     echo setup: clean >> $1
     echo "	mkdir \$(TMP_PATH) \$(TMP_PATH)/\$(TARGET_NAME)" >> $1
     echo "	cp -r \$(TARGET_PATH)/\$(TARGET_NAME).\$(TARGET_EXTENTION) \$(TMP_PATH)/\$(TARGET_NAME)/" >> $1
-    echo "  find \$(SRC_FILES) \$(INCLUDE_FILES) -type f -exec cp {} \$(TMP_PATH)/\$(TARGET_NAME)/ \;" >> $1
+    echo "	find \$(SRC_FILES) \$(INCLUDE_FILES) -type f -exec cp {} \$(TMP_PATH)/\$(TARGET_NAME)/ \;" >> $1
     echo >> $1
     echo clean: >> $1
     echo "	rm -rf \$(TMP_PATH)" >> $1
