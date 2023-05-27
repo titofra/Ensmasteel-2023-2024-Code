@@ -51,7 +51,8 @@ echo_color()
 
 if [ -z "$1" ]
 then
-    echo_color 1 "usage: ./install_unix <path to arduino-cli>"
+    echo_color 1 "usage: ./install_unix.sh <path to arduino-cli>"
+    echo_color 1 "  e.g. ./install_unix.sh /usr/bin/arduino-cli"
     echo_color 3 "[INFO] You must manually install arduino-cli from your package manager."
 else
     echo_color 2 "### ARDUINO-CLI SETUP ###"
