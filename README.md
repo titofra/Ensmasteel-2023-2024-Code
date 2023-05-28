@@ -1,29 +1,18 @@
-# 2023-2024 Ensmasteel's code
-Code for the [Ensmasteel](https://github.com/Ensmasteel)'s robot which will be competing in the French Robotics Cup during the 2023-2024 season.
+Here is the code for [Ensmasteel](https://github.com/Ensmasteel)'s robot, which will be competing in the French Robotics Cup during the 2023-2024 season.
 
 <p align="center">
 	<img src="https://github.com/titofra/Ensmasteel-2023-2024-Code/blob/main/resource/robot.png" width="700">
 </p>
 
-## Install
+<br/>
 
-### UNIX
+# Install
 
-Execute `install_unix.sh <path to arduino-cli>` with `<path to arduino-cli>` as the path to arduino-cli binaries (can just be `arduino-cli` if the command is available). This will create a Makefile for each board.
+## UNIX
 
-#### Usage
+Execute `install_unix.sh <path to arduino-cli>` with `<path to arduino-cli>` as the path to arduino-cli binaries (you can simply use `arduino-cli` if the command is available). This will generate a Makefile for each board.
 
-- `make compile`: compile
-- `make upload`	: upload (edit the Makefile to provide a valid port)
-- `make monitor`: monitor (edit the Makefile to provide a valid port)
-- `make clean`	: clean builds
-- `make list`	: list available boards
-
-### Windows
-
-Execute `install_windows_Makefile.bat <path to arduino-cli>` with `<path to arduino-cli>` as the path to arduino-cli.exe (can just be `arduino-cli` if the command is available). This will create a Makefile for each board. *Note: scripts that doesn't require GNU make are coming soon.* 
-
-#### Usage
+**Usage :**
 
 - `make compile`: compile
 - `make upload`	: upload (edit the Makefile to provide a valid port)
@@ -31,11 +20,29 @@ Execute `install_windows_Makefile.bat <path to arduino-cli>` with `<path to ardu
 - `make clean`	: clean builds
 - `make list`	: list available boards
 
-### Mac
+<br/>
+
+## Windows
+
+Execute `install_windows_Makefile.bat <path to arduino-cli>` with `<path to arduino-cli>` as the path to arduino-cli.exe (you can simply use`arduino-cli` if the command is available). This will generate a Makefile for each board. *Note: Scripts that do not require GNU make will be available soon.* 
+
+**Usage :**
+
+- `make compile`: compile
+- `make upload`	: upload (edit the Makefile to provide a valid port)
+- `make monitor`: monitor (edit the Makefile to provide a valid port)
+- `make clean`	: clean builds
+- `make list`	: list available boards
+
+<br/>
+
+## Mac
 
 *Coming soon*
 
-## TODO
+<br/>
+
+# TODO
 
 - [ ] mutex on mailbox?
 - [ ] monitor threads' refresh frenquency
