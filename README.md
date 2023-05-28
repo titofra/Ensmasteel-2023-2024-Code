@@ -21,7 +21,15 @@ Execute `install_unix.sh <path to arduino-cli>` with `<path to arduino-cli>` as 
 
 ### Windows
 
-*Coming soon*
+Execute `install_windows_Makefile.bat <path to arduino-cli>` with `<path to arduino-cli>` as the path to arduino-cli.exe (can just be `arduino-cli` if the command is available). This will create a Makefile for each board. *Note: scripts that doesn't require GNU make are coming soon.* 
+
+#### Usage
+
+- `make compile`: compile
+- `make upload`	: upload (edit the Makefile to provide a valid port)
+- `make monitor`: monitor (edit the Makefile to provide a valid port)
+- `make clean`	: clean builds
+- `make list`	: list available boards
 
 ### Mac
 
