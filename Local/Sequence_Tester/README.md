@@ -8,4 +8,4 @@ This code depends on class created for Teensy's board. However, they depend on u
 
 ## Compilation
 
-You can use any C++ compiler to compile this code. Note that it use SFML library (install it from [https://www.sfml-dev.org/download.php](https://www.sfml-dev.org/download.php)), so make sure you specify `-lsfml-graphics -lsfml-window -lsfml-system` flags.
+You can use any C++ compiler to compile this code. Note that it depends on SFML library (install it from [https://www.sfml-dev.org/download.php](https://www.sfml-dev.org/download.php)), so make sure you specify `-lsfml-graphics -lsfml-window -lsfml-system` flags.
