@@ -1,5 +1,7 @@
 #include "vector.hpp"
 
+const float PI = 3.14159274101257324219;
+
 float normalizeAngle(float angle) {
     float out;
     out = angle - (2 * PI) * ((int)(angle / (2 * PI)));
@@ -103,6 +105,7 @@ float Vector::angleWith(const Vector &other) const {
     }
 }
 
+
 float Vector::getX() const{
     return x;
 }
@@ -119,6 +122,7 @@ void Vector::setY(float value){
     y = value;
 }
 
+/*
 void Vector::printDebug(const char *prefix, Stream *serial) const {
     char buf [8];   // 6 digits, take care of '.' and '\0'!
 
@@ -131,4 +135,9 @@ void Vector::printDebug(const char *prefix, Stream *serial) const {
     serial->print("   y ");
     dtostrf (y, 1, 3, buf);
     serial->println(buf);
+}
+*/
+
+void Vector::printDebug(const char *prefix) const {
+    std::cout << prefix << " x " << x << "   y " << y << std::endl;
 }

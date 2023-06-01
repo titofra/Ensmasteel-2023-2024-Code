@@ -12,7 +12,7 @@ class Sequence {
         void pop ();
         void reset ();
 
-        void run (unsigned long timer, unsigned long dt, Robot *robot);
+        //void run (unsigned long timer, unsigned long dt, Robot *robot);
         void monitor (unsigned long timer, unsigned long dt, action_kind *kind, Kinetic *goal);
         void goToStep (int istep);
 

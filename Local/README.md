@@ -1,0 +1,3 @@
+# Code for a Local execution
+
+Those programs are not part of the robot's code but are useful for testing/debugging...
