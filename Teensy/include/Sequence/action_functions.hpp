@@ -1,16 +1,58 @@
 #ifndef ACTION_FUNCTIONS_HPP
 #define ACTION_FUNCTIONS_HPP
 
+#include "vector.hpp"
 #include "kinetic.hpp"
 #include <functional>
+#include <math.h>
 
 /* TRAJECTORY */
 
-trajectory_fn linear (const unsigned long beginTime, const unsigned long endTime) {
-    return [=] (const unsigned long t, const Kinetic beginKinetic, const Kinetic endKinetic) -> Kinetic {
-            return (Kinetic (endKinetic) - beginKinetic) * ((float) (t - beginTime) / (float) (endTime - beginTime)) + beginKinetic;
-        };
+// Note that a 2-order (with starting and ending points) bezier will do the same. However this function is useful for rotation.
+trajectory_fn linear (const unsigned long beginTime, const unsigned long endTime, std::vector<VectorOriented> vectors) {
+    return [=] (const unsigned long t) -> Kinetic {
+        Kinetic ret = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        ret += (VectorOriented (vectors [1]) - vectors [0]) * ((float) (t - beginTime) / (float) (endTime - beginTime)) + vectors [0];
+        return ret;
+    };
 }
+
+int factorial(int n) {
+    if (n == 0)
+        return 1;
+    else
+        return n * factorial(n - 1);
+}
+
+// Notations come from https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Polynomial_form, check here for more
+trajectory_fn bezier (const unsigned long beginTime, const unsigned long endTime, std::vector<VectorOriented> points) {
+    return [=] (const unsigned long t) -> Kinetic {
+        Kinetic ret = Kinetic (0.0f, 0.0f, 0.0f, 0.0f);
+        const int n = (int) points.size () - 1;
+        int partial_permutation;    // https://en.wikipedia.org/wiki/Partial_permutation
+        VectorOriented sum;
+
+        for (int j = 0; j <= n; j++) {
+            // update partial permutation
+            if (j <= 0) {
+                partial_permutation = 1;
+            } else {
+                partial_permutation *= n - (j - 1);
+            }
+
+            // process the sum
+            sum = VectorOriented (0.0f, 0.0f, 0.0f);
+            for (int i = 0; i <= j; i++) {
+                sum += VectorOriented (points [i]) * ((float) std::pow (-1.0, (double) (i + j)) / (float) factorial (i) / (float) factorial (j - i));
+            }
+
+            ret += sum * (float) std::pow ((double) (t - beginTime) / (double) (endTime - beginTime), (double) j) * (float) partial_permutation;
+        }
+
+        return ret;
+    };
+}
+
 
 /* TIME DISTORTION */
 

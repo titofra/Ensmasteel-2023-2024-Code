@@ -18,32 +18,45 @@ const unsigned long dt = 100;    // here dt has ne effect on the trajectory, how
 int main (void) {
     /* create the sequence */
     // kinetics
-    Kinetic kin1 (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);    // pt1
-    Kinetic kin2 (1000.0f, 0.0f, 0.0f, 0.0f, 0.0f); // pt2
-    Kinetic kin3 (1000.0f, 0.0f, 0.0f, 0.0f, 0.0f); // pt2 (rotated, the theta is modified few lines further)
-    Kinetic kin4 (200.0f, 800.0f, 0.0f, 0.0f, 0.0f);// pt3 (with the same rotation as we use a linear trajectory)
-    const float theta34 = kin3.angleWith (kin4);
-    kin3.setTheta (theta34);
-    kin4.setTheta (theta34);
+    VectorOriented P1 (0.0f, 0.0f, 0.0f);    // pt1
+    VectorOriented P2 (1000.0f, 0.0f, 0.0f); // pt2
+    VectorOriented P3 (1000.0f, 0.0f, 0.0f); // pt3 (rotated, the theta is modified few lines further)
+    VectorOriented P4 (200.0f, 800.0f, 0.0f);// pt4 (with the same rotation as we use a linear trajectory)
+    const float theta34 = P3.angleWith (P4);
+    P3.setTheta (theta34);
+    P4.setTheta (theta34);
+    VectorOriented P5 (900.0f, 1200.0f, 0.0f);// pt5
 
     // actions
     Action mvmt12 (
         MOVEMENT_ACT,
-        linear (0, 1500),
+        bezier (0, 1500, {P1, P2}),
         trapeze (0, 500, 1000, 1500, 0.7f, 0.7f),
-        kin1, kin2, 1500
+        1500
     );
     Action rota23 (
         MOVEMENT_ACT,
-        linear (1500, 1700),
+        linear (1500, 1700, {P2, P3}),
         linear (),
-        kin2, kin3, 1700
+        1700
     );
     Action mvmt34 (
         MOVEMENT_ACT,
-        linear (1700, 4000),
+        bezier (1700, 4000, {P3, P4}),
         trapeze (1700, 2500, 3300, 4000, 0.5f, 0.8f),
-        kin3, kin4, 4000
+        4000
+    );
+    std::vector<VectorOriented> controlPoints45;
+    controlPoints45.push_back (P4);
+    controlPoints45.push_back (VectorOriented (10.0f, 900.0f, 0.0f));
+    controlPoints45.push_back (VectorOriented (500.0f, 1300.0f, 0.0f));
+    controlPoints45.push_back (VectorOriented (700.0f, 700.0f, 0.0f));
+    controlPoints45.push_back (P5);
+    Action mvmt45 (
+        MOVEMENT_ACT,
+        bezier (4000, 6000, controlPoints45),
+        linear (),
+        6000
     );
 
     // sequence
@@ -51,9 +64,12 @@ int main (void) {
     seq.add (mvmt12);
     seq.add (rota23);
     seq.add (mvmt34);
+    seq.add (mvmt45);
 
     /* run the game to get kinetics over time */
-    std::vector<Kinetic> kinetics = Get_Kinetics_from_Sequence (seq, dt, kin1);
+    Kinetic beginKinetic = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    beginKinetic += P1;
+    std::vector<Kinetic> kinetics = Get_Kinetics_from_Sequence (seq, dt, beginKinetic);
 
     /* display the graph */
     Display (kinetics, width, height, mmToPxX, mmToPxY, pxOffsetX, pxOffsetY);

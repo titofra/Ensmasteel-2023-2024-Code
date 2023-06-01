@@ -1,12 +1,10 @@
 #include "action.hpp"
 
-Action::Action (action_kind kind, trajectory_fn trajectory, time_distortion_fn time_distortion, Kinetic beginKinetic, Kinetic endKinetic,  unsigned long endTime) :
+Action::Action (action_kind kind, trajectory_fn trajectory, time_distortion_fn time_distortion, unsigned long endTime) :
     kind (kind),
     endTime (endTime),
     trajectory (trajectory),
-    time_distortion (time_distortion),
-    beginKinetic (beginKinetic),
-    endKinetic (endKinetic)
+    time_distortion (time_distortion)
 {
     isFinished = false;
 }
@@ -25,9 +23,7 @@ Action::Action (action_kind kind, unsigned long endTime) :
                 trajectory (                        // the kinetic at timer + dt
                     time_distortion (               // but the instant timer + dt is disturbed by time_distortion ()
                         timer + dt
-                    ),
-                    beginKinetic,
-                    endKinetic
+                    )
                 ), dt                               // do it in dt
             );
             if (timer + dt >= endTime) {
@@ -58,9 +54,7 @@ void Action::monitor (unsigned long timer, unsigned long dt, action_kind *action
             *goal = trajectory (                // the kinetic at timer + dt
                 time_distortion (               // but the instant timer + dt is disturbed by time_distortion ()
                     timer + dt
-                ),
-                beginKinetic,
-                endKinetic
+                )
             );
             if (timer + dt >= endTime) {
                 isFinished = true;   // the action is done
