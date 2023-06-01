@@ -42,7 +42,7 @@ Action::Action (action_kind kind, unsigned long endTime) :
             robot->closeClaws ();
             isFinished = true;   // the action is almost instant, so it is done
             break;
-        case DELAY:
+        case DELAY_ACT:
             if (timer + dt >= endTime) {
                 isFinished = true;   // the action is done
             }   // else we do nothing
@@ -72,7 +72,7 @@ void Action::monitor (unsigned long timer, unsigned long dt, action_kind *action
         case CLOSE_CLAWS_ACT:
             isFinished = true;   // the action is almost instant, so it is done
             break;
-        case DELAY:
+        case DELAY_ACT:
             if (timer + dt >= endTime) {
                 isFinished = true;   // the action is done
             }

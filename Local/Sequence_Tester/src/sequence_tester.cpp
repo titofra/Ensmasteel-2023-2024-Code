@@ -3,8 +3,8 @@
 #include "action_functions.hpp"
 #include <SFML/Graphics.hpp>
 
-void Generate_Graph (sf::VertexArray* graph, std::vector<sf::CircleShape>* points, float mmToPxX, float mmToPxY, float pxOffsetX, float pxOffsetY, Sequence seq, unsigned long dt, Kinetic beginKinetic, float Rpoint = 3.0f);
-void Display (sf::VertexArray graph, std::vector<sf::CircleShape> points, const int width, const int height);
+std::vector<Kinetic> Get_Kinetics_from_Sequence (Sequence seq, unsigned long dt, Kinetic beginKinetic);
+void Display (std::vector<Kinetic> kinetics, const int width, const int height, float mmToPxX, float mmToPxY, float pxOffsetX, float pxOffsetY,  float Rpoint = 3.0f, float orient_line_sz = 20.0f);
 
 int main (void) {
 
@@ -28,51 +28,76 @@ int main (void) {
     );
     seq.add (aller);
 
-    // run the game/generate the graph
-    sf::VertexArray graph(sf::LinesStrip);
-    std::vector<sf::CircleShape> points;
-    Generate_Graph (&graph, &points, mmToPxX, mmToPxY, pxOffsetX, pxOffsetY, seq, dt, kin1);
+    // run the game to get kinetics over time
+    std::vector<Kinetic> kinetics = Get_Kinetics_from_Sequence (seq, dt, kin1);
 
-    // display the grap
-    Display (graph, points, width, height);
+    // display the graph
+    Display (kinetics, width, height, mmToPxX, mmToPxY, pxOffsetX, pxOffsetY);
 
     return 0;
 }
 
 
-void Generate_Graph (sf::VertexArray* graph, std::vector<sf::CircleShape>* points, float mmToPxX, float mmToPxY, float pxOffsetX, float pxOffsetY, Sequence seq, unsigned long dt, Kinetic beginKinetic, float Rpoint) {
+std::vector<Kinetic> Get_Kinetics_from_Sequence (Sequence seq, unsigned long dt, Kinetic beginKinetic) {
+    std::vector<Kinetic> kinetics;
+
     unsigned long timer = 0;
 
     action_kind kind;
     Kinetic goal = beginKinetic;
 
     // add the first kinetic
-    sf::Vector2f position(pxOffsetX + goal.getX () * mmToPxX, pxOffsetY + goal.getY () * mmToPxY);
-    graph->append (position);
-    sf::CircleShape point(Rpoint);
-    point.setFillColor(sf::Color::Green);
-    point.setPosition(position - sf::Vector2f (Rpoint, Rpoint));
-    points->push_back(point);
+    kinetics.push_back (goal);
 
     while (timer <= 2000) {
         // call the sequence
         seq.monitor (timer, dt, &kind, &goal);
 
-        // set the point in graph and points
-        position = sf::Vector2f (pxOffsetX + goal.getX () * mmToPxX, pxOffsetY + goal.getY () * mmToPxY);
-        graph->append (position);
-        point.setPosition(position - sf::Vector2f (Rpoint, Rpoint));    //- sf::Vector2f (Rpoint, Rpoint) is here center the dot on the position
-        points->push_back(point);
-
-        Display (*graph, *points, 1200, 800);
+        kinetics.push_back (goal);
 
         timer += dt;
     }
+
+    return kinetics;
 }
 
-void Display (sf::VertexArray graph, std::vector<sf::CircleShape> points, const int width, const int height) {
+void Display (std::vector<Kinetic> kinetics, const int width, const int height, float mmToPxX, float mmToPxY, float pxOffsetX, float pxOffsetY,  float Rpoint, float orient_line_sz) {
     sf::RenderWindow window(sf::VideoMode(width, height), "Sequence Tester - Ensmasteel");
     window.setFramerateLimit(60);
+
+    /* CREATE OBJECTS */
+    // graph
+    sf::VertexArray graph(sf::LinesStrip);
+
+    //points
+    std::vector<sf::CircleShape> points;
+    sf::CircleShape point(Rpoint);
+    point.setFillColor(sf::Color::Green);
+
+    // orientation indicators
+    std::vector<sf::VertexArray> orientations;
+
+    sf::Vector2f position;
+    for (const Kinetic& kin : kinetics) {
+        position = sf::Vector2f (pxOffsetX + kin.getX () * mmToPxX, pxOffsetY + kin.getY () * mmToPxY);
+
+        // graph
+        graph.append (position);
+
+        // point
+        point.setPosition(position - sf::Vector2f (Rpoint, Rpoint));
+        points.push_back (point);
+
+        // orientation indicator
+        sf::VertexArray line(sf::Lines, 2);
+        line.append (sf::Vertex(position, sf::Color::Red));
+        line.append (sf::Vertex(
+            position
+            + sf::Vector2f (orient_line_sz * cos (kin.getTheta ()), orient_line_sz * sin (kin.getTheta ()))
+            , sf::Color::Red
+        ));
+        orientations.push_back (line);
+    }
 
     while (window.isOpen()) {
         sf::Event event;
@@ -83,11 +108,20 @@ void Display (sf::VertexArray graph, std::vector<sf::CircleShape> points, const 
         }
 
         window.clear(sf::Color::Black);
+
+        // graph
         window.draw(graph);
-        // Draw the points
+
+        // points
         for (const sf::CircleShape& point : points) {
             window.draw(point);
         }
+
+        // orientation indicators
+        for (const sf::VertexArray& line : orientations) {
+            window.draw(line);
+        }
+
         window.display();
     }
 }

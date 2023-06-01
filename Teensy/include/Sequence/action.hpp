@@ -9,7 +9,7 @@ enum action_kind {
     MOVEMENT_ACT,
     OPEN_CLAWS_ACT,
     CLOSE_CLAWS_ACT,
-    DELAY
+    DELAY_ACT
 };
 
 typedef std::function<Kinetic (unsigned long, Kinetic, Kinetic)> trajectory_fn;
