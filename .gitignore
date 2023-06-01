@@ -1,4 +1,5 @@
-Teensy/.tmp
-Teensy/Makefile
-Arduino/.tmp
-Arduino/Makefile
+*/Makefile
+*/.tmp
+*.o
+*.out
+*.exe
