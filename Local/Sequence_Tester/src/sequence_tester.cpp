@@ -8,7 +8,7 @@ void Display (std::vector<Kinetic> kinetics, const int width, const int height, 
 
 int main (void) {
 
-    const int width = 1200;
+    const int width = 1600;
     const int height = 800;
     const int pxOffsetX = 10;
     const int pxOffsetY = 10;
