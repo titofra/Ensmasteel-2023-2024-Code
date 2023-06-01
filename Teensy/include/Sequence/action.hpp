@@ -23,7 +23,7 @@ class Action {
         void run (unsigned long timer, unsigned long dt, Robot *robot);
 
         // fake run to monitor the action
-        void monitor (unsigned long, unsigned long dt, action_kind *actionKind, Kinetic *goal);
+        void monitor (unsigned long timer, unsigned long dt, action_kind *actionKind, Kinetic *goal);
 
         bool isDone ();
 

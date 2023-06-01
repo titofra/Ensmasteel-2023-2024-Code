@@ -9,7 +9,7 @@ enum action_kind {
     MOVEMENT_ACT,
     OPEN_CLAWS_ACT,
     CLOSE_CLAWS_ACT,
-    DELAY
+    DELAY_ACT
 };
 
 typedef std::function<Kinetic (unsigned long, Kinetic, Kinetic)> trajectory_fn;
@@ -23,7 +23,7 @@ class Action {
         //void run (unsigned long timer, unsigned long dt, Robot *robot);
 
         // fake run to monitor the action
-        void monitor (unsigned long, unsigned long dt, action_kind *actionKind, Kinetic *goal);
+        void monitor (unsigned long timer, unsigned long dt, action_kind *actionKind, Kinetic *goal);
 
         bool isDone ();
 

@@ -12,17 +12,17 @@ int main (void) {
     const int height = 800;
     const int pxOffsetX = 10;
     const int pxOffsetY = 10;
-    const float mmToPxX = (float) (width - pxOffsetY) / 3000.0f;
-    const float mmToPxY = (float) (height - pxOffsetX) / 1500.0f;
+    const float mmToPxX = (float) (width - 2 * pxOffsetY) / 3000.0f;
+    const float mmToPxY = (float) (height - 2 * pxOffsetX) / 1500.0f;
     const unsigned long dt = 100;    // here dt has ne effect on the trajectory, however it has an effect in the number of sequence's call aka the number of dots on the graph
 
     // create the sequence
     Sequence seq;
     Kinetic kin1 (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-    Kinetic kin2 (2000.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    Kinetic kin2 (1000.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     Action aller (
         MOVEMENT_ACT,
-        linear (0, 1500, dt),
+        linear (0, 1500),
         trapeze (0, 500, 1000, 1500, 0.7f, 0.7f),
         kin1, kin2, 1500
     );
@@ -63,6 +63,8 @@ void Generate_Graph (sf::VertexArray* graph, std::vector<sf::CircleShape>* point
         graph->append (position);
         point.setPosition(position - sf::Vector2f (Rpoint, Rpoint));    //- sf::Vector2f (Rpoint, Rpoint) is here center the dot on the position
         points->push_back(point);
+
+        Display (*graph, *points, 1200, 800);
 
         timer += dt;
     }
