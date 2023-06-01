@@ -15,5 +15,6 @@ float Asservissement::compute (float error, unsigned long dt) {
     integralError += error * dt;
     previousError = error;
 
+
     return (kp * error) + (ki * integralError) + (kd * derivativeError);
 }

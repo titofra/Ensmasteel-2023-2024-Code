@@ -16,7 +16,7 @@ Vector::Vector(float x, float y) :
     y (y) {
 }
 
-Vector::Vector (Vector& vect) {
+Vector::Vector (const Vector& vect) {
     x = vect.getX ();
     y = vect.getY ();
 }
@@ -82,7 +82,7 @@ float Vector::distanceWith(Vector &other){
     return std::sqrt( std::pow(x - other.x , 2) + std::pow(y - other.y , 2) );
 }
 
-float Vector::angleWith(Vector &other) {
+float Vector::angleWith(const Vector &other) const {
     // as atan () return a value in (- PI/2, PI/2) we have to descrimine the cases
     if (other.x - x > 0) {
         return (float) std::atan ((double) (other.y - y) / (other.x - x));
@@ -104,11 +104,11 @@ float Vector::angleWith(Vector &other) {
 }
 
 
-float Vector::getX(){
+float Vector::getX() const{
     return x;
 }
 
-float Vector::getY(){
+float Vector::getY() const{
     return y;
 }
 
@@ -120,7 +120,7 @@ void Vector::setY(float value){
     y = value;
 }
 
-void Vector::printDebug(const char *prefix, Stream *serial) {
+void Vector::printDebug(const char *prefix, Stream *serial) const {
     char buf [8];   // 6 digits, take care of '.' and '\0'!
 
     serial->print(prefix);

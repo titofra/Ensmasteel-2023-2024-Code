@@ -12,13 +12,13 @@ enum action_kind {
     DELAY
 };
 
-using trajectory_fn = std::function<Kinetic (unsigned long)>;
-using time_distortion_fn = std::function<unsigned long (unsigned long)>;
+typedef std::function<Kinetic (unsigned long, Kinetic, Kinetic)> trajectory_fn;
+typedef std::function<unsigned long (unsigned long)> time_distortion_fn;
 
 class Action {
     public :
-        Action (action_kind kind, trajectory_fn trajectory, time_distortion_fn time_distortion, unsigned long endTime);
         Action (action_kind kind, unsigned long endTime);
+        Action (action_kind kind, trajectory_fn trajectory, time_distortion_fn time_distortion, Kinetic beginKinetic, Kinetic endKinetic, unsigned long endTime);
 
         void run (unsigned long timer, unsigned long dt, Robot *robot);
 
@@ -32,11 +32,12 @@ class Action {
     private :
         action_kind kind;
         bool isFinished;
+        unsigned long endTime;
 
         /* for movements only */
         trajectory_fn trajectory;         // time-function that returns the Kinetic over linear time
         time_distortion_fn time_distortion; // time-function that returns the local time refering to the global ones. This enable us to modify over the time the robot's accemeration/velocity
-        unsigned long endTime;
+        Kinetic beginKinetic, endKinetic;
 
 };
 

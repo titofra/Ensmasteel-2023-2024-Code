@@ -89,6 +89,13 @@ void Robot::updateKinetic (unsigned long dt) {
 
     float dforward_codeuseL = codeuseL.getDeltaAvance ();
     float dforward_codeuseR = codeuseR.getDeltaAvance ();
+
+    Serial.print ("   L ");
+    Serial.print (dforward_codeuseL);
+    Serial.print ("   R ");
+    Serial.println (dforward_codeuseR);
+    
+
     float theta = kinetic.getTheta ();
     
     float dforward = (dforward_codeuseR + dforward_codeuseL) / 2;
@@ -103,16 +110,26 @@ void Robot::updateKinetic (unsigned long dt) {
     );
 
     kinetic.normalizeTheta ();
+
 }
 
 void Robot::goTo (float x, float y, float theta, float v, float w, unsigned long dt) {
     goTo (Kinetic (x, y, theta, v, w), dt);
 }
 
+
+
+#include <Arduino.h>
+#include <Stream.h> // TODO REMOVE
+
 void Robot::goTo (Kinetic goal, unsigned long dt) {
     // kinetic error
     updateKinetic (dt);
     Kinetic error = goal - kinetic;
+
+    error.printDebug ("         error ", &Serial);
+    goal.printDebug ("         goal ", &Serial);
+    kinetic.printDebug ("         kinetic ", &Serial);
 
     // global error
     float dforward = error.norm ();

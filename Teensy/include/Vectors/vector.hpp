@@ -24,7 +24,7 @@ class Vector {
           * @param y : float, y-coordonnee
           */
         Vector (float x = 0.0f, float y = 0.0f);
-        Vector (Vector& vect);
+        Vector (const Vector& vect);
 
         //Surcharges des operateurs +, +=, -, *, ==
         Vector operator+ (const Vector &other);
@@ -56,17 +56,17 @@ class Vector {
           * @return Angle entre deux vecteurs-coordonnees
           * @param other : Vector, le deuxieme vecteur
           */
-        float angleWith(Vector &other);
+        float angleWith(const Vector &other) const;
 
         /**
           * @return Coordonnee x
           */
-        float getX();  
+        float getX () const;  
 
         /**
           * @return Coordonnee y
           */
-        float getY();
+        float getY () const;
 
             /**
           * @param x : Nouvelle coordonnee x
@@ -78,7 +78,7 @@ class Vector {
           */
         void setY(float value);
 
-        void printDebug(const char *prefix, Stream *serial);
+        void printDebug(const char *prefix, Stream *serial) const;
 
     protected :
         float x, y;

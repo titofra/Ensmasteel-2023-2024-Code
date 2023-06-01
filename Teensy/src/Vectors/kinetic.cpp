@@ -6,7 +6,7 @@ Kinetic::Kinetic (float x, float y, float theta, float v, float w) :
     w (w) {
 }
 
-Kinetic::Kinetic (Kinetic& kinetic) :
+Kinetic::Kinetic (const Kinetic& kinetic) :
     VectorOriented (kinetic.getX (), kinetic.getY (), kinetic.getTheta ())
 {
     v = kinetic.getTranslationSpeed ();
@@ -14,11 +14,13 @@ Kinetic::Kinetic (Kinetic& kinetic) :
 }
 
 Kinetic& Kinetic::operator=(const Kinetic& other) {
-    x = other.x;
-    y = other.y;
-    theta = other.theta;
-    v = other.v;
-    w = other.w;
+    if (this != &other) {
+        x = other.x;
+        y = other.y;
+        theta = other.theta;
+        v = other.v;
+        w = other.w;
+    }
     return *this;
 }
 
@@ -46,7 +48,7 @@ Kinetic Kinetic::operator*(float const &other){
     return Kinetic (vect.getX (),vect.getY (), vect.getTheta (), v * other, w * other); 
 }
 
-float Kinetic::getTranslationSpeed (){
+float Kinetic::getTranslationSpeed () const {
     return v;
 }
 
@@ -54,7 +56,7 @@ void Kinetic::setTranslationSpeed (float value) {
     v = value;
 }
 
-float Kinetic::getRotationSpeed (){
+float Kinetic::getRotationSpeed ()const {
     return w;
 }
 
@@ -62,7 +64,7 @@ void Kinetic::setRotationSpeed(float value) {
     w = value;
 }
 
-void Kinetic::printDebug(const char *prefix, Stream *serial) {
+void Kinetic::printDebug(const char *prefix, Stream *serial) const {
     char buf [8];   // 6 digits, take care of '.' and '\0'!
 
     serial->print(prefix);

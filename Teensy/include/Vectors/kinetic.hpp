@@ -20,8 +20,7 @@ class Kinetic : public VectorOriented {
          * @param w : float, Vitesse de rotation du robot
          */
         Kinetic (float x = 0.0f, float y = 0.0f, float theta = 0.0f, float v = 0.0f, float w = 0.0f);
-        Kinetic (Kinetic& kine);
-        Kinetic () {};
+        Kinetic (const Kinetic& kinetic);
 
         Kinetic& operator=(const Kinetic& other);
 
@@ -34,7 +33,7 @@ class Kinetic : public VectorOriented {
         /**
          * @return Vitesse de translation du robot
          */
-        float getTranslationSpeed ();
+        float getTranslationSpeed () const ;
 
         /**
          * @param v : Nouvelle vitesse de translation
@@ -44,7 +43,7 @@ class Kinetic : public VectorOriented {
             /**
          * @return Vitesse de rotation du robot
          */
-        float getRotationSpeed();
+        float getRotationSpeed() const ;
 
         /**
          * @param w : Nouvelle vitesse de rotation
@@ -56,7 +55,7 @@ class Kinetic : public VectorOriented {
          * x, y, Theta, v, w
          * @param prefix : string being printed in serial monitor
          */
-        void printDebug(const char *prefix, Stream *serial);
+        void printDebug(const char *prefix, Stream *serial) const;
 
     private :
         float v; //Vitesse de translation du robot

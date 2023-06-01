@@ -6,7 +6,7 @@ VectorOriented::VectorOriented(float x, float y,float th) :
     theta = th;
 }
 
-VectorOriented::VectorOriented (VectorOriented& vo) :
+VectorOriented::VectorOriented (const VectorOriented& vo) :
     Vector (vo.getX (), vo.getY ())
 {
     theta = vo.getTheta ();
@@ -43,7 +43,7 @@ VectorOriented VectorOriented::operator*(float const &other){
     return VectorOriented(vect.getX(),vect.getY(), theta * other); 
 }
 
-float VectorOriented::getTheta(){
+float VectorOriented::getTheta() const {
     return theta;
 }
 
@@ -55,7 +55,7 @@ void VectorOriented::normalizeTheta() {
     theta = normalizeAngle (theta);
 }
 
-void VectorOriented::printDebug(const char *prefix, Stream *serial) {
+void VectorOriented::printDebug(const char *prefix, Stream *serial) const {
     char buf [8];   // 6 digits, take care of '.' and '\0'!
 
     serial->print(prefix);

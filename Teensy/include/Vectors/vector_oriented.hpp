@@ -18,7 +18,7 @@ class VectorOriented : public Vector {
          * @param theta : float, orientation du robot
          */
         VectorOriented (float x = 0.0f, float y = 0.0f, float th = 0.0f);
-        VectorOriented (VectorOriented& vo);
+        VectorOriented (const VectorOriented& vo);
 
         bool operator== (VectorOriented const &other);
         VectorOriented operator- (VectorOriented const &other);
@@ -31,7 +31,7 @@ class VectorOriented : public Vector {
         /**
          * @return Angle d'orientation theta
          */
-        float getTheta ();
+        float getTheta () const;
 
         /**
          * @param theta : Nouvel angle theta
@@ -44,7 +44,7 @@ class VectorOriented : public Vector {
          */
         void normalizeTheta ();
 
-        void printDebug (const char *prefix, Stream *serial);
+        void printDebug (const char *prefix, Stream *serial) const;
 
     protected :
         float theta;

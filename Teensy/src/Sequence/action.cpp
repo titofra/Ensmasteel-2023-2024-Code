@@ -1,10 +1,12 @@
 #include "action.hpp"
 
-Action::Action (action_kind kind, trajectory_fn trajectory, time_distortion_fn time_distortion, unsigned long endTime) :
+Action::Action (action_kind kind, trajectory_fn trajectory, time_distortion_fn time_distortion, Kinetic beginKinetic, Kinetic endKinetic,  unsigned long endTime) :
     kind (kind),
+    endTime (endTime),
     trajectory (trajectory),
     time_distortion (time_distortion),
-    endTime (endTime)
+    beginKinetic (beginKinetic),
+    endKinetic (endKinetic)
 {
     isFinished = false;
 }
@@ -21,7 +23,11 @@ void Action::run (unsigned long timer, unsigned long dt, Robot *robot) {
         case MOVEMENT_ACT:
             robot->goTo (                           // goto
                 trajectory (                        // the kinetic at timer + dt
-                    time_distortion (timer + dt)    // but the instant timer + dt is disturbed by time_distortion ()
+                    time_distortion (               // but the instant timer + dt is disturbed by time_distortion ()
+                        timer + dt
+                    ),
+                    beginKinetic,
+                    endKinetic
                 ), dt                               // do it in dt
             );
             if (timer + dt >= endTime) {
@@ -50,7 +56,11 @@ void Action::monitor (unsigned long timer, unsigned long dt, action_kind *action
     switch (kind) {
         case MOVEMENT_ACT:
             *goal = trajectory (                // the kinetic at timer + dt
-                time_distortion (timer + dt)    // but the instant timer + dt is disturbed by time_distortion ()
+                time_distortion (               // but the instant timer + dt is disturbed by time_distortion ()
+                    timer + dt
+                ),
+                beginKinetic,
+                endKinetic
             );
             if (timer + dt >= endTime) {
                 isFinished = true;   // the action is done
