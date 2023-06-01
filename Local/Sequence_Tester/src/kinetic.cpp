@@ -34,7 +34,7 @@ Kinetic Kinetic::operator-(Kinetic const &other){
 }
 
 Kinetic Kinetic::operator+(Kinetic const &other){
-    VectorOriented vect = VectorOriented::operator- (other);
+    VectorOriented vect = VectorOriented::operator+ (other);
     return Kinetic (vect.getX (),vect.getY (), vect.getTheta (), v + other.v, w + other.w); 
 }
 

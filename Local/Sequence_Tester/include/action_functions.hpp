@@ -8,8 +8,8 @@
 
 trajectory_fn linear (const unsigned long beginTime, const unsigned long endTime) {
     return [=] (const unsigned long t, const Kinetic beginKinetic, const Kinetic endKinetic) -> Kinetic {
-            return (Kinetic (endKinetic) - beginKinetic) * ((float) (t - beginTime) / (float) (endTime - beginTime)) + beginKinetic;
-        };
+        return (Kinetic (endKinetic) - beginKinetic) * ((float) (t - beginTime) / (float) (endTime - beginTime)) + beginKinetic;
+    };
 }
 
 
