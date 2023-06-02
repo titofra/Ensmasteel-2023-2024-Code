@@ -15,6 +15,9 @@ float normalizeAngle(float angle) {
 
 Vector::Vector(float xValue, float yValue) : x(xValue), y(yValue) {}
 
+Vector::Vector(const Vector& other) : x(other.x), y(other.y) {};
+
+
 // Getter methods
 float Vector::getX() const {
     return x;
@@ -31,6 +34,14 @@ void Vector::setX(float xValue) {
 
 void Vector::setY(float yValue) {
     y = yValue;
+}
+
+Vector& Vector::operator=(const Vector& other) {
+    if (this != &other) {
+        x = other.x;
+        y = other.y;
+    }
+    return *this;
 }
 
 // Vector operations
