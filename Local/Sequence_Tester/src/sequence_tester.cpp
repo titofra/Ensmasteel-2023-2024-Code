@@ -69,9 +69,9 @@ int main (void) {
 
     // sequence
     Sequence seq;
-    /*seq.add (mvmt12);
+    seq.add (mvmt12);
     seq.add (rota23);
-    seq.add (mvmt34);*/
+    seq.add (mvmt34);
     seq.add (mvmt46);
 
     /* run the game to get kinetics over time */
@@ -89,7 +89,7 @@ int main (void) {
 std::vector<Kinetic> Get_Kinetics_from_Sequence (Sequence seq, unsigned long dt, Kinetic beginKinetic) {
     std::vector<Kinetic> kinetics;
 
-    unsigned long timer = 4000; // TORM
+    unsigned long timer = 0;
 
     action_kind kind;
     Kinetic goal = beginKinetic;
