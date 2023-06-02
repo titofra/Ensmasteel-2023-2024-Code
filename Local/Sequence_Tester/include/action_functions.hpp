@@ -7,12 +7,13 @@
 #include <math.h>
 
 /* TRAJECTORY */
+// NOTE: For all the trajectory fucntions, float variable "a" stands for a percentage of trajectory in [0.0f, 1.0f]
 
-// Note that a 2-order (with starting and ending points) bezier will do the same. However this function is useful for rotation.
-trajectory_fn linear (const unsigned long beginTime, const unsigned long endTime, std::vector<VectorOriented> vectors) {
-    return [=] (const unsigned long t) -> Kinetic {
+// Note that a 1-order (with starting and ending points) bezier will do the same. However this function is useful for rotation.
+trajectory_fn linear (std::vector<VectorOriented> vectors) {
+    return [=] (const float a) -> Kinetic {
         Kinetic ret = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-        ret += (VectorOriented (vectors [1]) - vectors [0]) * ((float) (t - beginTime) / (float) (endTime - beginTime)) + vectors [0];
+        ret += (VectorOriented (vectors [1]) - vectors [0]) * (1 - a) + vectors [0];
         return ret;
     };
 }
@@ -25,7 +26,7 @@ int factorial(int n) {
 }
 
 // Notations come from https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Polynomial_form, check here for more
-trajectory_fn bezier (const unsigned long beginTime, const unsigned long endTime, std::vector<VectorOriented> points) {
+trajectory_fn bezier (std::vector<VectorOriented> points) {
     // we process the Cj before the calls
     std::vector<VectorOriented> C;
 
@@ -49,17 +50,17 @@ trajectory_fn bezier (const unsigned long beginTime, const unsigned long endTime
         C.back () = C.back () * (float) partial_permutation;
     }
     
-    return [=] (const unsigned long t) -> Kinetic {
+    return [=] (const float a) -> Kinetic {
         // process the new Vector
         Kinetic ret = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         for (int j = 0; j <= n; j++) {
-            ret += VectorOriented (C [j]) * (float) std::pow ((double) (t - beginTime) / (double) (endTime - beginTime), (double) j);
+            ret += VectorOriented (C [j]) * (float) std::pow ((double) a, (double) j);
         }
 
         // process the orientation (this is the derivative of the trajectory)
         Kinetic tan = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         for (int j = 1; j <= n; j++) {
-            tan += VectorOriented (C [j]) * ((float) j * (float) std::pow ((double) (t - beginTime), (double) (j - 1)) / (float) std::pow ((double) (endTime - beginTime), (double) j));
+            tan += VectorOriented (C [j]) * ((float) j * (float) std::pow ((double) a, (double) (j - 1)));
         }
 
         // set the theta
@@ -72,9 +73,9 @@ trajectory_fn bezier (const unsigned long beginTime, const unsigned long endTime
 
 /* TIME DISTORTION */
 
-time_distortion_fn linear () {
+time_distortion_fn linear (const unsigned long beginTime, const unsigned long endTime) {
     return (
-        [](unsigned long t) { return t; }
+        [=](unsigned long t) -> float { return (float) (t - beginTime) / (float) (endTime - beginTime); }
     );
 }
 
@@ -82,20 +83,23 @@ time_distortion_fn trapeze (const unsigned long t0, const unsigned long t1, cons
     const float dt12 = (((float) t3 - (float) (t3 - t2) * dt23) - ((float) t0 + (float) (t1 - t0) * dt01)) / (float) (t2 - t1);
     
     return (
-        [=](unsigned long t) -> unsigned long {
+        [=](unsigned long t) -> float {
             if (t < t1) {   // pente = dt01
-                return t0
-                    + (unsigned long) ((float) (t - t0) * dt01);
+                return (float) (
+                    (unsigned long) ((float) (t - t0) * dt01)
+                    ) / (float) (t3 - t0);
             }
             if (t < t2) {   // pente = dt12
-                return t0
-                    + (unsigned long) ((float) (t1 - t0) * dt01)
-                    + (unsigned long) ((float) (t - t1) * dt12);
+                return (float) (
+                    (unsigned long) ((float) (t1 - t0) * dt01)
+                    + (unsigned long) ((float) (t - t1) * dt12)
+                    ) / (float) (t3 - t0);
             }
-            return t0      // pente = dt23
-                + (unsigned long) ((float) (t1 - t0) * dt01)
+            return (float) (// pente = dt23
+                (unsigned long) ((float) (t1 - t0) * dt01)
                 + (unsigned long) ((float) (t2 - t1) * dt12)
-                + (unsigned long) ((float) (t - t2) * dt23);
+                + (unsigned long) ((float) (t - t2) * dt23)
+                    ) / (float) (t3 - t0);
         }
     );
 }

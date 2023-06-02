@@ -31,19 +31,19 @@ int main (void) {
     // actions
     Action mvmt12 (
         MOVEMENT_ACT,
-        bezier (0, 1300, {P1, P2}),
+        bezier ({P1, P2}),
         trapeze (0, 500, 1000, 1300, 0.7f, 0.7f),
         1300
     );
     Action rota23 (
         MOVEMENT_ACT,
-        linear (1300, 1700, {P2, P3}),
-        linear (),
+        linear ({P2, P3}),
+        linear (1300, 1700),
         1700
     );
     Action mvmt34 (
         MOVEMENT_ACT,
-        bezier (1700, 4000, {P3, P4}),
+        bezier ({P3, P4}),
         trapeze (1700, 2500, 3300, 4000, 0.5f, 0.8f),
         4000
     );
@@ -55,8 +55,8 @@ int main (void) {
     controlPoints45.push_back (P5);
     Action mvmt45 (
         MOVEMENT_ACT,
-        bezier (4000, 6000, controlPoints45),
-        linear (),
+        bezier (controlPoints45),
+        linear (4000, 6000),
         6000
     );
     std::vector<VectorOriented> controlPoints56;
@@ -68,7 +68,7 @@ int main (void) {
     controlPoints56.push_back (P6);
     Action mvmt56 (
         MOVEMENT_ACT,
-        bezier (6000, 8000, controlPoints56),
+        bezier (controlPoints56),
         trapeze (6000, 6000, 7000, 8000, 1.0f, 0.4f),
         8000
     );
