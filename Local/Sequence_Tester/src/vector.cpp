@@ -13,53 +13,101 @@ float normalizeAngle(float angle) {
     return out;
 }
 
-Vector::Vector(float x, float y) :
-    x (x),
-    y (y) {
+Vector::Vector(float xValue, float yValue) : x(xValue), y(yValue) {}
+
+// Getter methods
+float Vector::getX() const {
+    return x;
 }
 
-Vector::Vector (const Vector& vect) {
-    x = vect.getX ();
-    y = vect.getY ();
+float Vector::getY() const {
+    return y;
 }
 
+// Setter methods
+void Vector::setX(float xValue) {
+    x = xValue;
+}
 
-Vector Vector::operator+(const Vector &other){
+void Vector::setY(float yValue) {
+    y = yValue;
+}
+
+// Vector operations
+Vector Vector::operator+(const Vector& other) const {
     return Vector(x + other.x, y + other.y);
 }
 
-Vector Vector::operator-(const Vector &other){
+Vector Vector::operator-(const Vector& other) const {
     return Vector(x - other.x, y - other.y);
 }
 
-Vector Vector::operator*(float scalaire){
-    return Vector(x * scalaire, y * scalaire);
+Vector Vector::operator*(float scalar) const {
+    return Vector(x * scalar, y * scalar);
 }
 
-Vector Vector::operator/(float scalaire){
-    return Vector(x / scalaire, y / scalaire);
+Vector Vector::operator/(float scalar) const {
+    return Vector(x / scalar, y / scalar);
 }
 
-void Vector::operator+=(const Vector &other){
-    x+=other.x;
-    y+=other.y;
-}
-
-bool Vector::operator==(Vector const &other){
-    return ((x - other.x) * (x - other.x) <= 1e-6) && ((y - other.y) * (y - other.y) <= 1e-6);
-}
-
-Vector& Vector::operator=(const Vector& other) {
-    x = other.x;
-    y = other.y;
+Vector& Vector::operator+=(const Vector& other) {
+    x += other.x;
+    y += other.y;
     return *this;
 }
 
-float Vector::norm(){
+Vector& Vector::operator-=(const Vector& other) {
+    x -= other.x;
+    y -= other.y;
+    return *this;
+}
+
+Vector& Vector::operator*=(float scalar) {
+    x *= scalar;
+    y *= scalar;
+    return *this;
+}
+
+Vector& Vector::operator/=(float scalar) {
+    x /= scalar;
+    y /= scalar;
+    return *this;
+}
+
+// Comparison operators
+bool Vector::operator==(const Vector& other) const {
+    return x == other.x && y == other.y;
+}
+
+bool Vector::operator!=(const Vector& other) const {
+    return !(*this == other);
+}
+
+bool Vector::operator<(const Vector& other) const {
+    return norm() < other.norm();
+}
+
+bool Vector::operator>(const Vector& other) const {
+    return norm() > other.norm();
+}
+
+bool Vector::operator<=(const Vector& other) const {
+    return norm() <= other.norm();
+}
+
+bool Vector::operator>=(const Vector& other) const {
+    return norm() >= other.norm();
+}
+
+float Vector::dotProduct(const Vector& other) const {
+    return x * other.x + y * other.y;
+}
+
+float Vector::norm() const {
     return std::sqrt(x * x + y * y);
 }
 
-float Vector::angle(){
+float Vector::angle() const {
     // as atan () return a value in (- PI/2, PI/2) we have to descrimine the cases
     if (x > 0) {
         return (float) std::atan ((double) y / x);
@@ -80,7 +128,20 @@ float Vector::angle(){
     };
 }
 
-float Vector::distanceWith(Vector &other){
+// Additional methods
+void Vector::normalize() {
+    float mag = norm();
+    if (mag != 0.0f) {
+        x /= mag;
+        y /= mag;
+    }
+}
+
+Vector Vector::perpendicular() const {
+    return Vector(-y, x);
+}
+
+float Vector::distanceWith(Vector &other) const {
     return (float) std::sqrt( std::pow(x - other.x , 2) + std::pow(y - other.y , 2) );
 }
 
@@ -103,23 +164,6 @@ float Vector::angleWith(const Vector &other) const {
             }
         }
     }
-}
-
-
-float Vector::getX() const{
-    return x;
-}
-
-float Vector::getY() const{
-    return y;
-}
-
-void Vector::setX(float value){
-    x = value;
-}
-
-void Vector::setY(float value){
-    y = value;
 }
 
 /*

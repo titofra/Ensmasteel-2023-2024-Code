@@ -2,86 +2,211 @@
 #define VECTOR_HPP
 
 #include <string>
-#include <Arduino.h>
 #include <Stream.h>
 #include <math.h>
 
 /**
- * Normalisation d'un angle.
- * @param angle : float, angle en radian.
- * @return : float, angle en radian entre -PI et PI.
+ * @brief Normalize an angle to fit in [-PI, PI).
+ * @param angle Angle in radian.
+ * @return Normalized angle in [-PI, PI).
  */
 float normalizeAngle (float angle);
 
-/**
- * Classe definissant un vecteur-coordonnee de base (x,y)
-*/
 class Vector {
-    public :
-        /**
-          * Constructeur d'un vecteur-coordonnee
-          * @param x : float, x-coordonnee
-          * @param y : float, y-coordonnee
-          */
-        Vector (float x = 0.0f, float y = 0.0f);
-        Vector (const Vector& vect);
+public:
+    /**
+      * @brief Parameterized constructor for Vector.
+      * @param xValue The x-coordinate value.
+      * @param yValue The y-coordinate value.
+      */
+    Vector(float xValue = 0.0f, float yValue = 0.0f);
 
-        //Surcharges des operateurs +, +=, -, *, ==
-        Vector operator+ (const Vector &other);
-        Vector operator- (const Vector &other);
-        Vector operator* (const float scalaire);
-        Vector operator/ (const float scalaire);
-        void operator+= (const Vector &other);
-        bool operator== (const Vector &other);
+    /**
+      * @brief Construct a Vector from another Vector.
+      * @param other The Vector object to construct from.
+      */
+    Vector(const Vector& other);
 
-        Vector& operator=(const Vector& other);
+    /**
+      * @brief Get the x-coordinate.
+      * @return The x-coordinate value.
+      */
+    float getX() const;
 
-        /**
-          * @return Norme du vecteur-coordonnee
-          */
-        float norm();
+    /**
+      * @brief Get the y-coordinate.
+      * @return The y-coordinate value.
+      */
+    float getY() const;
 
-        /**
-          * @return Angle par rapport au vecteur normalise du vecteur-coordonnee
-          */
-        float angle();
+    /**
+      * @brief Set the x-coordinate.
+      * @param xValue The x-coordinate value to be set.
+      */
+    void setX(float xValue);
 
-        /**
-          * @return Distance entre deux vecteurs-coordonnees
-          * @param other : Vector, le deuxieme vecteur
-          */
-        float distanceWith(Vector &other);
+    /**
+      * @brief Set the y-coordinate.
+      * @param yValue The y-coordinate value to be set.
+      */
+    void setY(float yValue);
 
-        /**
-          * @return Angle entre deux vecteurs-coordonnees
-          * @param other : Vector, le deuxieme vecteur
-          */
-        float angleWith(const Vector &other) const;
+    /**
+      * @brief Addition of two vectors.
+      * @param other The vector to be added.
+      * @return The resulting vector after addition.
+      */
+    Vector operator+(const Vector& other) const;
 
-        /**
-          * @return Coordonnee x
-          */
-        float getX () const;  
+    /**
+      * @brief Subtraction of two vectors.
+      * @param other The vector to be subtracted.
+      * @return The resulting vector after subtraction.
+      */
+    Vector operator-(const Vector& other) const;
 
-        /**
-          * @return Coordonnee y
-          */
-        float getY () const;
+    /**
+      * @brief Scalar multiplication of a vector.
+      * @param scalar The scalar value to multiply the vector.
+      * @return The resulting vector after scalar multiplication.
+      */
+    Vector operator*(float scalar) const;
 
-            /**
-          * @param x : Nouvelle coordonnee x
-          */
-        void setX(float value);  
+    /**
+      * @brief Scalar division of a vector.
+      * @param scalar The scalar value to divide the vector.
+      * @return The resulting vector after scalar division.
+      */
+    Vector operator/(float scalar) const;
 
-        /**
-          * @param y : Nouvelle coordonnee y
-          */
-        void setY(float value);
+    /**
+      * @brief Compound addition of two vectors.
+      * @param other The vector to be added.
+      * @return Reference to the resulting vector after addition.
+      */
+    Vector& operator+=(const Vector& other);
 
-        void printDebug(const char *prefix, Stream *serial) const;
+    /**
+      * @brief Compound subtraction of two vectors.
+      * @param other The vector to be subtracted.
+      * @return Reference to the resulting vector after subtraction.
+      */
+    Vector& operator-=(const Vector& other);
 
-    protected :
-        float x, y;
+    /**
+      * @brief Compound scalar multiplication of a vector.
+      * @param scalar The scalar value to multiply the vector.
+      * @return Reference to the resulting vector after scalar multiplication.
+      */
+    Vector& operator*=(float scalar);
+
+    /**
+      * @brief Compound scalar division of a vector.
+      * @param scalar The scalar value to divide the vector.
+      * @return Reference to the resulting vector after scalar division.
+      */
+    Vector& operator/=(float scalar);
+
+    // Comparison operators
+
+    /**
+     * @brief Check if two vectors are equal.
+     * @param other The vector to compare with.
+     * @return True if the vectors are equal, false otherwise.
+     */
+    bool operator==(const Vector& other) const;
+
+    /**
+     * @brief Check if two vectors are not equal.
+     * @param other The vector to compare with.
+     * @return True if the vectors are not equal, false otherwise.
+     */
+    bool operator!=(const Vector& other) const;
+
+    /**
+     * @brief Compare the norm of two vectors.
+     * @param other The vector to compare with.
+     * @return True if the norm of this vector is less than the norm of the other vector, false otherwise.
+     */
+    bool operator<(const Vector& other) const;
+
+    /**
+     * @brief Compare the norm of two vectors.
+     * @param other The vector to compare with.
+     * @return True if the norm of this vector is greater than the norm of the other vector, false otherwise.
+     */
+    bool operator>(const Vector& other) const;
+
+    /**
+     * @brief Compare the norm of two vectors.
+     * @param other The vector to compare with.
+     * @return True if the norm of this vector is less than or equal to the norm of the other vector, false otherwise.
+     */
+    bool operator<=(const Vector& other) const;
+
+    /**
+     * @brief Compare the norm of two vectors.
+     * @param other The vector to compare with.
+     * @return True if the norm of this vector is greater than or equal to the norm of the other vector, false otherwise.
+     */
+    bool operator>=(const Vector& other) const;
+
+
+    /**
+      * @brief Dot product of two vectors.
+      * @param other The other vector.
+      * @return The dot product of the two vectors.
+      */
+    float dotProduct(const Vector& other) const;
+
+    /**
+      * @brief Norm of the vector.
+      * @return The norm of the vector.
+      */
+    float norm() const;
+
+    /**
+      * @brief Angle of the vector.
+      * @return The angle of the vector.
+      */
+    float angle() const;
+
+    /**
+      * @brief Normalize the vector.
+      */
+    void normalize();
+
+    /**
+      * @brief Calculate the perpendicular vector.
+      * @return The perpendicular vector.
+      */
+    Vector perpendicular() const;
+
+    /**
+      * @return Distance between two vectors.
+      * @param other The second vector.
+      * @return The distance.
+      */
+    float distanceWith(Vector &other) const;
+
+    /**
+      * @return Angle between two vectors.
+      * @param other The second vector.
+      * @return The normalized angle.
+      */
+    float angleWith(const Vector &other) const;
+
+    /**
+      * @brief Print vector's coordinates on the serial.
+      * @param prefix A prefix to print on the same line before vector's coordinates.
+      * @param serial The stream where to print on.
+      */
+    void printDebug(const char *prefix, Stream *serial) const;
+
+protected:
+    float x;
+    float y;
+
 };
 
 #endif  // VECTOR_HPP
