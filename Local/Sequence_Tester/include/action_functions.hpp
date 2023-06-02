@@ -70,12 +70,23 @@ trajectory_fn bezier (std::vector<VectorOriented> points) {
     };
 }
 
+trajectory_fn combine (trajectory_fn f1, trajectory_fn f2, const float comb_a) {
+    return (
+        [=](const float a) -> Kinetic {
+            if (a <= comb_a) {
+                return f1 (a / comb_a);
+            }
+            return f2 ((a - comb_a) / (1.0f - comb_a));
+        }
+    );
+}
+
 
 /* TIME DISTORTION */
 
 time_distortion_fn linear (const unsigned long beginTime, const unsigned long endTime) {
     return (
-        [=](unsigned long t) -> float { return (float) (t - beginTime) / (float) (endTime - beginTime); }
+        [=](const unsigned long t) -> float { return (float) (t - beginTime) / (float) (endTime - beginTime); }
     );
 }
 
@@ -83,7 +94,7 @@ time_distortion_fn trapeze (const unsigned long t0, const unsigned long t1, cons
     const float dt12 = (((float) t3 - (float) (t3 - t2) * dt23) - ((float) t0 + (float) (t1 - t0) * dt01)) / (float) (t2 - t1);
     
     return (
-        [=](unsigned long t) -> float {
+        [=](const unsigned long t) -> float {
             if (t < t1) {   // pente = dt01
                 return (float) (
                     (unsigned long) ((float) (t - t0) * dt01)
@@ -100,6 +111,17 @@ time_distortion_fn trapeze (const unsigned long t0, const unsigned long t1, cons
                 + (unsigned long) ((float) (t2 - t1) * dt12)
                 + (unsigned long) ((float) (t - t2) * dt23)
                     ) / (float) (t3 - t0);
+        }
+    );
+}
+
+time_distortion_fn combine (time_distortion_fn f1, time_distortion_fn f2, const unsigned long beginTime, const unsigned long combTime, const unsigned long endTime) {
+    return (
+        [=](const unsigned long t) -> float {
+            if (t <= combTime) {
+                return f1 (t) * (float) (combTime - beginTime) / (float) (endTime - beginTime);
+            }
+            return f2 (t) * (float) (endTime - combTime) / (float) (endTime - beginTime) + (float) (combTime - beginTime) / (float) (endTime - beginTime);
         }
     );
 }

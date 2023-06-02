@@ -53,12 +53,6 @@ int main (void) {
     controlPoints45.push_back (VectorOriented (500.0f, 1300.0f, 0.0f));
     controlPoints45.push_back (VectorOriented (700.0f, 700.0f, 0.0f));
     controlPoints45.push_back (P5);
-    Action mvmt45 (
-        MOVEMENT_ACT,
-        bezier (controlPoints45),
-        linear (4000, 6000),
-        6000
-    );
     std::vector<VectorOriented> controlPoints56;
     controlPoints56.push_back (P5);
     controlPoints56.push_back (VectorOriented (900.0f, 1200.0f, 0.0f));
@@ -66,20 +60,19 @@ int main (void) {
     controlPoints56.push_back (VectorOriented (1800.0f, 500.0f, 0.0f));
     controlPoints56.push_back (VectorOriented (2000.0f, 1500.0f, 0.0f));
     controlPoints56.push_back (P6);
-    Action mvmt56 (
+    Action mvmt46 (
         MOVEMENT_ACT,
-        bezier (controlPoints56),
-        trapeze (6000, 6000, 7000, 8000, 1.0f, 0.4f),
+        combine (bezier (controlPoints45), bezier (controlPoints56), 0.5f),
+        combine (linear (4000, 6000), trapeze (6000, 6000, 7000, 8000, 1.0f, 0.4f), 4000, 6000, 8000),
         8000
     );
 
     // sequence
     Sequence seq;
-    seq.add (mvmt12);
+    /*seq.add (mvmt12);
     seq.add (rota23);
-    seq.add (mvmt34);
-    seq.add (mvmt45);
-    seq.add (mvmt56);
+    seq.add (mvmt34);*/
+    seq.add (mvmt46);
 
     /* run the game to get kinetics over time */
     Kinetic beginKinetic = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
@@ -96,7 +89,7 @@ int main (void) {
 std::vector<Kinetic> Get_Kinetics_from_Sequence (Sequence seq, unsigned long dt, Kinetic beginKinetic) {
     std::vector<Kinetic> kinetics;
 
-    unsigned long timer = 0;
+    unsigned long timer = 4000; // TORM
 
     action_kind kind;
     Kinetic goal = beginKinetic;
