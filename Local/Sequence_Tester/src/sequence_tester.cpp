@@ -30,13 +30,13 @@ int main (void) {
     // actions
     Action mvmt12 (
         MOVEMENT_ACT,
-        bezier (0, 1500, {P1, P2}),
-        trapeze (0, 500, 1000, 1500, 0.7f, 0.7f),
-        1500
+        bezier (0, 1300, {P1, P2}),
+        trapeze (0, 500, 1000, 1300, 0.7f, 0.7f),
+        1300
     );
     Action rota23 (
         MOVEMENT_ACT,
-        linear (1500, 1700, {P2, P3}),
+        linear (1300, 1700, {P2, P3}),
         linear (),
         1700
     );

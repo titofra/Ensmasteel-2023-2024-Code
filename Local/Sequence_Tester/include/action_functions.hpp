@@ -50,10 +50,21 @@ trajectory_fn bezier (const unsigned long beginTime, const unsigned long endTime
     }
     
     return [=] (const unsigned long t) -> Kinetic {
-        Kinetic ret = Kinetic (0.0f, 0.0f, 0.0f, 0.0f);
+        // process the new Vector
+        Kinetic ret = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
         for (int j = 0; j <= n; j++) {
             ret += VectorOriented (C [j]) * (float) std::pow ((double) (t - beginTime) / (double) (endTime - beginTime), (double) j);
         }
+
+        // process the orientation (this is the derivative of the trajectory)
+        Kinetic tan = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        for (int j = 1; j <= n; j++) {
+            tan += VectorOriented (C [j]) * ((float) j * (float) std::pow ((double) (t - beginTime), (double) (j - 1)) / (float) std::pow ((double) (endTime - beginTime), (double) j));
+        }
+
+        // set the theta
+        ret.setTheta (Vector (0.0f, 0.0f).angleWith (tan));
+
         return ret;
     };
 }

@@ -33,6 +33,11 @@ VectorOriented& VectorOriented::operator=(const VectorOriented& other) {
     return *this;
 }
 
+void VectorOriented::operator+=(const VectorOriented &other){
+    Vector::operator+= (other);
+    theta += other.getTheta ();
+}
+
 VectorOriented VectorOriented::operator/(float const &other){
     Vector vect = Vector::operator/ (other);
     return VectorOriented(vect.getX(),vect.getY(), theta / other); 

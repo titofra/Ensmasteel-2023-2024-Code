@@ -43,6 +43,11 @@ VectorOriented VectorOriented::operator*(float const &other){
     return VectorOriented(vect.getX(),vect.getY(), theta * other); 
 }
 
+void VectorOriented::operator+=(const VectorOriented &other){
+    Vector::operator+= (other);
+    theta += other.getTheta ();
+}
+
 float VectorOriented::getTheta() const {
     return theta;
 }

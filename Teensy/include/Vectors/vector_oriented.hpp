@@ -25,6 +25,7 @@ class VectorOriented : public Vector {
         VectorOriented operator+ (VectorOriented const &other);
         VectorOriented operator/ (float const &other);
         VectorOriented operator* (float const &other);
+        void operator+= (const VectorOriented &other);
 
         VectorOriented& operator=(const VectorOriented& other);
 
