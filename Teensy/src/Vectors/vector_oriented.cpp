@@ -1,59 +1,83 @@
 #include "vector_oriented.hpp"
 
-VectorOriented::VectorOriented(float x, float y,float th) :
-    Vector (x, y)
-{
-    theta = th;
-}
+const float PI = 3.14159274101257324219;
 
-VectorOriented::VectorOriented (const VectorOriented& vo) :
-    Vector (vo.getX (), vo.getY ())
-{
-    theta = vo.getTheta ();
-}
+VectorOriented::VectorOriented(float xValue, float yValue, float thetaValue)
+    : Vector(xValue, yValue), theta(thetaValue) {}
 
-bool VectorOriented::operator==(VectorOriented const &other){
-    return Vector::operator==(other) && abs(theta - other.theta) <= 1e-6;
-}
-
-VectorOriented VectorOriented::operator-(VectorOriented const &other){
-    Vector vect = Vector::operator- (other);
-    return VectorOriented(vect.getX(),vect.getY(), theta - other.theta); 
-}
-
-VectorOriented VectorOriented::operator+(VectorOriented const &other){
-    Vector vect = Vector::operator+ (other);
-    return VectorOriented(vect.getX(),vect.getY(), theta + other.theta); 
-}
-
-VectorOriented& VectorOriented::operator=(const VectorOriented& other) {
-    x = other.x;
-    y = other.y;
-    theta = other.theta;
-    return *this;
-}
-
-VectorOriented VectorOriented::operator/(float const &other){
-    Vector vect = Vector::operator/ (other);
-    return VectorOriented(vect.getX(),vect.getY(), theta / other); 
-}
-
-VectorOriented VectorOriented::operator*(float const &other){
-    Vector vect = Vector::operator* (other);
-    return VectorOriented(vect.getX(),vect.getY(), theta * other); 
-}
-
-void VectorOriented::operator+=(const VectorOriented &other){
-    Vector::operator+= (other);
-    theta += other.getTheta ();
-}
+VectorOriented::VectorOriented(const VectorOriented& other)
+    : Vector(other), theta(other.theta) {}
 
 float VectorOriented::getTheta() const {
     return theta;
 }
 
-void VectorOriented::setTheta(float value) {
-    theta = value;
+void VectorOriented::setTheta(float thetaValue) {
+    theta = thetaValue;
+}
+
+VectorOriented VectorOriented::perpendicular() const {
+    return VectorOriented(x, y, normalizeAngle (theta + PI / 2.0f));
+}
+
+VectorOriented& VectorOriented::operator=(const VectorOriented& other) {
+    if (this != &other) {
+        Vector::operator=(other);
+        theta = other.theta;
+    }
+    return *this;
+}
+
+VectorOriented VectorOriented::operator+(const VectorOriented& other) const {
+    return VectorOriented(x + other.x, y + other.y, theta + other.theta);
+}
+
+VectorOriented VectorOriented::operator-(const VectorOriented& other) const {
+    return VectorOriented(x - other.x, y - other.y, theta - other.theta);
+}
+
+VectorOriented VectorOriented::operator*(float scalar) const {
+    return VectorOriented(x * scalar, y * scalar, theta * scalar);
+}
+
+VectorOriented VectorOriented::operator/(float scalar) const {
+    return VectorOriented(x / scalar, y / scalar, theta / scalar);
+}
+
+VectorOriented& VectorOriented::operator+=(const VectorOriented& other) {
+    x += other.x;
+    y += other.y;
+    theta += other.theta;
+    return *this;
+}
+
+VectorOriented& VectorOriented::operator-=(const VectorOriented& other) {
+    x -= other.x;
+    y -= other.y;
+    theta -= other.theta;
+    return *this;
+}
+
+VectorOriented& VectorOriented::operator*=(float scalar) {
+    x *= scalar;
+    y *= scalar;
+    theta *= scalar;
+    return *this;
+}
+
+VectorOriented& VectorOriented::operator/=(float scalar) {
+    x /= scalar;
+    y /= scalar;
+    theta /= scalar;
+    return *this;
+}
+
+bool VectorOriented::operator==(const VectorOriented& other) const {
+    return (x == other.x) && (y == other.y) && (theta == other.theta);
+}
+
+bool VectorOriented::operator!=(const VectorOriented& other) const {
+    return !(*this == other);
 }
 
 void VectorOriented::normalizeTheta() {
