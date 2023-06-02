@@ -12,5 +12,5 @@ You can use any C++ compiler to compile this code. Note that it depends on SFML 
 Example using g++: `g++ -Wall -Wextra -Werror -O3 -Wundef -Wcast-align -Wwrite-strings -Wunreachable-code -Wconversion -Wno-error=maybe-uninitialized -Iinclude/ src/* -lsfml-graphics -lsfml-window -lsfml-system`.
 
 <p align="center">
-  <img src="https://github.com/titofra/Ensmasteel-2023-2024-Code/blob/main/Local/Sequence_Tester/resources/example.jpeg"></a>
+  <img src="https://github.com/titofra/Ensmasteel-2023-2024-Code/blob/main/Local/Sequence_Tester/resources/example.png"></a>
 </p>
