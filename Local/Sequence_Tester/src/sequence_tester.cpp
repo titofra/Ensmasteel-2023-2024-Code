@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 std::vector<Kinetic> Get_Kinetics_from_Sequence (Sequence seq, unsigned long dt, Kinetic beginKinetic);
-void Display (std::vector<Kinetic> kinetics, const int width, const int height, float mmToPxX, float mmToPxY, float pxOffsetX, float pxOffsetY,  float Rpoint = 3.0f, float orient_line_sz = 20.0f);
+void Display (std::vector<Kinetic> kinetics, const int width, const int height, float mmToPxX, float mmToPxY, float pxOffsetX, float pxOffsetY, unsigned long dt, float Rpoint = 3.0f, float orient_line_sz = 20.0f);
 
 const int width = 1600;
 const int height = 800;
@@ -26,7 +26,8 @@ int main (void) {
     P3.setTheta (theta34);
     P4.setTheta (theta34);
     VectorOriented P5 (900.0f, 1200.0f, 0.0f);// pt5
-    VectorOriented P6 (2800.0f, 1400.0f, -1.5f);// pt6
+    VectorOriented P6 (2600.0f, 1400.0f, 0.0f);// pt6
+    VectorOriented P7 (2200.0f, 800.0f, 0.0f);// pt7
 
     // actions
     Action mvmt12 (
@@ -66,6 +67,12 @@ int main (void) {
         combine (linear (4000, 6000), trapeze (6000, 6000, 7000, 8000, 1.0f, 0.4f), 4000, 6000, 8000),
         8000
     );
+    Action mvmt67 (
+        MOVEMENT_ACT,
+        bezier_auto ({P6, P7}, 300.0f),
+        linear (8000, 10000),
+        10000
+    );
 
     // sequence
     Sequence seq;
@@ -73,6 +80,7 @@ int main (void) {
     seq.add (rota23);
     seq.add (mvmt34);
     seq.add (mvmt46);
+    seq.add (mvmt67);
 
     /* run the game to get kinetics over time */
     Kinetic beginKinetic = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
@@ -80,7 +88,7 @@ int main (void) {
     std::vector<Kinetic> kinetics = Get_Kinetics_from_Sequence (seq, dt, beginKinetic);
 
     /* display the graph */
-    Display (kinetics, width, height, mmToPxX, mmToPxY, pxOffsetX, pxOffsetY);
+    Display (kinetics, width, height, mmToPxX, mmToPxY, pxOffsetX, pxOffsetY, dt);
 
     return 0;
 }
@@ -103,17 +111,15 @@ std::vector<Kinetic> Get_Kinetics_from_Sequence (Sequence seq, unsigned long dt,
 
         kinetics.push_back (goal);
 
-        //Display (kinetics, width, height, mmToPxX, mmToPxY, pxOffsetX, pxOffsetY);
-
         timer += dt;
     }
 
     return kinetics;
 }
 
-void Display (std::vector<Kinetic> kinetics, const int width, const int height, float mmToPxX, float mmToPxY, float pxOffsetX, float pxOffsetY,  float Rpoint, float orient_line_sz) {
+void Display (std::vector<Kinetic> kinetics, const int width, const int height, float mmToPxX, float mmToPxY, float pxOffsetX, float pxOffsetY, unsigned long dt, float Rpoint, float orient_line_sz) {
     sf::RenderWindow window(sf::VideoMode(width, height), "Sequence Tester - Ensmasteel");
-    window.setFramerateLimit(60);
+    window.setFramerateLimit((unsigned int) (1000 / dt));
 
     /* CREATE OBJECTS */
     // graph
@@ -149,6 +155,7 @@ void Display (std::vector<Kinetic> kinetics, const int width, const int height, 
         orientations.push_back (line);
     }
 
+    int frame = 1;
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -160,18 +167,25 @@ void Display (std::vector<Kinetic> kinetics, const int width, const int height, 
         window.clear(sf::Color::Black);
 
         // graph
-        window.draw(graph);
+        sf::VertexArray graphToDraw(sf::LinesStrip);
+        for (int i = 0; i < frame; i++) {
+            graphToDraw.append (graph [i]);
+        } 
+        window.draw(graphToDraw);
 
         // points
-        for (const sf::CircleShape& point : points) {
-            window.draw(point);
+        for (int i = 0; i < frame; i++) {
+            window.draw(points [i]);
         }
 
         // orientation indicators
-        for (const sf::VertexArray& line : orientations) {
-            window.draw(line);
+        for (int i = 0; i < frame; i++) {
+            window.draw(orientations [i]);
         }
 
         window.display();
+
+        frame ++;
+        if (frame > (int) (100000 / dt)) frame = (int) (100000 / dt);
     }
 }
