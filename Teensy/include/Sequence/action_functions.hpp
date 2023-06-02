@@ -26,11 +26,11 @@ int factorial(int n) {
 }
 
 // Notations come from https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Polynomial_form, check here for more
-trajectory_fn bezier (std::vector<VectorOriented> points) {
+trajectory_fn bezier (std::vector<VectorOriented> control_points) {
     // we process the Cj before the calls
     std::vector<VectorOriented> C;
 
-    const int n = (int) points.size () - 1;
+    const int n = (int) control_points.size () - 1;
     int partial_permutation;    // https://en.wikipedia.org/wiki/Partial_permutation
 
     for (int j = 0; j <= n; j++) {
@@ -44,7 +44,7 @@ trajectory_fn bezier (std::vector<VectorOriented> points) {
         // process the sum
         C.push_back (VectorOriented (0.0f, 0.0f, 0.0f));
         for (int i = 0; i <= j; i++) {
-            C.back () += points [i] * ((float) std::pow (-1.0, (double) (i + j)) / (float) factorial (i) / (float) factorial (j - i));
+            C.back () += control_points [i] * ((float) std::pow (-1.0, (double) (i + j)) / (float) factorial (i) / (float) factorial (j - i));
         }
 
         C.back () = C.back () * (float) partial_permutation;
