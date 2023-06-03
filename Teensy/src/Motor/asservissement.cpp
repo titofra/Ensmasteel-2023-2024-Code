@@ -11,10 +11,9 @@ Asservissement::Asservissement (float kp, float ki, float kd) :
 }
 
 float Asservissement::compute (float error, unsigned long dt) {
-    derivativeError = (error - previousError) / dt;
-    integralError += error * dt;
+    derivativeError = (error - previousError) / (float) dt;
+    integralError += error * (float) dt;
     previousError = error;
-
 
     return (kp * error) + (ki * integralError) + (kd * derivativeError);
 }

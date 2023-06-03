@@ -45,30 +45,33 @@ Robot robot (
     &comESP,
     (uint8_t) PIN_LEFT_MOTOR_PWM,
     (uint8_t) PIN_LEFT_MOTOR_IN1,
-    (uint8_t) PIN_LEFT_MOTOR_PWM,
-    1.0f,
+    (uint8_t) PIN_LEFT_MOTOR_IN2,
+    14.0f,
+    0.00001f,
     0.0f,
-    0.0f,
+    true,
     (uint8_t) PIN_RIGHT_MOTOR_PWM,
     (uint8_t) PIN_RIGHT_MOTOR_IN1,
     (uint8_t) PIN_RIGHT_MOTOR_IN2,
-    1.0f,
+    14.0f,
+    0.00001f,
     0.0f,
-    0.0f,
-    0.255f,
+    false,
+    255.0f,
     (uint8_t) PIN_CODEUSE_GAUCHE_A,
     (uint8_t) PIN_CODEUSE_GAUCHE_B,
     (int32_t) 16384*(1+SYM),
-    0.0566f,
+    56.6f,
     true,
     (uint8_t) PIN_CODEUSE_DROITE_A,
     (uint8_t) PIN_CODEUSE_DROITE_B,
     (int32_t) 8192*(1-SYM),
-    0.0566f,
+    56.6f,
     true
 );
 
 Threads::Mutex mainMut; // mutex used to stop the main loop
+
 
 /* FUNCTIONS */
 void Wait_While_Tirette () {
@@ -81,8 +84,7 @@ void Wait_While_Tirette () {
 void threadUrgence () {
     while (1) {
         if (digitalRead(PIN_ARRET_URGENCE) == LOW) {
-            robot.setPWM_MotorL (0);
-            robot.setPWM_MotorR (0);
+            robot.freeMotors ();
             mainMut.lock ();
             threads.stop ();
         }

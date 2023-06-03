@@ -1,9 +1,10 @@
 #include "motor.hpp"
 
-Motor::Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t pinIN2, uint8_t numberBitsPWM, float kp, float ki, float kd) :
+Motor::Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t pinIN2, uint8_t numberBitsPWM, float kp, float ki, float kd, bool isReversed) :
     pinPWM (pinPWM),
     pinIN1 (pinIN1),
-    pinIN2 (pinIN2)
+    pinIN2 (pinIN2),
+    isReversed (isReversed)
 {
     pinMode(pinPWM, OUTPUT);
     pinMode(pinIN1, OUTPUT);
@@ -26,9 +27,13 @@ void Motor::setPWM (int pwm){
         }
     }
 
-    analogWrite(pinPWM, pwm);
+    if (pwm < 0) {
+        analogWrite(pinPWM, -pwm);
+    } else {
+        analogWrite(pinPWM, pwm);
+    }
 
-    if(pwm > 0){
+    if((pwm > 0 && !isReversed) || (pwm < 0 && isReversed)){
         digitalWrite (pinIN1, HIGH); // cf datasheet of motor driver
         digitalWrite (pinIN2, LOW);
     }
@@ -41,6 +46,12 @@ void Motor::setPWM (int pwm){
 void Motor::setMovement (float distance, unsigned long dt) {
     int pwm = (int) asservissement.compute (distance, dt);
     setPWM (pwm);
+}
+
+void Motor::free () {
+    digitalWrite(pinIN1, LOW); // cf datasheet of motor driver
+    digitalWrite(pinIN2, LOW);
+    analogWrite(pinPWM,0);
 }
 
 double Motor::idealFrequency (uint8_t numberBitsPWM){

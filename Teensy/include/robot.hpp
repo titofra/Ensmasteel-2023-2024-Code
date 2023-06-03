@@ -26,6 +26,7 @@ typedef struct {
             float kp;
             float ki;
             float kd;
+            bool isReversed;
         };
         struct r {
             uint8_t pin_pwm;
@@ -34,6 +35,7 @@ typedef struct {
             float kp;
             float ki;
             float kd;
+            bool isReversed;
         };
         l L;
         r R;
@@ -77,12 +79,14 @@ class Robot {
             float kp_motorL,
             float ki_motorL,
             float kd_motorL,
+            bool isReversed_motorL,
             uint8_t pin_pwm_motorR,
             uint8_t pin_in1_motorR,
             uint8_t pin_in2_motorR,
             float kp_motorR,
             float ki_motorR,
             float kd_motorR,
+            bool isReversed_motorR,
             float codeuses_spacing,
             uint8_t pin_A_codeuseL,
             uint8_t pin_B_codeuseL, 
@@ -104,6 +108,7 @@ class Robot {
         /* BASIC PHYSICAL ACTIONS */
         void setPWM_MotorL (int pwm);
         void setPWM_MotorR (int pwm);
+        void freeMotors ();
         void openClaws ();
         void closeClaws ();
 
@@ -112,8 +117,9 @@ class Robot {
         void goTo (Kinetic goal, unsigned long dt); // goto goal in dt
         void goTo (float x, float y, float theta, float v, float w, unsigned long dt);
         Kinetic getKinetic ();
-        
-        // TODO: add some func such as freeWheels etc
+        Kinetic getGoal ();
+        void setGoal (Kinetic newGoal);
+        void updateMovement (unsigned long dt);
 
     private :
         Kinetic kinetic;
@@ -122,6 +128,8 @@ class Robot {
         Communication<msg_ardtee> *arduino;
         Communication<msg_esptee> *esp32;
         float codeuses_spacing;
+
+        Kinetic goal;
 
 };
 

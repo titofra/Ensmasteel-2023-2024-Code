@@ -13,17 +13,19 @@ class Motor {
          * @param pinIN2 : uint8_t, Pin avec signal booleen représentant la direction du moteur
          * @param numberBitsPWM : uint8_t, Indique le nombre de bits sur laquelle est defini le PWM du moteur (entre 8 et 16)
          */
-        Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t pinIN2, uint8_t numberBitsPWM, float kp, float ki, float kd);
+        Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t pinIN2, uint8_t numberBitsPWM, float kp, float ki, float kd, bool isReversed);
         Motor () {};
 
         void setPWM (int pwm);
         void setMovement (float distance, unsigned long dt);
+        void free ();
 
     private :
         uint8_t pinPWM;
         uint8_t pinIN1;
         uint8_t pinIN2;
         uint16_t maxPWM;
+        bool isReversed;
         Asservissement asservissement;  // position
 
         /**

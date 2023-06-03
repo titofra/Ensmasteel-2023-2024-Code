@@ -10,10 +10,10 @@
 // NOTE: For all the trajectory fucntions, float variable "a" stands for a percentage of trajectory in [0.0f, 1.0f]
 
 // Note that a 1-order (with starting and ending points) bezier will do the same. However this function is useful for rotation.
-trajectory_fn linear (std::vector<VectorOriented> vectors) {
+trajectory_fn linear (std::vector<VectorOriented> extremums) {
     return [=] (const float a) -> Kinetic {
         Kinetic ret = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-        ret += (VectorOriented (vectors [1]) - vectors [0]) * (1 - a) + vectors [0];
+        ret += (VectorOriented (extremums [1]) - extremums [0]) * a + extremums [0];
         return ret;
     };
 }
@@ -25,6 +25,8 @@ int factorial(int n) {
         return n * factorial(n - 1);
 }
 
+// WARNINGS: Bezier curves are not linear over time (there is a time ditortion).
+// WARNINGS: Bezier curves don't care of theta
 // Notations come from https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Polynomial_form, check here for more
 trajectory_fn bezier (std::vector<VectorOriented> control_points) {
     // we process the Cj before the calls
@@ -69,6 +71,17 @@ trajectory_fn bezier (std::vector<VectorOriented> control_points) {
         return ret;
     };
 }
+
+trajectory_fn bezier_auto (std::vector<VectorOriented> extremums, const float delta_curve) {
+    std::vector<VectorOriented> control_points;
+    control_points.push_back (extremums [0]);
+    control_points.push_back (extremums [0] + VectorOriented (std::cos (extremums [0].getTheta ()), std::sin (extremums [0].getTheta ()), 0.0f) * delta_curve);
+    control_points.push_back (extremums [1] - VectorOriented (std::cos (extremums [1].getTheta ()), std::sin (extremums [1].getTheta ()), 0.0f) * delta_curve);
+    control_points.push_back (extremums [1]);
+
+    return bezier (control_points);
+}
+
 
 trajectory_fn combine (trajectory_fn f1, trajectory_fn f2, const float comb_a) {
     return (

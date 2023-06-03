@@ -5,12 +5,14 @@ unsigned long timer, timer_init;
 
 Sequence seq;
 
+void BuildSequence (Sequence *seq);
+
 void setup () {
     // Communications
     Serial.begin (115200);
 
     // SENSORS
-    //pinMode (PIN_ARRET_URGENCE, INPUT_PULLDOWN);
+    pinMode (PIN_ARRET_URGENCE, INPUT_PULLDOWN);
     //pinMode (PIN_TIRETTE, INPUT_PULLDOWN);
 
     // Actuators
@@ -18,23 +20,47 @@ void setup () {
     // Logger
 
     // Threads
-    /*threads.setMicroTimer(10);
+    threads.setMicroTimer(10);
     threads.setDefaultTimeSlice (1);
-    threads.addThread (threadUrgence);*/
+    threads.addThread (threadUrgence);
 
-    //delay (1000);   // ton ensure all the threads are loaded
+    delay (1000);   // to ensure all the threads are loaded
 
     // Wait until the beggining of the match
     //Wait_While_Tirette ();
+
+    // Sequence
+    BuildSequence (&seq);
 
     timer_init = millis ();
 }
 
 void loop () {
     timer = millis () - timer_init;
-    //mainMut.lock ();
+    mainMut.lock ();
 
+    Serial.println (timer);
+    seq.run (timer, dt, &robot);
+    robot.updateMovement (dt);
 
-    //mainMut.unlock ();
+    mainMut.unlock ();
     delay (dt - ((millis () - timer_init) - timer));
+}
+
+
+void BuildSequence (Sequence *seq) {
+    // Kinetics
+    Kinetic P0 = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    Kinetic P1 = Kinetic (900.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    
+    // Actions
+    Action aller (
+        MOVEMENT_ACT,
+        linear ({P0, P1}),
+        trapeze (0, 500, 1000, 1500, 0.5f, 0.5f),
+        1500
+    );
+
+    // Sequence
+    seq->add (aller);
 }
