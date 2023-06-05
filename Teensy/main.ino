@@ -44,7 +44,7 @@ void loop () {
     robot.updateMovement (dt);
 
     mainMut.unlock ();
-    delay (dt - ((millis () - timer_init) - timer));
+    Wait_Until_Timer (timer_init, timer, dt);
 }
 
 

@@ -79,6 +79,15 @@ void Wait_While_Tirette () {
     while (digitalRead(PIN_TIRETTE) == HIGH) {}
 }
 
+void Wait_Until_Timer (unsigned long timer_init, unsigned long timer, unsigned long dt) {
+    int to_delay = (int) (dt - ((millis () - timer_init) - timer));
+    if (to_delay < 0) {
+        Serial.println ("[WARNING] Main thread's frequency to low.");
+    } else {
+        delay (to_delay);
+    }
+}
+
 
 /* THREADS */
 void threadUrgence () {
