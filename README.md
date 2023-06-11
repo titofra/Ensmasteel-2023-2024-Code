@@ -45,4 +45,4 @@ Execute `install_windows_Makefile.bat <path to arduino-cli>` with `<path to ardu
 # TODO
 
 - [ ] mutex on mailbox?
-- [ ] monitor threads' refresh frenquency
+- [x] monitor threads' refresh frenquency
