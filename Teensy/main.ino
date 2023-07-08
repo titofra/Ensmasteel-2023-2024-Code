@@ -47,11 +47,10 @@ void loop () {
     Wait_Until_Timer (timer_init, timer, dt);
 }
 
-
 void BuildSequence (Sequence *seq) {
     // Kinetics
     Kinetic P0 = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-    Kinetic P1 = Kinetic (900.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    Kinetic P1 = Kinetic (700.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     
     // Actions
     Action aller (

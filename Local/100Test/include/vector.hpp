@@ -202,7 +202,7 @@ class Vector {
        * @param other The second vector.
        * @return The normalized angle.
        */
-      float angleWith(const Vector &other) const;
+      float angleWith(const Vector other) const;
 
       /**
        * @brief Print vector's coordinates on the serial.

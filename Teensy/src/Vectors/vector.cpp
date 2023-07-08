@@ -153,12 +153,19 @@ Vector Vector::perpendicular() const {
 }
 
 float Vector::distanceWith(Vector &other) const {
-    return (float) std::sqrt( std::pow(x - other.x , 2) + std::pow(y - other.y , 2) );
+    return (float) std::sqrt( std::pow(x - other.x , 2) + std::pow(y - other.y , 2));
 }
+
+
+#include <Arduino.h>
 
 float Vector::angleWith(const Vector &other) const {
     // as atan () return a value in (- PI/2, PI/2) we have to descrimine the cases
-    if (other.x - x > 0) {
+    Serial.print (" y ");
+    Serial.print ((double) (other.y - y));
+    Serial.print ("  x ");
+    Serial.println ((double) (other.x - x));
+    /*if (other.x - x > 0) {
         return (float) std::atan ((double) (other.y - y) / (other.x - x));
     } else {
         if (other.x - x < 0) {
@@ -174,7 +181,8 @@ float Vector::angleWith(const Vector &other) const {
                 }
             }
         }
-    }
+    }*/
+    return 18.0f;
 }
 
 void Vector::printDebug(const char *prefix, Stream *serial) const {
