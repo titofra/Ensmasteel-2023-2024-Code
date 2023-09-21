@@ -28,7 +28,7 @@ build_Makefile()
     echo "	\$(ARDUINO_CLI) upload --fqbn \$(FQBN) -p \$(PORT) \$(TMP_PATH)/\$(TARGET_NAME)/\$(TARGET_NAME).\$(TARGET_EXTENTION)" >> $1
     echo >> $1
     echo monitor: >> $1
-    echo "	\$(ARDUINO_CLI) monitor -p \$(PORT) -c baudrate=115200" >> $1
+    echo "	\$(ARDUINO_CLI) monitor -p \$(PORT)" >> $1
     echo >> $1
     echo setup: clean >> $1
     echo "	mkdir \$(TMP_PATH) \$(TMP_PATH)/\$(TARGET_NAME)" >> $1
