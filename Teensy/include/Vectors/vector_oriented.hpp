@@ -10,7 +10,7 @@ class VectorOriented : public Vector {
         /**
          * @brief Default constructor. Initializes the VectorOriented with zero values.
          */
-        VectorOriented(float xValue = 0.0f, float yValue = 0.0f, float thetaValue = 0.0f);
+        VectorOriented(double xValue = 0.0, double yValue = 0.0, double thetaValue = 0.0f);
 
         /**
          * @brief Copy constructor. Creates a new VectorOriented object by copying the values from another VectorOriented object.
@@ -22,13 +22,13 @@ class VectorOriented : public Vector {
          * @brief Get the theta value of the VectorOriented.
          * @return The theta value in radians.
          */
-        float getTheta() const;
+        double getTheta() const;
 
         /**
          * @brief Set the theta value of the VectorOriented.
          * @param thetaValue The theta value in radians.
          */
-        void setTheta(float thetaValue);
+        void setTheta(double thetaValue);
 
         /**
          * @brief Calculate the perpendicular vector.
@@ -62,14 +62,14 @@ class VectorOriented : public Vector {
          * @param scalar The scalar value to multiply the vector with.
          * @return The resulting VectorOriented object after scalar multiplication.
          */
-        VectorOriented operator*(float scalar) const;
+        VectorOriented operator*(double scalar) const;
 
         /**
          * @brief Perform scalar division of the VectorOriented object.
          * @param scalar The scalar value to divide the vector by.
          * @return The resulting VectorOriented object after scalar division.
          */
-        VectorOriented operator/(float scalar) const;
+        VectorOriented operator/(double scalar) const;
 
         /**
          * @brief Perform compound addition of two VectorOriented objects.
@@ -90,14 +90,14 @@ class VectorOriented : public Vector {
          * @param scalar The scalar value to multiply the vector with.
          * @return The resulting VectorOriented object after compound scalar multiplication.
          */
-        VectorOriented& operator*=(float scalar);
+        VectorOriented& operator*=(double scalar);
 
         /**
          * @brief Perform compound scalar division of the VectorOriented object.
          * @param scalar The scalar value to divide the vector by.
          * @return The resulting VectorOriented object after compound scalar division.
          */
-        VectorOriented& operator/=(float scalar);
+        VectorOriented& operator/=(double scalar);
 
         /**
          * @brief Check if the VectorOriented object is equal to another VectorOriented object.
@@ -121,7 +121,7 @@ class VectorOriented : public Vector {
         void printDebug (const char *prefix, Stream *serial) const;
 
     protected:
-        float theta;
+        double theta;
 };
 
 #endif  // VECTOR_ORIENTED

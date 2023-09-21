@@ -1,6 +1,6 @@
 #include "motor.hpp"
 
-Motor::Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t pinIN2, uint8_t numberBitsPWM, float kp, float ki, float kd, bool isReversed) :
+Motor::Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t pinIN2, uint8_t numberBitsPWM, double kp, double ki, double kd, bool isReversed) :
     pinPWM (pinPWM),
     pinIN1 (pinIN1),
     pinIN2 (pinIN2),
@@ -43,7 +43,7 @@ void Motor::setPWM (int pwm){
     }
 }
 
-void Motor::setMovement (float distance, unsigned long dt) {
+void Motor::setMovement (double distance, unsigned long dt) {
     int pwm = (int) asservissement.compute (distance, dt);
     setPWM (pwm);
 }

@@ -8,9 +8,9 @@
 #include "codeuse.hpp"
 
 typedef struct {
-    float x_init;
-    float y_init;
-    float theta_init;
+    double x_init;
+    double y_init;
+    double theta_init;
 
     struct Communications {
         Communication<msg_ardtee> *arduino;
@@ -23,18 +23,18 @@ typedef struct {
             uint8_t pin_pwm;
             uint8_t pin_in1;
             uint8_t pin_in2;
-            float kp;
-            float ki;
-            float kd;
+            double kp;
+            double ki;
+            double kd;
             bool isReversed;
         };
         struct r {
             uint8_t pin_pwm;
             uint8_t pin_in1;
             uint8_t pin_in2;
-            float kp;
-            float ki;
-            float kd;
+            double kp;
+            double ki;
+            double kd;
             bool isReversed;
         };
         l L;
@@ -43,19 +43,19 @@ typedef struct {
     Motors motors;
 
     struct Codeuses {
-        float spacing;
+        double spacing;
         struct l {
             uint8_t pin_A;
             uint8_t pin_B; 
             int32_t ticksPerRound;
-            float wheel_diameter;
+            double wheel_diameter;
             bool orientation;
         };
         struct r {
             uint8_t pin_A;
             uint8_t pin_B; 
             int32_t ticksPerRound;
-            float wheel_diameter;
+            double wheel_diameter;
             bool orientation;
         };
         l L;
@@ -68,35 +68,35 @@ typedef struct {
 class Robot {
     public :
         Robot (
-            float x_init,
-            float y_init,
-            float theta_init,
+            double x_init,
+            double y_init,
+            double theta_init,
             Communication<msg_ardtee> *arduino,
             Communication<msg_esptee> *esp32,
             uint8_t pin_pwm_motorL,
             uint8_t pin_in1_motorL,
             uint8_t pin_in2_motorL,
-            float kp_motorL,
-            float ki_motorL,
-            float kd_motorL,
+            double kp_motorL,
+            double ki_motorL,
+            double kd_motorL,
             bool isReversed_motorL,
             uint8_t pin_pwm_motorR,
             uint8_t pin_in1_motorR,
             uint8_t pin_in2_motorR,
-            float kp_motorR,
-            float ki_motorR,
-            float kd_motorR,
+            double kp_motorR,
+            double ki_motorR,
+            double kd_motorR,
             bool isReversed_motorR,
-            float codeuses_spacing,
+            double codeuses_spacing,
             uint8_t pin_A_codeuseL,
             uint8_t pin_B_codeuseL, 
             int32_t ticksPerRound_codeuseL,
-            float wheel_diameter_codeuseL,
+            double wheel_diameter_codeuseL,
             bool orientation_codeuseL,
             uint8_t pin_A_codeuseR,
             uint8_t pin_B_codeuseR, 
             int32_t ticksPerRound_codeuseR,
-            float wheel_diameter_codeuseR,
+            double wheel_diameter_codeuseR,
             bool orientation_codeuseR
         );
         Robot (robot_setup setup);
@@ -115,7 +115,7 @@ class Robot {
         /* KINETIC */
         void updateKinetic (unsigned long dt);
         void goTo (Kinetic goal, unsigned long dt); // goto goal in dt
-        void goTo (float x, float y, float theta, float v, float w, unsigned long dt);
+        void goTo (double x, double y, double theta, double v, double w, unsigned long dt);
         Kinetic getKinetic ();
         Kinetic getGoal ();
         void setGoal (Kinetic newGoal);
@@ -127,7 +127,7 @@ class Robot {
         Codeuse codeuseL, codeuseR;
         Communication<msg_ardtee> *arduino;
         Communication<msg_esptee> *esp32;
-        float codeuses_spacing;
+        double codeuses_spacing;
 
         Kinetic goal;
 

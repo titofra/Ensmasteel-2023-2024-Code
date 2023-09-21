@@ -12,8 +12,8 @@ enum action_kind {
     DELAY_ACT
 };
 
-typedef std::function<Kinetic (float)> trajectory_fn;
-typedef std::function<float (unsigned long)> time_distortion_fn;
+typedef std::function<Kinetic (double)> trajectory_fn;
+typedef std::function<double (unsigned long)> time_distortion_fn;
 
 class Action {
     public :

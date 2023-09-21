@@ -45,8 +45,8 @@ void Sequence::goToStep (int istep) {
     currentStep = istep;
 }
 /*
-void save_monitor (const std::string& path, float beginTime, float endTime, float dt) {
-    float timer = beginTime;
+void save_monitor (const std::string& path, double beginTime, double endTime, double dt) {
+    double timer = beginTime;
     Kinetic goal;
     action_kind kind;
 

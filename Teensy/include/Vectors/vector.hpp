@@ -10,7 +10,7 @@
  * @param angle Angle in radian.
  * @return Normalized angle in (-PI, PI].
  */
-float normalizeAngle (float angle);
+double normalizeAngle (double angle);
 
 class Vector {
   public:
@@ -19,7 +19,7 @@ class Vector {
        * @param xValue The x-coordinate value.
        * @param yValue The y-coordinate value.
        */
-      Vector(float xValue = 0.0f, float yValue = 0.0f);
+      Vector(double xValue = 0.0, double yValue = 0.0);
 
       /**
        * @brief Construct a Vector from another Vector.
@@ -31,25 +31,25 @@ class Vector {
        * @brief Get the x-coordinate.
        * @return The x-coordinate value.
        */
-      float getX() const;
+      double getX() const;
 
       /**
        * @brief Get the y-coordinate.
        * @return The y-coordinate value.
        */
-      float getY() const;
+      double getY() const;
 
       /**
        * @brief Set the x-coordinate.
        * @param xValue The x-coordinate value to be set.
        */
-      void setX(float xValue);
+      void setX(double xValue);
 
       /**
        * @brief Set the y-coordinate.
        * @param yValue The y-coordinate value to be set.
        */
-      void setY(float yValue);
+      void setY(double yValue);
 
       /**
        * @brief Assignment operator. Assigns the values of another Vector object to this object.
@@ -77,14 +77,14 @@ class Vector {
        * @param scalar The scalar value to multiply the vector.
        * @return The resulting vector after scalar multiplication.
        */
-      Vector operator*(float scalar) const;
+      Vector operator*(double scalar) const;
 
       /**
        * @brief Scalar division of a vector.
        * @param scalar The scalar value to divide the vector.
        * @return The resulting vector after scalar division.
        */
-      Vector operator/(float scalar) const;
+      Vector operator/(double scalar) const;
 
       /**
        * @brief Compound addition of two vectors.
@@ -105,14 +105,14 @@ class Vector {
        * @param scalar The scalar value to multiply the vector.
        * @return Reference to the resulting vector after scalar multiplication.
        */
-      Vector& operator*=(float scalar);
+      Vector& operator*=(double scalar);
 
       /**
        * @brief Compound scalar division of a vector.
        * @param scalar The scalar value to divide the vector.
        * @return Reference to the resulting vector after scalar division.
        */
-      Vector& operator/=(float scalar);
+      Vector& operator/=(double scalar);
 
       // Comparison operators
 
@@ -163,19 +163,19 @@ class Vector {
        * @param other The other vector.
        * @return The dot product of the two vectors.
        */
-      float dotProduct(const Vector& other) const;
+      double dotProduct(const Vector& other) const;
 
       /**
        * @brief Norm of the vector.
        * @return The norm of the vector.
        */
-      float norm() const;
+      double norm() const;
 
       /**
        * @brief Angle of the vector.
        * @return The angle of the vector.
        */
-      float angle() const;
+      double angle() const;
 
       /**
        * @brief Normalize the vector.
@@ -193,14 +193,14 @@ class Vector {
        * @param other The second vector.
        * @return The distance.
        */
-      float distanceWith(Vector &other) const;
+      double distanceWith(Vector &other) const;
 
       /**
        * @return Angle between two vectors.
        * @param other The second vector.
        * @return The normalized angle.
        */
-      float angleWith(const Vector &other) const;
+      double angleWith(const Vector &other) const;
 
       /**
        * @brief Print vector's coordinates on the serial.
@@ -210,8 +210,8 @@ class Vector {
       void printDebug(const char *prefix, Stream *serial) const;
 
   protected:
-      float x;
-      float y;
+      double x;
+      double y;
 
 };
 

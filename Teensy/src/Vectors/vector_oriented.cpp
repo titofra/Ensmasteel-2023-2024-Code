@@ -1,23 +1,23 @@
 #include "vector_oriented.hpp"
 
-const float PI = 3.14159274101257324219;
+const double PI = 3.14159274101257324219;
 
-VectorOriented::VectorOriented(float xValue, float yValue, float thetaValue)
+VectorOriented::VectorOriented(double xValue, double yValue, double thetaValue)
     : Vector(xValue, yValue), theta(thetaValue) {}
 
 VectorOriented::VectorOriented(const VectorOriented& other)
     : Vector(other), theta(other.theta) {}
 
-float VectorOriented::getTheta() const {
+double VectorOriented::getTheta() const {
     return theta;
 }
 
-void VectorOriented::setTheta(float thetaValue) {
+void VectorOriented::setTheta(double thetaValue) {
     theta = thetaValue;
 }
 
 VectorOriented VectorOriented::perpendicular() const {
-    return VectorOriented(x, y, normalizeAngle (theta + PI / 2.0f));
+    return VectorOriented(x, y, normalizeAngle (theta + PI / 2.0));
 }
 
 VectorOriented& VectorOriented::operator=(const VectorOriented& other) {
@@ -36,11 +36,11 @@ VectorOriented VectorOriented::operator-(const VectorOriented& other) const {
     return VectorOriented(x - other.x, y - other.y, theta - other.theta);
 }
 
-VectorOriented VectorOriented::operator*(float scalar) const {
+VectorOriented VectorOriented::operator*(double scalar) const {
     return VectorOriented(x * scalar, y * scalar, theta * scalar);
 }
 
-VectorOriented VectorOriented::operator/(float scalar) const {
+VectorOriented VectorOriented::operator/(double scalar) const {
     return VectorOriented(x / scalar, y / scalar, theta / scalar);
 }
 
@@ -58,14 +58,14 @@ VectorOriented& VectorOriented::operator-=(const VectorOriented& other) {
     return *this;
 }
 
-VectorOriented& VectorOriented::operator*=(float scalar) {
+VectorOriented& VectorOriented::operator*=(double scalar) {
     x *= scalar;
     y *= scalar;
     theta *= scalar;
     return *this;
 }
 
-VectorOriented& VectorOriented::operator/=(float scalar) {
+VectorOriented& VectorOriented::operator/=(double scalar) {
     x /= scalar;
     y /= scalar;
     theta /= scalar;

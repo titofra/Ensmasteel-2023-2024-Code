@@ -1,35 +1,35 @@
 #include "robot.hpp"
 
 Robot::Robot (
-    float x_init,
-    float y_init,
-    float theta_init,
+    double x_init,
+    double y_init,
+    double theta_init,
     Communication<msg_ardtee> *arduino,
     Communication<msg_esptee> *esp32,
     uint8_t pin_pwm_motorL,
     uint8_t pin_in1_motorL,
     uint8_t pin_in2_motorL,
-    float kp_motorL,
-    float ki_motorL,
-    float kd_motorL,
+    double kp_motorL,
+    double ki_motorL,
+    double kd_motorL,
     bool isReversed_motorL,
     uint8_t pin_pwm_motorR,
     uint8_t pin_in1_motorR,
     uint8_t pin_in2_motorR,
-    float kp_motorR,
-    float ki_motorR,
-    float kd_motorR,
+    double kp_motorR,
+    double ki_motorR,
+    double kd_motorR,
     bool isReversed_motorR,
-    float codeuses_spacing,
+    double codeuses_spacing,
     uint8_t pin_A_codeuseL,
     uint8_t pin_B_codeuseL, 
     int32_t ticksPerRound_codeuseL,
-    float wheel_diameter_codeuseL,
+    double wheel_diameter_codeuseL,
     bool orientation_codeuseL,
     uint8_t pin_A_codeuseR,
     uint8_t pin_B_codeuseR, 
     int32_t ticksPerRound_codeuseR,
-    float wheel_diameter_codeuseR,
+    double wheel_diameter_codeuseR,
     bool orientation_codeuseR
 ) :
     kinetic (Kinetic (x_init, y_init, theta_init, 0.0f, 0.0f)),
@@ -102,13 +102,13 @@ void Robot::updateKinetic (unsigned long dt) {
     codeuseL.update ();
     codeuseR.update ();
 
-    float dforward_codeuseL = codeuseL.getDeltaAvance ();
-    float dforward_codeuseR = codeuseR.getDeltaAvance ();
+    double dforward_codeuseL = codeuseL.getDeltaAvance ();
+    double dforward_codeuseR = codeuseR.getDeltaAvance ();
 
-    float theta = kinetic.getTheta ();
+    double theta = kinetic.getTheta ();
     
-    float dforward = (dforward_codeuseR + dforward_codeuseL) / 2.0f;
-    float dtheta = (dforward_codeuseR - dforward_codeuseL) / codeuses_spacing;
+    double dforward = (dforward_codeuseR + dforward_codeuseL) / 2.0;
+    double dtheta = (dforward_codeuseR - dforward_codeuseL) / codeuses_spacing;
 
     kinetic += Kinetic (
         dforward * cos (theta),
@@ -125,7 +125,7 @@ void Robot::updateMovement (unsigned long dt) {
     goTo (goal, dt);
 }
 
-void Robot::goTo (float x, float y, float theta, float v, float w, unsigned long dt) {
+void Robot::goTo (double x, double y, double theta, double v, double w, unsigned long dt) {
     goTo (Kinetic (x, y, theta, v, w), dt);
 }
 
@@ -139,10 +139,10 @@ void Robot::goTo (Kinetic goal, unsigned long dt) {
     error.printDebug ("ERROR   ", &Serial);
 
     // global error
-    /*float dforward = error.norm ();    // front/back distance to do to be the closest to the goal
+    /*double dforward = error.norm ();    // front/back distance to do to be the closest to the goal
     Serial.print ("dfwd  ");
     Serial.print (dforward);*/
-    float dmmtheta = kinetic.angleWith (goal) ;//* codeuses_spacing / 2.0f;       // distance to do to face the goal
+    double dmmtheta = kinetic.angleWith (goal) ;//* codeuses_spacing / 2.0f;       // distance to do to face the goal
     /*if (-10.0f < dforward && dforward < 10.0f) {  // if we are close enough to the goal, we try to reach its theta
         dmmtheta = error.getTheta () * codeuses_spacing / 2.0f;
     }*/
@@ -150,10 +150,10 @@ void Robot::goTo (Kinetic goal, unsigned long dt) {
     Serial.print (dmmtheta);
 /*
     // specific error
-    float dwheelR = dforward + dmmtheta;
+    double dwheelR = dforward + dmmtheta;
     Serial.print ("      dwheelR  ");
     Serial.print (dwheelR);
-    float dwheelL = dforward - dmmtheta;
+    double dwheelL = dforward - dmmtheta;
     Serial.print ("      dwheelL  ");
     Serial.println (dwheelL);*/
 

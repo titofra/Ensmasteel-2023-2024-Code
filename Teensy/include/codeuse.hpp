@@ -17,7 +17,7 @@ class Codeuse{
          * @param wDiam : diametre de la roue de la codeuse (en m)
          * @param orient : booleen, orientation de la codeuse
          */
-        Codeuse (uint8_t pinCodA, uint8_t pinCodB, int32_t ticksPerRound, float wheelDiameter, bool orientation);
+        Codeuse (uint8_t pinCodA, uint8_t pinCodB, int32_t ticksPerRound, double wheelDiameter, bool orientation);
         Codeuse () {};
         ~Codeuse ();
 
@@ -30,15 +30,15 @@ class Codeuse{
          * @brief Obtient l'avancement de la codeuse depuis la derniere actualisation
          * @return Avancement du robot d'après le codeuse
          */
-        float getDeltaAvance();
+        double getDeltaAvance();
 
     private :
         Encoder *encoder; //Encoder de la codeuse permet les interruptions (je crois)
         int32_t ticksPerRound; //Nombre de ticks en un tour de roue
-        float wheelDiameter; //Diamètre de la roue sur laquelle la codeuse est
+        double wheelDiameter; //Diamètre de la roue sur laquelle la codeuse est
         int32_t prev_ticks; //sert à comparer combien de ticks on a effectué
         int32_t ticks;
-        float deltaAvance;
+        double deltaAvance;
         bool orientation; //true si codeuse montee a l'endroit, false sinon
 
 };

@@ -1,6 +1,6 @@
 #include "asservissement.hpp"
 
-Asservissement::Asservissement (float kp, float ki, float kd) :
+Asservissement::Asservissement (double kp, double ki, double kd) :
     kp (kp),
     ki (ki),
     kd (kd)
@@ -10,9 +10,9 @@ Asservissement::Asservissement (float kp, float ki, float kd) :
     derivativeError = 0.0f;
 }
 
-float Asservissement::compute (float error, unsigned long dt) {
-    derivativeError = (error - previousError) / (float) dt;
-    integralError += error * (float) dt;
+double Asservissement::compute (double error, unsigned long dt) {
+    derivativeError = (error - previousError) / (double) dt;
+    integralError += error * (double) dt;
     previousError = error;
 
     return (kp * error) + (ki * integralError) + (kd * derivativeError);

@@ -1,9 +1,9 @@
 #include "vector.hpp"
 
-const float PI = 3.14159274101257324219;
+const double PI = 3.14159274101257324219;
 
-float normalizeAngle(float angle) {
-    float out;
+double normalizeAngle(double angle) {
+    double out;
     out = angle - (2 * PI) * ((int)(angle / (2 * PI)));
     if (out > PI)
         return (out - 2 * PI);
@@ -13,26 +13,26 @@ float normalizeAngle(float angle) {
     return out;
 }
 
-Vector::Vector(float xValue, float yValue) : x(xValue), y(yValue) {}
+Vector::Vector(double xValue, double yValue) : x(xValue), y(yValue) {}
 
 Vector::Vector(const Vector& other) : x(other.x), y(other.y) {};
 
 
 // Getter methods
-float Vector::getX() const {
+double Vector::getX() const {
     return x;
 }
 
-float Vector::getY() const {
+double Vector::getY() const {
     return y;
 }
 
 // Setter methods
-void Vector::setX(float xValue) {
+void Vector::setX(double xValue) {
     x = xValue;
 }
 
-void Vector::setY(float yValue) {
+void Vector::setY(double yValue) {
     y = yValue;
 }
 
@@ -53,11 +53,11 @@ Vector Vector::operator-(const Vector& other) const {
     return Vector(x - other.x, y - other.y);
 }
 
-Vector Vector::operator*(float scalar) const {
+Vector Vector::operator*(double scalar) const {
     return Vector(x * scalar, y * scalar);
 }
 
-Vector Vector::operator/(float scalar) const {
+Vector Vector::operator/(double scalar) const {
     return Vector(x / scalar, y / scalar);
 }
 
@@ -73,13 +73,13 @@ Vector& Vector::operator-=(const Vector& other) {
     return *this;
 }
 
-Vector& Vector::operator*=(float scalar) {
+Vector& Vector::operator*=(double scalar) {
     x *= scalar;
     y *= scalar;
     return *this;
 }
 
-Vector& Vector::operator/=(float scalar) {
+Vector& Vector::operator/=(double scalar) {
     x /= scalar;
     y /= scalar;
     return *this;
@@ -110,29 +110,29 @@ bool Vector::operator>=(const Vector& other) const {
     return norm() >= other.norm();
 }
 
-float Vector::dotProduct(const Vector& other) const {
+double Vector::dotProduct(const Vector& other) const {
     return x * other.x + y * other.y;
 }
 
-float Vector::norm() const {
+double Vector::norm() const {
     return std::sqrt(x * x + y * y);
 }
 
-float Vector::angle() const {
+double Vector::angle() const {
     // as atan () return a value in (- PI/2, PI/2) we have to descrimine the cases
     if (x > 0) {
-        return (float) std::atan ((double) y / x);
+        return (double) std::atan ((double) y / x);
     } else {
         if (x < 0) {
-            return normalizeAngle ((float) std::atan ((double) y / x) + PI);
+            return normalizeAngle ((double) std::atan ((double) y / x) + PI);
         } else {    // both on the same y axis
             if (y > 0) {
-                return PI / 2.0f;
+                return PI / 2.0;
             } else {
                 if (y < 0) {
-                    return - PI / 2.0f;
+                    return - PI / 2.0;
                 } else {
-                    return 0.0f;    // convention: origine point => theta = 0.0f
+                    return 0.0;    // convention: origine point => theta = 0.0f
                 }
             }
         }
@@ -141,8 +141,8 @@ float Vector::angle() const {
 
 // Additional methods
 void Vector::normalize() {
-    float mag = norm();
-    if (mag != 0.0f) {
+    double mag = norm();
+    if (mag != 0.0) {
         x /= mag;
         y /= mag;
     }
@@ -152,37 +152,33 @@ Vector Vector::perpendicular() const {
     return Vector(-y, x);
 }
 
-float Vector::distanceWith(Vector &other) const {
-    return (float) std::sqrt( std::pow(x - other.x , 2) + std::pow(y - other.y , 2));
+double Vector::distanceWith(Vector &other) const {
+    return (double) std::sqrt( std::pow(x - other.x , 2) + std::pow(y - other.y , 2));
 }
 
 
 #include <Arduino.h>
 
-float Vector::angleWith(const Vector &other) const {
+double Vector::angleWith(const Vector &other) const {
     // as atan () return a value in (- PI/2, PI/2) we have to descrimine the cases
-    Serial.print (" y ");
-    Serial.print ((double) (other.y - y));
-    Serial.print ("  x ");
-    Serial.println ((double) (other.x - x));
-    /*if (other.x - x > 0) {
-        return (float) std::atan ((double) (other.y - y) / (other.x - x));
+    if (other.x - x > 0) {
+        return (double) std::atan ((double) (other.y - y) / (other.x - x));
     } else {
         if (other.x - x < 0) {
-            return normalizeAngle ((float) std::atan ((double) (other.y - y) / (other.x - x)) + PI);
+            return normalizeAngle ((double) std::atan ((double) (other.y - y) / (other.x - x)) + PI);
         } else {    // both on the same y axis
             if (other.y - y > 0) {
-                return PI / 2.0f;
+                return PI / 2.0;
             } else {
                 if (other.y - y < 0) {
-                    return - PI / 2.0f;
+                    return - PI / 2.0;
                 } else {
-                    return 0.0f;    // convention: same point => theta = 0.0f
+                    return 0.0;    // convention: same point => theta = 0.0f
                 }
             }
         }
-    }*/
-    return 18.0f;
+    }
+    return 18.0;
 }
 
 void Vector::printDebug(const char *prefix, Stream *serial) const {

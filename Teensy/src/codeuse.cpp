@@ -1,6 +1,6 @@
 #include "codeuse.hpp"
 
-Codeuse::Codeuse(uint8_t pinCodA, uint8_t pinCodB, int32_t ticksPerRound, float wheelDiameter, bool orientation) :
+Codeuse::Codeuse(uint8_t pinCodA, uint8_t pinCodB, int32_t ticksPerRound, double wheelDiameter, bool orientation) :
     ticksPerRound (ticksPerRound),
     wheelDiameter (wheelDiameter),
     orientation (orientation)
@@ -8,7 +8,7 @@ Codeuse::Codeuse(uint8_t pinCodA, uint8_t pinCodB, int32_t ticksPerRound, float 
     encoder = new Encoder (pinCodA, pinCodB);
     ticks = 0;
     prev_ticks = 0;
-    deltaAvance = 0.0f;
+    deltaAvance = 0.0;
 }
 
 Codeuse::~Codeuse () {
@@ -21,6 +21,6 @@ void Codeuse::update (){
     prev_ticks = ticks;
 }
 
-float Codeuse::getDeltaAvance(){
+double Codeuse::getDeltaAvance(){
     return deltaAvance;
 }

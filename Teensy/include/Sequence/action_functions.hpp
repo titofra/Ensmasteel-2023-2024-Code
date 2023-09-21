@@ -7,12 +7,12 @@
 #include <math.h>
 
 /* TRAJECTORY */
-// NOTE: For all the trajectory fucntions, float variable "a" stands for a percentage of trajectory in [0.0f, 1.0f]
+// NOTE: For all the trajectory fucntions, double variable "a" stands for a percentage of trajectory in [0.0, 1.0]
 
 // Note that a 1-order (with starting and ending points) bezier will do the same. However this function is useful for rotation.
 trajectory_fn linear (std::vector<VectorOriented> extremums) {
-    return [=] (const float a) -> Kinetic {
-        Kinetic ret = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    return [=] (const double a) -> Kinetic {
+        Kinetic ret = Kinetic (0.0, 0.0, 0.0, 0.0, 0.0);
         ret += (VectorOriented (extremums [1]) - extremums [0]) * a + extremums [0];
         return ret;
     };
@@ -44,52 +44,52 @@ trajectory_fn bezier (std::vector<VectorOriented> control_points) {
         }
 
         // process the sum
-        C.push_back (VectorOriented (0.0f, 0.0f, 0.0f));
+        C.push_back (VectorOriented (0.0, 0.0, 0.0));
         for (int i = 0; i <= j; i++) {
-            C.back () += control_points [i] * ((float) std::pow (-1.0, (double) (i + j)) / (float) factorial (i) / (float) factorial (j - i));
+            C.back () += control_points [i] * ((double) std::pow (-1.0, (double) (i + j)) / (double) factorial (i) / (double) factorial (j - i));
         }
 
-        C.back () = C.back () * (float) partial_permutation;
+        C.back () = C.back () * (double) partial_permutation;
     }
     
-    return [=] (const float a) -> Kinetic {
+    return [=] (const double a) -> Kinetic {
         // process the new Vector
-        Kinetic ret = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        Kinetic ret = Kinetic (0.0, 0.0, 0.0, 0.0, 0.0);
         for (int j = 0; j <= n; j++) {
-            ret += VectorOriented (C [j]) * (float) std::pow ((double) a, (double) j);
+            ret += VectorOriented (C [j]) * (double) std::pow ((double) a, (double) j);
         }
 
         // process the orientation (this is the derivative of the trajectory)
-        Kinetic tan = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        Kinetic tan = Kinetic (0.0, 0.0, 0.0, 0.0, 0.0);
         for (int j = 1; j <= n; j++) {
-            tan += VectorOriented (C [j]) * ((float) j * (float) std::pow ((double) a, (double) (j - 1)));
+            tan += VectorOriented (C [j]) * ((double) j * (double) std::pow ((double) a, (double) (j - 1)));
         }
 
         // set the theta
-        ret.setTheta (Vector (0.0f, 0.0f).angleWith (tan));
+        ret.setTheta (Vector (0.0, 0.0).angleWith (tan));
 
         return ret;
     };
 }
 
-trajectory_fn bezier_auto (std::vector<VectorOriented> extremums, const float delta_curve) {
+trajectory_fn bezier_auto (std::vector<VectorOriented> extremums, const double delta_curve) {
     std::vector<VectorOriented> control_points;
     control_points.push_back (extremums [0]);
-    control_points.push_back (extremums [0] + VectorOriented (std::cos (extremums [0].getTheta ()), std::sin (extremums [0].getTheta ()), 0.0f) * delta_curve);
-    control_points.push_back (extremums [1] - VectorOriented (std::cos (extremums [1].getTheta ()), std::sin (extremums [1].getTheta ()), 0.0f) * delta_curve);
+    control_points.push_back (extremums [0] + VectorOriented (std::cos (extremums [0].getTheta ()), std::sin (extremums [0].getTheta ()), 0.0) * delta_curve);
+    control_points.push_back (extremums [1] - VectorOriented (std::cos (extremums [1].getTheta ()), std::sin (extremums [1].getTheta ()), 0.0) * delta_curve);
     control_points.push_back (extremums [1]);
 
     return bezier (control_points);
 }
 
 
-trajectory_fn combine (trajectory_fn f1, trajectory_fn f2, const float comb_a) {
+trajectory_fn combine (trajectory_fn f1, trajectory_fn f2, const double comb_a) {
     return (
-        [=](const float a) -> Kinetic {
+        [=](const double a) -> Kinetic {
             if (a <= comb_a) {
                 return f1 (a / comb_a);
             }
-            return f2 ((a - comb_a) / (1.0f - comb_a));
+            return f2 ((a - comb_a) / (1.0 - comb_a));
         }
     );
 }
@@ -99,42 +99,42 @@ trajectory_fn combine (trajectory_fn f1, trajectory_fn f2, const float comb_a) {
 
 time_distortion_fn linear (const unsigned long beginTime, const unsigned long endTime) {
     return (
-        [=](const unsigned long t) -> float { return (float) (t - beginTime) / (float) (endTime - beginTime); }
+        [=](const unsigned long t) -> double { return (double) (t - beginTime) / (double) (endTime - beginTime); }
     );
 }
 
-time_distortion_fn trapeze (const unsigned long t0, const unsigned long t1, const unsigned long t2, const unsigned long t3, const float dt01, const float dt23) {   // dt < 1 stands for space deceleration, dt > 1 stands for space acceleration // dt cannot be negative as it is a we cannot go backward in time!
-    const float dt12 = (((float) t3 - (float) (t3 - t2) * dt23) - ((float) t0 + (float) (t1 - t0) * dt01)) / (float) (t2 - t1);
+time_distortion_fn trapeze (const unsigned long t0, const unsigned long t1, const unsigned long t2, const unsigned long t3, const double dt01, const double dt23) {   // dt < 1 stands for space deceleration, dt > 1 stands for space acceleration // dt cannot be negative as it is a we cannot go backward in time!
+    const double dt12 = (((double) t3 - (double) (t3 - t2) * dt23) - ((double) t0 + (double) (t1 - t0) * dt01)) / (double) (t2 - t1);
     
     return (
-        [=](const unsigned long t) -> float {
+        [=](const unsigned long t) -> double {
             if (t < t1) {   // pente = dt01
-                return (float) (
-                    (unsigned long) ((float) (t - t0) * dt01)
-                    ) / (float) (t3 - t0);
+                return (double) (
+                    (unsigned long) ((double) (t - t0) * dt01)
+                    ) / (double) (t3 - t0);
             }
             if (t < t2) {   // pente = dt12
-                return (float) (
-                    (unsigned long) ((float) (t1 - t0) * dt01)
-                    + (unsigned long) ((float) (t - t1) * dt12)
-                    ) / (float) (t3 - t0);
+                return (double) (
+                    (unsigned long) ((double) (t1 - t0) * dt01)
+                    + (unsigned long) ((double) (t - t1) * dt12)
+                    ) / (double) (t3 - t0);
             }
-            return (float) (// pente = dt23
-                (unsigned long) ((float) (t1 - t0) * dt01)
-                + (unsigned long) ((float) (t2 - t1) * dt12)
-                + (unsigned long) ((float) (t - t2) * dt23)
-                    ) / (float) (t3 - t0);
+            return (double) (// pente = dt23
+                (unsigned long) ((double) (t1 - t0) * dt01)
+                + (unsigned long) ((double) (t2 - t1) * dt12)
+                + (unsigned long) ((double) (t - t2) * dt23)
+                    ) / (double) (t3 - t0);
         }
     );
 }
 
 time_distortion_fn combine (time_distortion_fn f1, time_distortion_fn f2, const unsigned long beginTime, const unsigned long combTime, const unsigned long endTime) {
     return (
-        [=](const unsigned long t) -> float {
+        [=](const unsigned long t) -> double {
             if (t <= combTime) {
-                return f1 (t) * (float) (combTime - beginTime) / (float) (endTime - beginTime);
+                return f1 (t) * (double) (combTime - beginTime) / (double) (endTime - beginTime);
             }
-            return f2 (t) * (float) (endTime - combTime) / (float) (endTime - beginTime) + (float) (combTime - beginTime) / (float) (endTime - beginTime);
+            return f2 (t) * (double) (endTime - combTime) / (double) (endTime - beginTime) + (double) (combTime - beginTime) / (double) (endTime - beginTime);
         }
     );
 }

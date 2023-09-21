@@ -13,13 +13,13 @@ class Kinetic : public VectorOriented {
     public :
         /**
          * Constructeur de la classe Kinetic 
-         * @param x : float, Position en x
-         * @param y : float, Position en y
-         * @param theta : float : Angle d'orientation
-         * @param v : float, Vitesse de translation du robot
-         * @param w : float, Vitesse de rotation du robot
+         * @param x : double, Position en x
+         * @param y : double, Position en y
+         * @param theta : double : Angle d'orientation
+         * @param v : double, Vitesse de translation du robot
+         * @param w : double, Vitesse de rotation du robot
          */
-        Kinetic (float x = 0.0f, float y = 0.0f, float theta = 0.0f, float v = 0.0f, float w = 0.0f);
+        Kinetic (double x = 0.0, double y = 0.0, double theta = 0.0, double v = 0.0, double w = 0.0);
         Kinetic (const Kinetic& kinetic);
 
         Kinetic& operator=(const Kinetic& other);
@@ -27,28 +27,28 @@ class Kinetic : public VectorOriented {
         bool operator== (Kinetic const &other);
         Kinetic operator- (Kinetic const &other);
         Kinetic operator+ (Kinetic const &other);
-        Kinetic operator/ (float const &other);
-        Kinetic operator* (float const &other);
+        Kinetic operator/ (double const &other);
+        Kinetic operator* (double const &other);
 
         /**
          * @return Vitesse de translation du robot
          */
-        float getTranslationSpeed () const ;
+        double getTranslationSpeed () const ;
 
         /**
          * @param v : Nouvelle vitesse de translation
          */
-        void setTranslationSpeed(float value);
+        void setTranslationSpeed(double value);
 
             /**
          * @return Vitesse de rotation du robot
          */
-        float getRotationSpeed() const ;
+        double getRotationSpeed() const ;
 
         /**
          * @param w : Nouvelle vitesse de rotation
          */
-        void setRotationSpeed(float value);
+        void setRotationSpeed(double value);
 
         /**
          * Prints in Serial consol kinetic parameters :
@@ -58,8 +58,8 @@ class Kinetic : public VectorOriented {
         void printDebug(const char *prefix, Stream *serial) const;
 
     private :
-        float v; //Vitesse de translation du robot
-        float w; //Vitesse de rotation du robot
+        double v; //Vitesse de translation du robot
+        double w; //Vitesse de rotation du robot
 };
 
 #endif  // KINETIC_HPP

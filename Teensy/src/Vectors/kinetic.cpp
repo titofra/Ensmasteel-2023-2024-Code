@@ -1,6 +1,6 @@
 #include "kinetic.hpp"
 
-Kinetic::Kinetic (float x, float y, float theta, float v, float w) :
+Kinetic::Kinetic (double x, double y, double theta, double v, double w) :
     VectorOriented(x, y, theta),
     v (v),
     w (w) {
@@ -38,29 +38,29 @@ Kinetic Kinetic::operator+(Kinetic const &other){
     return Kinetic (vect.getX (),vect.getY (), vect.getTheta (), v + other.v, w + other.w); 
 }
 
-Kinetic Kinetic::operator/(float const &other){
+Kinetic Kinetic::operator/(double const &other){
     VectorOriented vect = VectorOriented::operator/ (other);
     return Kinetic (vect.getX (),vect.getY (), vect.getTheta (), v / other, w / other); 
 }
 
-Kinetic Kinetic::operator*(float const &other){
+Kinetic Kinetic::operator*(double const &other){
     VectorOriented vect = VectorOriented::operator* (other);
     return Kinetic (vect.getX (),vect.getY (), vect.getTheta (), v * other, w * other); 
 }
 
-float Kinetic::getTranslationSpeed () const {
+double Kinetic::getTranslationSpeed () const {
     return v;
 }
 
-void Kinetic::setTranslationSpeed (float value) {
+void Kinetic::setTranslationSpeed (double value) {
     v = value;
 }
 
-float Kinetic::getRotationSpeed ()const {
+double Kinetic::getRotationSpeed ()const {
     return w;
 }
 
-void Kinetic::setRotationSpeed(float value) {
+void Kinetic::setRotationSpeed(double value) {
     w = value;
 }
 
