@@ -49,14 +49,14 @@ void loop () {
 
 void BuildSequence (Sequence *seq) {
     // Kinetics
-    Kinetic P0 = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-    Kinetic P1 = Kinetic (700.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    Kinetic P0 = Kinetic (0.0, 0.0, 0.0, 0.0, 0.0);
+    Kinetic P1 = Kinetic (700.0, 0.0, 0.0, 0.0, 0.0);
     
     // Actions
     Action aller (
         MOVEMENT_ACT,
         linear ({P0, P1}),
-        trapeze (0, 500, 1000, 1500, 0.5f, 0.5f),
+        trapeze (0, 500, 1000, 1500, 0.5, 0.5),
         1500
     );
 
