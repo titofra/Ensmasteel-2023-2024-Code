@@ -5,9 +5,9 @@ Asservissement::Asservissement (double kp, double ki, double kd) :
     ki (ki),
     kd (kd)
 {
-    previousError = 0.0f;
-    integralError = 0.0f;
-    derivativeError = 0.0f;
+    previousError = 0.0;
+    integralError = 0.0;
+    derivativeError = 0.0;
 }
 
 double Asservissement::compute (double error, unsigned long dt) {

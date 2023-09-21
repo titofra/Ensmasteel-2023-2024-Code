@@ -102,23 +102,56 @@ void Robot::updateKinetic (unsigned long dt) {
     codeuseL.update ();
     codeuseR.update ();
 
-    double dforward_codeuseL = codeuseL.getDeltaAvance ();
-    double dforward_codeuseR = codeuseR.getDeltaAvance ();
+    const double dforward_codeuseL = codeuseL.getDeltaAvance ();
+    const double dforward_codeuseR = codeuseR.getDeltaAvance ();
 
-    double theta = kinetic.getTheta ();
-    
-    double dforward = (dforward_codeuseR + dforward_codeuseL) / 2.0;
-    double dtheta = (dforward_codeuseR - dforward_codeuseL) / codeuses_spacing;
+    const double theta = kinetic.getTheta ();
 
-    kinetic += Kinetic (
-        dforward * cos (theta),
-        dforward * sin (theta),
-        dtheta,
-        dforward / dt,
-        dtheta / dt
-    );
+    if (AreEqual (dforward_codeuseL, dforward_codeuseR)) {
+        // the robot strictly goes forward
 
-    kinetic.normalizeTheta ();
+        const double dforward = (dforward_codeuseL + dforward_codeuseR) / 2.0;
+
+        kinetic += Kinetic (
+            dforward * cos (theta),
+            dforward * sin (theta),
+            0.0,
+            dforward / dt,
+            0.0
+        );
+    } else {
+        // The robot did a rotation
+        // Note that these are the exact values, there is no approximations
+
+        const double dtheta = (dforward_codeuseR - dforward_codeuseL) / codeuses_spacing;
+
+        double rotation_circle_radius;
+        if (AreEqual (dforward_codeuseR, 0.0)) {
+            // the right wheel does not moved
+            rotation_circle_radius = -codeuses_spacing;
+        } else {
+            const double dforward_ratio = dforward_codeuseL / dforward_codeuseR;
+            rotation_circle_radius = (codeuses_spacing / 2.0) * (1 + dforward_ratio) / (1 - dforward_ratio);   // radius of the imaginary circle of the robot's rotation
+        }
+        const double local_deltaX = rotation_circle_radius * (1 - cos (dtheta));
+        const double local_deltaY = rotation_circle_radius * sin (dtheta);
+
+        Serial.println (rotation_circle_radius);
+        Serial.println (local_deltaX);
+        Serial.println (local_deltaY);
+        Serial.println (-local_deltaX * sin (theta) + local_deltaY * cos (theta));
+        Serial.println (local_deltaX * cos (theta) + local_deltaY * sin (theta));
+
+        kinetic += Kinetic (
+            -local_deltaX * sin (theta) + local_deltaY * cos (theta),   // conversion from local to global coords
+            local_deltaX * cos (theta) + local_deltaY * sin (theta),    // conversion from local to global coords
+            dtheta,
+            0.0,    // TODO V and W
+            0.0
+        );
+
+        kinetic.normalizeTheta ();
+    }
 }
 
 void Robot::updateMovement (unsigned long dt) {
@@ -139,23 +172,19 @@ void Robot::goTo (Kinetic goal, unsigned long dt) {
     error.printDebug ("ERROR   ", &Serial);
 
     // global error
-    /*double dforward = error.norm ();    // front/back distance to do to be the closest to the goal
-    Serial.print ("dfwd  ");
-    Serial.print (dforward);*/
-    double dmmtheta = kinetic.angleWith (goal) ;//* codeuses_spacing / 2.0f;       // distance to do to face the goal
+    double dforward = error.norm ();    // front/back distance to do to be the closest to the goal
+    double dmmtheta = error.getTheta () * codeuses_spacing / 2.0; //kinetic.angleWith (goal) ;       // distance to do to face the goal
     /*if (-10.0f < dforward && dforward < 10.0f) {  // if we are close enough to the goal, we try to reach its theta
-        dmmtheta = error.getTheta () * codeuses_spacing / 2.0f;
+        dmmtheta = error.getTheta () * codeuses_spacing / 2.0;
     }*/
-    Serial.print ("      dthe  ");
-    Serial.print (dmmtheta);
-/*
+
     // specific error
     double dwheelR = dforward + dmmtheta;
     Serial.print ("      dwheelR  ");
     Serial.print (dwheelR);
     double dwheelL = dforward - dmmtheta;
     Serial.print ("      dwheelL  ");
-    Serial.println (dwheelL);*/
+    Serial.println (dwheelL);
 
     /*motorR.setMovement (dwheelR, dt);
     motorL.setMovement (dwheelL, dt);*/

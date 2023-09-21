@@ -6,6 +6,7 @@
 #include "message.hpp"
 #include "kinetic.hpp"
 #include "codeuse.hpp"
+#include "utils.hpp"
 
 typedef struct {
     double x_init;

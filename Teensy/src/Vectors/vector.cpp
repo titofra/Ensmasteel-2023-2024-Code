@@ -156,16 +156,13 @@ double Vector::distanceWith(Vector &other) const {
     return (double) std::sqrt( std::pow(x - other.x , 2) + std::pow(y - other.y , 2));
 }
 
-
-#include <Arduino.h>
-
 double Vector::angleWith(const Vector &other) const {
     // as atan () return a value in (- PI/2, PI/2) we have to descrimine the cases
     if (other.x - x > 0) {
-        return (double) std::atan ((double) (other.y - y) / (other.x - x));
+        return (double) std::atan ((other.y - y) / (other.x - x));
     } else {
         if (other.x - x < 0) {
-            return normalizeAngle ((double) std::atan ((double) (other.y - y) / (other.x - x)) + PI);
+            return normalizeAngle ((double) std::atan ((other.y - y) / (other.x - x)) + PI);
         } else {    // both on the same y axis
             if (other.y - y > 0) {
                 return PI / 2.0;
