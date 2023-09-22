@@ -7,6 +7,7 @@
 #include "kinetic.hpp"
 #include "codeuse.hpp"
 #include "utils.hpp"
+#include <cmath>
 
 typedef struct {
     double x_init;

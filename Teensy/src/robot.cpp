@@ -121,34 +121,51 @@ void Robot::updateKinetic (unsigned long dt) {
         );
     } else {
         // The robot did a rotation
-        // Note that these are the exact values, there is no approximations
 
-        const double dtheta = (dforward_codeuseR - dforward_codeuseL) / codeuses_spacing;
+        /*
+        Hypothesis:
+            - the robot moved along a circular trajectory.
+            - it was perpendicular to its trajectory at the beggining of its movemement.
 
-        double rotation_circle_radius;
+        Note that these are the exact values, there is no approximations unless these hypothesis.
+        */
+
+        const double dtheta = (dforward_codeuseR - dforward_codeuseL) / codeuses_spacing;   // new_theta = prev_theta + dtheta
+
+        double rotation_circle_radius;  // the radius of the imaginary circle
         if (AreEqual (dforward_codeuseR, 0.0)) {
             // the right wheel does not moved
-            rotation_circle_radius = -codeuses_spacing;
+            rotation_circle_radius = -codeuses_spacing / 2.0;
         } else {
-            const double dforward_ratio = dforward_codeuseL / dforward_codeuseR;
-            rotation_circle_radius = (codeuses_spacing / 2.0) * (1 + dforward_ratio) / (1 - dforward_ratio);   // radius of the imaginary circle of the robot's rotation
+            const double dforward_ratio = std::fabs (dforward_codeuseL / dforward_codeuseR);
+            rotation_circle_radius = (codeuses_spacing / 2.0) * (1 + dforward_ratio) / (1 - dforward_ratio);
         }
-        const double local_deltaX = rotation_circle_radius * (1 - cos (dtheta));
-        const double local_deltaY = rotation_circle_radius * sin (dtheta);
+
+        // Compute the movement relatively to the robot orientation
+        const double local_deltaX = std::fabs (rotation_circle_radius * (1 - std::cos (dtheta)));
+        const double local_deltaY = std::fabs (rotation_circle_radius * std::sin (dtheta));
 
         Serial.println (rotation_circle_radius);
         Serial.println (local_deltaX);
         Serial.println (local_deltaY);
-        Serial.println (-local_deltaX * sin (theta) + local_deltaY * cos (theta));
-        Serial.println (local_deltaX * cos (theta) + local_deltaY * sin (theta));
 
-        kinetic += Kinetic (
-            -local_deltaX * sin (theta) + local_deltaY * cos (theta),   // conversion from local to global coords
-            local_deltaX * cos (theta) + local_deltaY * sin (theta),    // conversion from local to global coords
-            dtheta,
-            0.0,    // TODO V and W
-            0.0
-        );
+        if (dtheta > 0.0) {
+            kinetic += Kinetic (
+                -local_deltaX * std::sin (theta) + local_deltaY * std::cos (theta),   // conversion from local to global
+                local_deltaX * std::cos (theta) + local_deltaY * std::sin (theta),    // conversion from local to global
+                dtheta,
+                0.0,    // TODO V and W
+                0.0
+            );
+        } else {
+            kinetic += Kinetic (
+                local_deltaX * std::sin (theta) + local_deltaY * std::cos (theta),   // conversion from local to global
+                -local_deltaX * std::cos (theta) + local_deltaY * std::sin (theta),    // conversion from local to global
+                dtheta,
+                0.0,    // TODO V and W
+                0.0
+            );
+        }
 
         kinetic.normalizeTheta ();
     }
@@ -174,18 +191,11 @@ void Robot::goTo (Kinetic goal, unsigned long dt) {
     // global error
     double dforward = error.norm ();    // front/back distance to do to be the closest to the goal
     double dmmtheta = error.getTheta () * codeuses_spacing / 2.0; //kinetic.angleWith (goal) ;       // distance to do to face the goal
-    /*if (-10.0f < dforward && dforward < 10.0f) {  // if we are close enough to the goal, we try to reach its theta
-        dmmtheta = error.getTheta () * codeuses_spacing / 2.0;
-    }*/
 
     // specific error
     double dwheelR = dforward + dmmtheta;
-    Serial.print ("      dwheelR  ");
-    Serial.print (dwheelR);
     double dwheelL = dforward - dmmtheta;
-    Serial.print ("      dwheelL  ");
-    Serial.println (dwheelL);
 
-    /*motorR.setMovement (dwheelR, dt);
-    motorL.setMovement (dwheelL, dt);*/
+    motorR.setMovement (dwheelR, dt);
+    motorL.setMovement (dwheelL, dt);
 }
