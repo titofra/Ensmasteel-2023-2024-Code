@@ -44,20 +44,6 @@ void Sequence::monitor (unsigned long timer, unsigned long dt, action_kind *kind
 void Sequence::goToStep (int istep) {
     currentStep = istep;
 }
-/*
-void save_monitor (const std::string& path, double beginTime, double endTime, double dt) {
-    double timer = beginTime;
-    Kinetic goal;
-    action_kind kind;
-
-    std::string data = "{";
-
-    while (timer < endTime) {
-        monitor (timer, dt, &kind, &goal);
-
-        timer += dt;
-    }
-}*/
 
 bool Sequence::isDone () {
     return currentStep < (int) steps.size ();

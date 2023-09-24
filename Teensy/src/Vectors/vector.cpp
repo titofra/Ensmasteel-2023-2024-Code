@@ -2,17 +2,6 @@
 
 const double PI = 3.14159274101257324219;
 
-double normalizeAngle(double angle) {
-    double out;
-    out = angle - (2 * PI) * ((int)(angle / (2 * PI)));
-    if (out > PI)
-        return (out - 2 * PI);
-    else if (out <= -PI)
-        return (out + 2 * PI);
-
-    return out;
-}
-
 Vector::Vector(double xValue, double yValue) : x(xValue), y(yValue) {}
 
 Vector::Vector(const Vector& other) : x(other.x), y(other.y) {};

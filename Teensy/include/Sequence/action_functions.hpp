@@ -3,13 +3,22 @@
 
 #include "vector.hpp"
 #include "kinetic.hpp"
+#include "utils.hpp"
 #include <functional>
 #include <math.h>
 
 /* TRAJECTORY */
-// NOTE: For all the trajectory fucntions, double variable "a" stands for a percentage of trajectory in [0.0, 1.0]
+// NOTE: For all the trajectory functions, double variable "a" stands for a percentage of trajectory in [0.0, 1.0]
 
-// Note that a 1-order (with starting and ending points) bezier will do the same. However this function is useful for rotation.
+/**
+ * @brief Compute a linear trajectory
+ * 
+ * NOTE: a 1-order (with only starting and ending points) bezier will do the same. However this function is useful for rotation.
+ * WARNING: starting and ending oriented vectors must neither have the same theta nor the same position
+ * 
+ * @param extremums The starting and ending oriented vector
+ * @return The computed linear trajectory
+ */
 trajectory_fn linear (std::vector<VectorOriented> extremums) {
     return [=] (const double a) -> Kinetic {
         Kinetic ret = Kinetic (0.0, 0.0, 0.0, 0.0, 0.0);
@@ -18,17 +27,18 @@ trajectory_fn linear (std::vector<VectorOriented> extremums) {
     };
 }
 
-int factorial(int n) {
-    if (n == 0)
-        return 1;
-    else
-        return n * factorial(n - 1);
-}
-
-// WARNINGS: Bezier curves are not linear over time (there is a time ditortion).
-// WARNINGS: Bezier curves don't care of theta
-// Notations come from https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Polynomial_form, check here for more
+/**
+ * @brief Compute a bezier trajectory 
+ * 
+ * WARNING: bezier curves are not linear over time (there is a time ditortion)
+ * WARNING: bezier curves don't care of control points's thetas
+ *
+ * @param control_points The bezier control points
+ * @return The computed bezier trajectory
+ */
 trajectory_fn bezier (std::vector<VectorOriented> control_points) {
+    // Notations come from https://en.wikipedia.org/wiki/B%C3%A9zier_curve#Polynomial_form, check for more
+
     // we process the Cj before the calls
     std::vector<VectorOriented> C;
 
@@ -72,6 +82,16 @@ trajectory_fn bezier (std::vector<VectorOriented> control_points) {
     };
 }
 
+/**
+ * @brief Automatically compute an order 3 (which is four points) bezier trajectory
+ * 
+ * WARNING: bezier curves are not linear over time (there is a time ditortion)
+ * WARNING: bezier curves don't care of control points's thetas
+ *
+ * @param extremums The starting and ending oriented vectors
+ * @param delta_curve The level of trajectory curvature
+ * @return The computed bezier trajectory
+ */
 trajectory_fn bezier_auto (std::vector<VectorOriented> extremums, const double delta_curve) {
     std::vector<VectorOriented> control_points;
     control_points.push_back (extremums [0]);
@@ -82,7 +102,14 @@ trajectory_fn bezier_auto (std::vector<VectorOriented> extremums, const double d
     return bezier (control_points);
 }
 
-
+/**
+ * @brief Combine two trajectory
+ * 
+ * @param f1 The first trajectory
+ * @param f2 The second trajectory
+ * @param comb_a A double in (0, 1) which represent the moment where the trajectories are combined. If comb_a is equal to 0.25, then the first 25% of the trajectory is the first trajectory and then it is second one until the end.
+ * @return The combined trajectory
+ */
 trajectory_fn combine (trajectory_fn f1, trajectory_fn f2, const double comb_a) {
     return (
         [=](const double a) -> Kinetic {
@@ -97,12 +124,30 @@ trajectory_fn combine (trajectory_fn f1, trajectory_fn f2, const double comb_a) 
 
 /* TIME DISTORTION */
 
+/**
+ * @brief Compute a linear time function
+ * 
+ * @param beginTime The time at the beginning of the movement
+ * @param endTime The time at the end of the movement
+ * @return The computed function
+ */
 time_distortion_fn linear (const unsigned long beginTime, const unsigned long endTime) {
     return (
         [=](const unsigned long t) -> double { return (double) (t - beginTime) / (double) (endTime - beginTime); }
     );
 }
 
+/**
+ * @brief Copmute a trapeze time function
+ * 
+ * @param t0 The time at the beginning of the movement
+ * @param t1 The time of the second part of the trapeze
+ * @param t2 The time of the second third of the trapeze
+ * @param t3 The time at the end of the movement
+ * @param dt01 The slope between times t0 and t1
+ * @param dt23 The slope between times t2 and t3
+ * @return The computed function
+ */
 time_distortion_fn trapeze (const unsigned long t0, const unsigned long t1, const unsigned long t2, const unsigned long t3, const double dt01, const double dt23) {   // dt < 1 stands for space deceleration, dt > 1 stands for space acceleration // dt cannot be negative as it is a we cannot go backward in time!
     const double dt12 = (((double) t3 - (double) (t3 - t2) * dt23) - ((double) t0 + (double) (t1 - t0) * dt01)) / (double) (t2 - t1);
     
@@ -128,6 +173,16 @@ time_distortion_fn trapeze (const unsigned long t0, const unsigned long t1, cons
     );
 }
 
+/**
+ * @brief Combine two time functions
+ * 
+ * @param f1 The first function
+ * @param f2 The second function
+ * @param beginTime The time at the beginning of the movement
+ * @param combTime The time where the fucntions are combined
+ * @param endTime The time at the end of the movement
+ * @return The combined function
+ */
 time_distortion_fn combine (time_distortion_fn f1, time_distortion_fn f2, const unsigned long beginTime, const unsigned long combTime, const unsigned long endTime) {
     return (
         [=](const unsigned long t) -> double {

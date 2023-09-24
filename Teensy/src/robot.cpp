@@ -175,10 +175,6 @@ void Robot::updateMovement (unsigned long dt) {
     goTo (goal, dt);
 }
 
-void Robot::goTo (double x, double y, double theta, double v, double w, unsigned long dt) {
-    goTo (Kinetic (x, y, theta, v, w), dt);
-}
-
 void Robot::goTo (Kinetic goal, unsigned long dt) {
     // kinetic error
     updateKinetic (dt);

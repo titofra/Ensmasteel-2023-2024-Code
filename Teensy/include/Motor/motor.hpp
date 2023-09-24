@@ -4,20 +4,48 @@
 #include <Arduino.h>
 #include "asservissement.hpp"
 
+/**
+ * @brief Class that represents a motor
+ */
 class Motor {
     public : 
         /**
-         * @brief Constructeur de la classe Motor 
-         * @param pinPWM : uint8_t, Pin sur laquelle la puissance est donnee
-         * @param pinIN1 : uint8_t, Pin avec signal booleen représentant la direction du moteur
-         * @param pinIN2 : uint8_t, Pin avec signal booleen représentant la direction du moteur
-         * @param numberBitsPWM : uint8_t, Indique le nombre de bits sur laquelle est defini le PWM du moteur (entre 8 et 16)
+         * @brief Construct a new Motor object
+         * 
+         * @param pinPWM The PWM pin
+         * @param pinIN1 The IN1 pin
+         * @param pinIN2 The IN2 pin
+         * @param numberBitsPWM The number of bits allowed to encode the pwm
+         * @param kp The asservissement's proportional gain
+         * @param ki The asservissement's integral gain
+         * @param kd The asservissement's derivative gain
+         * @param isReversed Is the motor reversed? For a *positive* command, does it goes forward?
          */
         Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t pinIN2, uint8_t numberBitsPWM, double kp, double ki, double kd, bool isReversed);
+
+        /**
+         * @brief Construct a new Motor object
+         */
         Motor () {};
 
+        /**
+         * @brief Set the motor's pwm
+         * 
+         * @param pwm The pwm to be set
+         */
         void setPWM (int pwm);
+
+        /**
+         * @brief Give the distance it has to do
+         * 
+         * @param distance The distance to do
+         * @param dt The time it has to do it
+         */
         void setMovement (double distance, unsigned long dt);
+
+        /**
+         * @brief Free the motor
+         */
         void free ();
 
     private :
@@ -26,7 +54,7 @@ class Motor {
         uint8_t pinIN2;
         uint16_t maxPWM;
         bool isReversed;
-        Asservissement asservissement;  // position
+        Asservissement asservissement;
 
         /**
          * @brief Fonction permettant de determiner la frequence ideal en fonction du nombre de bits de la valeur puissance-moteur.
