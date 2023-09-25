@@ -107,16 +107,16 @@ void Robot::updateKinetic (unsigned long dt) {
 
     const double theta = kinetic.getTheta ();
 
-    if (AreEqual (dforward_codeuseL, dforward_codeuseR)) {
+    const double dforward = (dforward_codeuseL + dforward_codeuseR) / 2.0;  // pure translation movement
+
+    if (AreEqual (dforward_codeuseL, dforward_codeuseR)) {  // TODO: a little bit to dirty
         // the robot strictly goes forward
 
-        const double dforward = (dforward_codeuseL + dforward_codeuseR) / 2.0;
-
         kinetic += Kinetic (
-            dforward * cos (theta),
-            dforward * sin (theta),
+            dforward * std::cos (theta),
+            dforward * std::sin (theta),
             0.0,
-            dforward / dt,
+            dforward / dt,  // TODO
             0.0
         );
     } else {
@@ -132,39 +132,48 @@ void Robot::updateKinetic (unsigned long dt) {
 
         const double dtheta = (dforward_codeuseR - dforward_codeuseL) / codeuses_spacing;   // new_theta = prev_theta + dtheta
 
-        double rotation_circle_radius;  // the radius of the imaginary circle
-        if (AreEqual (dforward_codeuseR, 0.0)) {
-            // the right wheel does not moved
-            rotation_circle_radius = -codeuses_spacing / 2.0;
-        } else {
-            const double dforward_ratio = std::fabs (dforward_codeuseL / dforward_codeuseR);
-            rotation_circle_radius = (codeuses_spacing / 2.0) * (1 + dforward_ratio) / (1 - dforward_ratio);
-        }
+        const double rotation_circle_radius = (codeuses_spacing / 2.0) * (dforward_codeuseR + dforward_codeuseL) / (dforward_codeuseR - dforward_codeuseL);    // the radius of the imaginary circle
 
         // Compute the movement relatively to the robot orientation
         const double local_deltaX = std::fabs (rotation_circle_radius * (1 - std::cos (dtheta)));
         const double local_deltaY = std::fabs (rotation_circle_radius * std::sin (dtheta));
 
-        Serial.println (rotation_circle_radius);
-        Serial.println (local_deltaX);
-        Serial.println (local_deltaY);
-
-        if (dtheta > 0.0) {
-            kinetic += Kinetic (
-                -local_deltaX * std::sin (theta) + local_deltaY * std::cos (theta),   // conversion from local to global
-                local_deltaX * std::cos (theta) + local_deltaY * std::sin (theta),    // conversion from local to global
-                dtheta,
-                0.0,    // TODO V and W
-                0.0
-            );
+        if (dforward > 0.0) {
+            if (dtheta > 0.0) {
+                kinetic += Kinetic (
+                    -local_deltaX * std::sin (theta) + local_deltaY * std::cos (theta),   // conversion from local to global
+                    local_deltaX * std::cos (theta) + local_deltaY * std::sin (theta),    // conversion from local to global
+                    dtheta,
+                    0.0,    // TODO V and W
+                    0.0
+                );
+            } else {
+                kinetic += Kinetic (
+                    local_deltaX * std::sin (theta) + local_deltaY * std::cos (theta),   // conversion from local to global
+                    -local_deltaX * std::cos (theta) + local_deltaY * std::sin (theta),    // conversion from local to global
+                    dtheta,
+                    0.0,    // TODO V and W
+                    0.0
+                );
+            }
         } else {
-            kinetic += Kinetic (
-                local_deltaX * std::sin (theta) + local_deltaY * std::cos (theta),   // conversion from local to global
-                -local_deltaX * std::cos (theta) + local_deltaY * std::sin (theta),    // conversion from local to global
-                dtheta,
-                0.0,    // TODO V and W
-                0.0
-            );
+            if (dtheta > 0.0) {
+                kinetic += Kinetic (
+                    local_deltaX * std::sin (theta) - local_deltaY * std::cos (theta),   // conversion from local to global
+                    -local_deltaX * std::cos (theta) - local_deltaY * std::sin (theta),    // conversion from local to global
+                    dtheta,
+                    0.0,    // TODO V and W
+                    0.0
+                );
+            } else {
+                kinetic += Kinetic (
+                    -local_deltaX * std::sin (theta) - local_deltaY * std::cos (theta),   // conversion from local to global
+                    local_deltaX * std::cos (theta) - local_deltaY * std::sin (theta),    // conversion from local to global
+                    dtheta,
+                    0.0,    // TODO V and W
+                    0.0
+                );
+            }
         }
 
         kinetic.normalizeTheta ();
@@ -185,7 +194,7 @@ void Robot::goTo (Kinetic goal, unsigned long dt) {
     error.printDebug ("ERROR   ", &Serial);
 
     // global error
-    double dforward = error.norm ();    // front/back distance to do to be the closest to the goal
+    /*double dforward = error.norm ();    // front/back distance to do to be the closest to the goal
     double dmmtheta = error.getTheta () * codeuses_spacing / 2.0; //kinetic.angleWith (goal) ;       // distance to do to face the goal
 
     // specific error
@@ -193,5 +202,5 @@ void Robot::goTo (Kinetic goal, unsigned long dt) {
     double dwheelL = dforward - dmmtheta;
 
     motorR.setMovement (dwheelR, dt);
-    motorL.setMovement (dwheelL, dt);
+    motorL.setMovement (dwheelL, dt);*/
 }
