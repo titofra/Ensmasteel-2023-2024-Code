@@ -194,7 +194,7 @@ void Robot::goTo (Kinetic goal, unsigned long dt) {
     error.printDebug ("ERROR   ", &Serial);
 
     // global error
-    /*double dforward = error.norm ();    // front/back distance to do to be the closest to the goal
+    double dforward = error.norm ();    // front/back distance to do to be the closest to the goal
     double dmmtheta = error.getTheta () * codeuses_spacing / 2.0; //kinetic.angleWith (goal) ;       // distance to do to face the goal
 
     // specific error
@@ -202,5 +202,5 @@ void Robot::goTo (Kinetic goal, unsigned long dt) {
     double dwheelL = dforward - dmmtheta;
 
     motorR.setMovement (dwheelR, dt);
-    motorL.setMovement (dwheelL, dt);*/
+    motorL.setMovement (dwheelL, dt);
 }

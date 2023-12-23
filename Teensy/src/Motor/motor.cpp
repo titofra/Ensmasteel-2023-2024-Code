@@ -17,10 +17,8 @@ Motor::Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t pinIN2, uint8_t numberBitsP
 
     asservissement = Asservissement (kp, ki, kd);
 }
-#include <Arduino.h>
+
 void Motor::setPWM (int pwm){
-    Serial.print ("PWM  ");
-    Serial.println(pwm);
     if (pwm > maxPWM) {
         pwm = maxPWM;
     } else {
