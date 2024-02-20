@@ -1,5 +1,6 @@
-*/Makefile
-*/.tmp
+Makefile
+.tmp
 *.o
 *.out
 *.exe
+build
