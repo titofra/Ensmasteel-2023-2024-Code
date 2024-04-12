@@ -1,0 +1,6 @@
+[submodule "Local/Sequence_Tester/nanosvg"]
+	path = Local/Sequence_Tester/nanosvg
+	url = https://github.com/memononen/nanosvg
+[submodule "Local/Sequence_Tester/lib/nanosvg"]
+	path = Local/Sequence_Tester/lib/nanosvg
+	url = https://github.com/memononen/nanosvg
