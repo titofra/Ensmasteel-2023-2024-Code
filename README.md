@@ -36,12 +36,6 @@ Execute `install_windows_Makefile.bat <path to arduino-cli>` with `<path to ardu
 
 <br/>
 
-## Mac
-
-*Coming soon*
-
-<br/>
-
 # TODO
 
 - [ ] mutex on mailbox?
