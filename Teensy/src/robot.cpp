@@ -8,14 +8,12 @@ Robot::Robot (
     Communication<msg_esptee> *esp32,
     uint8_t pin_pwm_motorL,
     uint8_t pin_in1_motorL,
-    uint8_t pin_in2_motorL,
     double kp_motorL,
     double ki_motorL,
     double kd_motorL,
     bool isReversed_motorL,
     uint8_t pin_pwm_motorR,
     uint8_t pin_in1_motorR,
-    uint8_t pin_in2_motorR,
     double kp_motorR,
     double ki_motorR,
     double kd_motorR,
@@ -33,8 +31,8 @@ Robot::Robot (
     bool orientation_codeuseR
 ) :
     kinetic (Kinetic (x_init, y_init, theta_init, 0.0f, 0.0f)),
-    motorL (Motor (pin_pwm_motorL, pin_in1_motorL, pin_in2_motorL, (uint8_t) 12, kp_motorL, ki_motorL, kd_motorL, isReversed_motorL)),
-    motorR (Motor (pin_pwm_motorR, pin_in1_motorR, pin_in2_motorR, (uint8_t) 12, kp_motorR, ki_motorR, kd_motorR, isReversed_motorR)),
+    motorL (Motor (pin_pwm_motorL, pin_in1_motorL, (uint8_t) 13, kp_motorL, ki_motorL, kd_motorL, isReversed_motorL)),
+    motorR (Motor (pin_pwm_motorR, pin_in1_motorR, (uint8_t) 13, kp_motorR, ki_motorR, kd_motorR, isReversed_motorR)),
     codeuseL (Codeuse (pin_A_codeuseL, pin_B_codeuseL, ticksPerRound_codeuseL, wheel_diameter_codeuseL, orientation_codeuseL)),
     codeuseR (Codeuse (pin_A_codeuseR, pin_B_codeuseR, ticksPerRound_codeuseR, wheel_diameter_codeuseR, orientation_codeuseR)),
     arduino (arduino),
@@ -44,8 +42,8 @@ Robot::Robot (
 
 Robot::Robot (robot_setup setup) :
     kinetic (Kinetic (setup.x_init, setup.y_init, setup.theta_init, 0.0f, 0.0f)),
-    motorL (Motor (setup.motors.L.pin_pwm, setup.motors.L.pin_in1, setup.motors.L.pin_in2, (uint8_t) 12, setup.motors.L.kp, setup.motors.L.ki, setup.motors.L.kd, setup.motors.L.isReversed)),
-    motorR (Motor (setup.motors.R.pin_pwm, setup.motors.R.pin_in1, setup.motors.R.pin_in2, (uint8_t) 12, setup.motors.R.kp, setup.motors.R.ki, setup.motors.R.kd, setup.motors.R.isReversed)),
+    motorL (Motor (setup.motors.L.pin_pwm, setup.motors.L.pin_in1, (uint8_t) 13, setup.motors.L.kp, setup.motors.L.ki, setup.motors.L.kd, setup.motors.L.isReversed)),
+    motorR (Motor (setup.motors.R.pin_pwm, setup.motors.R.pin_in1, (uint8_t) 13, setup.motors.R.kp, setup.motors.R.ki, setup.motors.R.kd, setup.motors.R.isReversed)),
     codeuseL (Codeuse (setup.codeuses.L.pin_A, setup.codeuses.L.pin_B, setup.codeuses.L.ticksPerRound, setup.codeuses.L.wheel_diameter, setup.codeuses.L.orientation)),
     codeuseR (Codeuse (setup.codeuses.R.pin_A, setup.codeuses.R.pin_B, setup.codeuses.R.ticksPerRound, setup.codeuses.R.wheel_diameter, setup.codeuses.R.orientation)),
     arduino (setup.communications.arduino),
@@ -59,11 +57,6 @@ void Robot::setPWM_MotorL (int pwm) {
 
 void Robot::setPWM_MotorR (int pwm) {
     motorR.setPWM (pwm);
-}
-
-void Robot::freeMotors () {
-    motorL.free ();
-    motorR.free ();
 }
 
 void Robot::openClaws () {

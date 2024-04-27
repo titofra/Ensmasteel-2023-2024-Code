@@ -13,13 +13,11 @@
 
 
 /* DEFINES */
-#define PIN_RIGHT_MOTOR_PWM 33
-#define PIN_RIGHT_MOTOR_IN1 34
-#define PIN_RIGHT_MOTOR_IN2 35
+#define PIN_RIGHT_MOTOR_PWM 37
+#define PIN_RIGHT_MOTOR_IN1 36
 
-#define PIN_LEFT_MOTOR_PWM 36
-#define PIN_LEFT_MOTOR_IN1 37
-#define PIN_LEFT_MOTOR_IN2 38
+#define PIN_LEFT_MOTOR_PWM 33
+#define PIN_LEFT_MOTOR_IN1 34
 
 #define PIN_CODEUSE_DROITE_A 26
 #define PIN_CODEUSE_DROITE_B 27
@@ -45,19 +43,17 @@ Robot robot (
     &comESP,
     (uint8_t) PIN_LEFT_MOTOR_PWM,
     (uint8_t) PIN_LEFT_MOTOR_IN1,
-    (uint8_t) PIN_LEFT_MOTOR_IN2,
     5.0,
     0.0,
     0.0,
     true,
     (uint8_t) PIN_RIGHT_MOTOR_PWM,
     (uint8_t) PIN_RIGHT_MOTOR_IN1,
-    (uint8_t) PIN_RIGHT_MOTOR_IN2,
     5.0,
     0.0,
     0.0,
     false,
-    255.0,
+    295.0,
     (uint8_t) PIN_CODEUSE_GAUCHE_A,
     (uint8_t) PIN_CODEUSE_GAUCHE_B,
     (int32_t) 16384*(1+SYM),
@@ -92,8 +88,7 @@ void Wait_Until_Timer (unsigned long timer_init, unsigned long timer, unsigned l
 /* THREADS */
 void threadUrgence () {
     while (1) {
-        if (digitalRead(PIN_ARRET_URGENCE) == LOW) {
-            robot.freeMotors ();
+        if (digitalRead (PIN_ARRET_URGENCE) == LOW) {
             mainMut.lock ();
             threads.stop ();
         }

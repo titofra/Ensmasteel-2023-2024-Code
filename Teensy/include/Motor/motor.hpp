@@ -14,14 +14,13 @@ class Motor {
          * 
          * @param pinPWM The PWM pin
          * @param pinIN1 The IN1 pin
-         * @param pinIN2 The IN2 pin
          * @param numberBitsPWM The number of bits allowed to encode the pwm
          * @param kp The asservissement's proportional gain
          * @param ki The asservissement's integral gain
          * @param kd The asservissement's derivative gain
          * @param isReversed Is the motor reversed? For a *positive* command, does it goes forward?
          */
-        Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t pinIN2, uint8_t numberBitsPWM, double kp, double ki, double kd, bool isReversed);
+        Motor(uint8_t pinPWM, uint8_t pinIN1, uint8_t numberBitsPWM, double kp, double ki, double kd, bool isReversed);
 
         /**
          * @brief Construct a new Motor object
@@ -43,15 +42,9 @@ class Motor {
          */
         void setMovement (double distance, unsigned long dt);
 
-        /**
-         * @brief Free the motor
-         */
-        void free ();
-
     private :
         uint8_t pinPWM;
         uint8_t pinIN1;
-        uint8_t pinIN2;
         uint16_t maxPWM;
         bool isReversed;
         Asservissement asservissement;

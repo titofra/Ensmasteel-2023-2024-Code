@@ -71,11 +71,6 @@ typedef struct {
             uint8_t pin_in1;
 
             /**
-             * @brief IN2 pin number
-             */
-            uint8_t pin_in2;
-
-            /**
              * @brief Proportional coefficient of the motor's PID
              */
             double kp;
@@ -186,14 +181,12 @@ class Robot {
          * @param esp32 Pointer to the esp32 serial connection
          * @param pin_pwm_motorL Left motor's PWM pin number
          * @param pin_in1_motorL Left motor's IN1 pin number
-         * @param pin_in2_motorL Left motor's IN2 pin number
          * @param kp_motorL Proportional coefficient of the left motor's PID
          * @param ki_motorL Integral coefficient of the left motor's PID
          * @param kd_motorL Derivative coefficient of the left motor's PID
          * @param isReversed_motorL Is the left motor reversed? For a *positive* command, does it goes forward?
          * @param pin_pwm_motorR Right motor's PWM pin number
          * @param pin_in1_motorR Right motor's IN1 pin number
-         * @param pin_in2_motorR Right motor's IN2 pin number
          * @param kp_motorR Proportional coefficient of the right motor's PID
          * @param ki_motorR Integral coefficient of the right motor's PID
          * @param kd_motorR Derivative coefficient of the right motor's PID
@@ -218,14 +211,12 @@ class Robot {
             Communication<msg_esptee> *esp32,
             uint8_t pin_pwm_motorL,
             uint8_t pin_in1_motorL,
-            uint8_t pin_in2_motorL,
             double kp_motorL,
             double ki_motorL,
             double kd_motorL,
             bool isReversed_motorL,
             uint8_t pin_pwm_motorR,
             uint8_t pin_in1_motorR,
-            uint8_t pin_in2_motorR,
             double kp_motorR,
             double ki_motorR,
             double kd_motorR,
@@ -279,11 +270,6 @@ class Robot {
          * @param pwm The PWM
          */
         void setPWM_MotorR (int pwm);
-
-        /**
-         * @brief Free both motors
-         */
-        void freeMotors ();
 
         /**
          * @brief Open the claws
