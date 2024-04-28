@@ -10,6 +10,7 @@ void BuildSequence (Sequence *seq);
 void setup () {
     // Communications
     Serial.begin (115200);
+    Serial1.begin (115200);
 
     // SENSORS
     pinMode (PIN_ARRET_URGENCE, INPUT_PULLDOWN);
@@ -36,22 +37,26 @@ void setup () {
 }
 
 void loop () {
-    timer = millis () - timer_init;
-    mainMut.lock ();
+    // timer = millis () - timer_init;
+    // mainMut.lock ();
 
-    Serial.println (timer);
-    seq.run (timer, dt, &robot);
-    robot.updateMovement (dt);
+    // seq.run (timer, dt, &robot);
+    // robot.updateMovement (dt);
 
-    mainMut.unlock ();
-    Wait_Until_Timer (timer_init, timer, dt);
+    // mainMut.unlock ();
+    // Wait_Until_Timer (timer_init, timer, dt);
+
+    robot.writeLCD ((char*) "salut oui");
+    delay (2000);
+    robot.clearLCD ();
+    delay (1000);
 }
 
 void BuildSequence (Sequence *seq) {
     // Kinetics
     Kinetic P0 = Kinetic (0.0, 0.0, 0.0, 0.0, 0.0);
     Kinetic P1 = Kinetic (700.0, 0.0, 0.0, 0.0, 0.0);
-    
+
     // Actions
     Action aller (
         MOVEMENT_ACT,

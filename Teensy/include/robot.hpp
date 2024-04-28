@@ -281,6 +281,16 @@ class Robot {
          */
         void closeClaws ();
 
+        /**
+         * @brief Write to the LCD
+         */
+        void writeLCD (char* data);
+
+        /**
+         * @brief Clear the LCD
+         */
+        void clearLCD ();
+
 
         /* KINETIC */
 

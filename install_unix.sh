@@ -62,11 +62,14 @@ else
     echo_color 2 "### ARDUINO-CLI SETUP ###"
     $1 config init
     $1 config add board_manager.additional_urls https://www.pjrc.com/teensy/package_teensy_index.json
+    $1 config add board_manager.additional_urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
     $1 core update-index
     $1 core install teensy:avr
+    $1 core install esp32:esp32
 
     # Library install
     $1 lib install Servo
+    $1 lib install "LiquidCrystal I2C"
 
     echo_color 2 "### MAKEFILES SETUP ###"
 
@@ -74,4 +77,9 @@ else
     echo_color 2 "Teensy's Makefile done!"
     build_Makefile "./Arduino/Makefile" $1 "arduino:avr:mega:cpu=atmega2560" "--build-property compiler.cpp.extra_flags=-DUSE_ARDUINO_STD_VECTOR" ""
     echo_color 2 "Arduino's Makefile done!"
+    build_Makefile "./ESP32/Makefile" $1 "esp32:esp32:uPesy_wroom" "--build-property compiler.cpp.extra_flags=-DUSE_ARDUINO_STD_VECTOR" ""
+    echo_color 2 "ESP32's Makefile done!"
+
+    echo_color 3 "Please install pyserial from your python's packet manager"
+    echo "-> example: pip3 install pyserial"
 fi

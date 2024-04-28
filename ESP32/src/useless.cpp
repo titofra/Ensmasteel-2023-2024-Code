@@ -1,0 +1,1 @@
+// This file prevent the find command from raising an error as the src folder is empty

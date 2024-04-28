@@ -71,6 +71,19 @@ void Robot::closeClaws () {
     arduino->send (msg);
 }
 
+void Robot::writeLCD (char* data) {
+    msg_esptee msg;
+    msg.id = LCD_PRINT;
+    strcpy(msg.data, data);
+    esp32->send (msg);
+}
+
+void Robot::clearLCD () {
+    msg_esptee msg;
+    msg.id = LCD_CLEAR;
+    esp32->send (msg);
+}
+
 Kinetic Robot::getKinetic () {
     return kinetic;
 }

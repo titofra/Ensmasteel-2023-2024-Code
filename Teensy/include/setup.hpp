@@ -89,7 +89,11 @@ void Wait_Until_Timer (unsigned long timer_init, unsigned long timer, unsigned l
 void threadUrgence () {
     while (1) {
         if (digitalRead (PIN_ARRET_URGENCE) == LOW) {
+            robot.setPWM_MotorL (0);
+            robot.setPWM_MotorR (0);
             mainMut.lock ();
+            robot.setPWM_MotorL (0);
+            robot.setPWM_MotorR (0);
             threads.stop ();
         }
         threads.yield ();
