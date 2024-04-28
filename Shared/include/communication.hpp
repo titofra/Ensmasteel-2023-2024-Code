@@ -38,10 +38,8 @@ Communication<T>::Communication (Stream* serial) :
 
 template <typename T>
 void Communication<T>::send (T msg){
-    if (serial->available() > 0) {
-        uint8_t *buf = (uint8_t*) &msg;
-        serial->print (*buf);
-    }
+    uint8_t *buf = (uint8_t*) &msg;
+    serial->print (*buf);
 }
 
 template <typename T>
