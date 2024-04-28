@@ -65,7 +65,7 @@ void Kinetic::setRotationSpeed(double value) {
 }
 
 void Kinetic::printDebug(const char *prefix, Stream *serial) const {
-    char buf [8];   // 6 digits, take care of '.' and '\0'!
+    char buf [9];   // 6 digits, take care of '.', '-' and '\0'!
 
     serial->print(prefix);
 
