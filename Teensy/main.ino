@@ -11,6 +11,7 @@ void setup () {
     // Communications
     Serial.begin (115200);
     Serial1.begin (115200);
+    Serial2.begin (115200);
 
     // SENSORS
     pinMode (PIN_ARRET_URGENCE, INPUT_PULLDOWN);
@@ -37,34 +38,52 @@ void setup () {
 }
 
 void loop () {
-    // timer = millis () - timer_init;
-    // mainMut.lock ();
+    timer = millis () - timer_init;
 
-    // seq.run (timer, dt, &robot);
-    // robot.updateMovement (dt);
+    seq.run (timer, dt, &robot);
+    robot.updateMovement (dt);
 
-    // mainMut.unlock ();
-    // Wait_Until_Timer (timer_init, timer, dt);
-
-    robot.writeLCD ((char*) "salut oui");
-    delay (2000);
-    robot.clearLCD ();
-    delay (1000);
+    Wait_Until_Timer (timer_init, timer, dt); 
 }
 
-void BuildSequence (Sequence *seq) {
-    // Kinetics
-    Kinetic P0 = Kinetic (0.0, 0.0, 0.0, 0.0, 0.0);
-    Kinetic P1 = Kinetic (700.0, 0.0, 0.0, 0.0, 0.0);
+void BuildSequence (Sequence* seq) {
+    // kinetics
+    VectorOriented P1 (2000.0f, 1000.0f, 3.14f / 2.0f);
+    VectorOriented P2 (1650.0f, 1350.0f, 3.14f);
+    VectorOriented P3 (1300.0f, 1000.0f, -3.14f / 2.0f);
+    VectorOriented P4 (1650.0f, 650.0f, 0.0f);
 
-    // Actions
-    Action aller (
+    const float delta_curve = 200.0f;
+
+    // actions
+    Action mvmt12 (
         MOVEMENT_ACT,
-        linear ({P0, P1}),
-        trapeze (0, 500, 1000, 1500, 0.5, 0.5),
+        bezier_auto ({P1, P2}, delta_curve),
+        trapeze (0, 500, 1500, 1500, 0.7f, 0.7f),
         1500
     );
+    Action mvmt23 (
+        MOVEMENT_ACT,
+        bezier_auto ({P2, P3}, delta_curve),
+        trapeze (1500, 1500, 2500, 2500, 0.5f, 0.8f),
+        2500
+    );
+    Action mvmt34 (
+        MOVEMENT_ACT,
+        bezier_auto ({P3, P4}, delta_curve),
+        trapeze (2500, 2500, 3500, 3500, 0.5f, 0.8f),
+        3500
+    );
+    Action mvmt41 (
+        MOVEMENT_ACT,
+        bezier_auto ({P4, P1}, delta_curve),
+        trapeze (3500, 3500, 4500, 5000, 0.5f, 0.8f),
+        5000
+    );
 
-    // Sequence
-    seq->add (aller);
+    // sequence
+    seq->add (mvmt12);
+    seq->add (mvmt23);
+    seq->add (mvmt34);
+    seq->add (mvmt41);
 }

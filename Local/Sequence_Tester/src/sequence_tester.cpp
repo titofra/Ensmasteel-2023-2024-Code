@@ -20,7 +20,7 @@ int main (void) {
     BuildSequence (&seq);
 
     /* run the game to get kinetics over time */
-    Kinetic beginKinetic = Kinetic (0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    Kinetic beginKinetic = Kinetic (2000.0f, 1000.0f, 3.14f / 2.0f);
     std::vector<Kinetic> kinetics = Get_Kinetics_from_Sequence (seq, dt, beginKinetic);
 
     /* display the graph */
@@ -159,66 +159,42 @@ void Display (std::vector<Kinetic> kinetics, float scale, float pxOffsetX, float
 
 void BuildSequence (Sequence* seq) {
     // kinetics
-    VectorOriented P1 (0.0f, 0.0f, 0.0f);    // pt1
-    VectorOriented P2 (1000.0f, 0.0f, 0.0f); // pt2
-    VectorOriented P3 (1000.0f, 0.0f, 0.0f); // pt3 (rotated, the theta is modified few lines further)
-    VectorOriented P4 (200.0f, 800.0f, 0.0f);// pt4 (with the same rotation as we use a linear trajectory)
-    const float theta34 = P3.angleWith (P4);
-    P3.setTheta (theta34);
-    P4.setTheta (theta34);
-    VectorOriented P5 (900.0f, 1200.0f, 0.0f);// pt5
-    VectorOriented P6 (2600.0f, 1400.0f, 0.0f);// pt6
-    VectorOriented P7 (2200.0f, 800.0f, 0.0f);// pt7
+    VectorOriented P1 (2000.0f, 1000.0f, 3.14f / 2.0f);
+    VectorOriented P2 (1650.0f, 1350.0f, 3.14f);
+    VectorOriented P3 (1300.0f, 1000.0f, -3.14f / 2.0f);
+    VectorOriented P4 (1650.0f, 650.0f, 0.0f);
+
+    const float delta_curve = 200.0f;
 
     // actions
     Action mvmt12 (
         MOVEMENT_ACT,
-        bezier ({P1, P2}),
-        trapeze (0, 500, 1000, 1300, 0.7f, 0.7f),
-        1300
+        bezier_auto ({P1, P2}, delta_curve),
+        trapeze (0, 500, 1500, 1500, 0.7f, 0.7f),
+        1500
     );
-    Action rota23 (
+    Action mvmt23 (
         MOVEMENT_ACT,
-        linear ({P2, P3}),
-        linear (1300, 1700),
-        1700
+        bezier_auto ({P2, P3}, delta_curve),
+        trapeze (1500, 1500, 2500, 2500, 0.5f, 0.8f),
+        2500
     );
     Action mvmt34 (
         MOVEMENT_ACT,
-        bezier ({P3, P4}),
-        trapeze (1700, 2500, 3300, 4000, 0.5f, 0.8f),
-        4000
+        bezier_auto ({P3, P4}, delta_curve),
+        trapeze (2500, 2500, 3500, 3500, 0.5f, 0.8f),
+        3500
     );
-    std::vector<VectorOriented> controlPoints45;
-    controlPoints45.push_back (P4);
-    controlPoints45.push_back (VectorOriented (10.0f, 900.0f, 0.0f));
-    controlPoints45.push_back (VectorOriented (500.0f, 1300.0f, 0.0f));
-    controlPoints45.push_back (VectorOriented (700.0f, 700.0f, 0.0f));
-    controlPoints45.push_back (P5);
-    std::vector<VectorOriented> controlPoints56;
-    controlPoints56.push_back (P5);
-    controlPoints56.push_back (VectorOriented (900.0f, 1200.0f, 0.0f));
-    controlPoints56.push_back (VectorOriented (1000.0f, 1500.0f, 0.0f));
-    controlPoints56.push_back (VectorOriented (1800.0f, 500.0f, 0.0f));
-    controlPoints56.push_back (VectorOriented (2000.0f, 1500.0f, 0.0f));
-    controlPoints56.push_back (P6);
-    Action mvmt46 (
+    Action mvmt41 (
         MOVEMENT_ACT,
-        combine (bezier (controlPoints45), bezier (controlPoints56), 0.5f),
-        combine (linear (4000, 6000), trapeze (6000, 6000, 7000, 8000, 1.0f, 0.4f), 4000, 6000, 8000),
-        8000
-    );
-    Action mvmt67 (
-        MOVEMENT_ACT,
-        bezier_auto ({P6, P7}, 300.0f),
-        linear (8000, 10000),
-        10000
+        bezier_auto ({P4, P1}, delta_curve),
+        trapeze (3500, 3500, 4500, 5000, 0.5f, 0.8f),
+        5000
     );
 
     // sequence
     seq->add (mvmt12);
-    seq->add (rota23);
+    seq->add (mvmt23);
     seq->add (mvmt34);
-    seq->add (mvmt46);
-    seq->add (mvmt67);
+    seq->add (mvmt41);
 }

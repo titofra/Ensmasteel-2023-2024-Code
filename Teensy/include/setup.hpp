@@ -36,20 +36,18 @@ Communication<msg_esptee> comESP (&Serial2);
 
 #define SYM 0.001   // TODO c'est quoi ca
 Robot robot (
-    0.0,
-    0.0,
-    0.0,
+    2000.0f, 1000.0f, 3.14f / 2.0f,
     &comArd,
     &comESP,
     (uint8_t) PIN_LEFT_MOTOR_PWM,
     (uint8_t) PIN_LEFT_MOTOR_IN1,
-    5.0,
+    27.0,
     0.0,
     0.0,
     true,
     (uint8_t) PIN_RIGHT_MOTOR_PWM,
     (uint8_t) PIN_RIGHT_MOTOR_IN1,
-    5.0,
+    27.0,
     0.0,
     0.0,
     false,
@@ -65,8 +63,6 @@ Robot robot (
     56.6,
     true
 );
-
-Threads::Mutex mainMut; // mutex used to stop the main loop
 
 
 /* FUNCTIONS */
@@ -87,14 +83,18 @@ void Wait_Until_Timer (unsigned long timer_init, unsigned long timer, unsigned l
 
 /* THREADS */
 void threadUrgence () {
+    bool isStopped = false;
     while (1) {
         if (digitalRead (PIN_ARRET_URGENCE) == LOW) {
             robot.setPWM_MotorL (0);
             robot.setPWM_MotorR (0);
-            mainMut.lock ();
-            robot.setPWM_MotorL (0);
-            robot.setPWM_MotorR (0);
             threads.stop ();
+            isStopped = true;
+        }
+        if(isStopped && digitalRead(PIN_ARRET_URGENCE) == HIGH){
+            SRC_GPR5 = 0x0BAD00F1;
+            SCB_AIRCR = 0x05FA0004;
+            // reset Teensy
         }
         threads.yield ();
     }

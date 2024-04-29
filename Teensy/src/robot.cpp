@@ -115,7 +115,7 @@ void Robot::updateKinetic (unsigned long dt) {
 
     const double dforward = (dforward_codeuseL + dforward_codeuseR) / 2.0;  // pure translation movement
 
-    if (AreEqual (dforward_codeuseL, dforward_codeuseR)) {  // TODO: a little bit to dirty
+    if (AreEqual (dforward_codeuseL, dforward_codeuseR)) {  // TODO: dirty
         // the robot strictly goes forward
 
         kinetic += Kinetic (
@@ -194,18 +194,32 @@ void Robot::goTo (Kinetic goal, unsigned long dt) {
     // kinetic error
     updateKinetic (dt);
     Kinetic error = goal - kinetic;
-
-    goal.printDebug ("GOAL    ", &Serial);
-    kinetic.printDebug ("KINET   ", &Serial);
-    error.printDebug ("ERROR   ", &Serial);
+    if (error.norm () > 10.0) {  // if we are far away from the goal
+        error.setTheta (normalizeAngle (error.angle () - kinetic.getTheta ()));    // Theta is not a delta, it is the angle to face the goal
+    }
 
     // global error
-    double dforward = error.norm ();    // front/back distance to do to be the closest to the goal
-    double dmmtheta = error.getTheta () * codeuses_spacing / 2.0; //kinetic.angleWith (goal) ;       // distance to do to face the goal
+    double dforward = error.norm ();    // distance to do to be to the goal
+    if (abs (error.getTheta ()) > PI / 2.0) dforward *= -1; // if the goal is behind, this distance is negative
+    double dmmtheta = error.getTheta () * codeuses_spacing / 2.0;   // distance to do to face the goal
 
     // specific error
     double dwheelR = dforward + dmmtheta;
     double dwheelL = dforward - dmmtheta;
+
+    goal.printDebug ("GOAL    ", &Serial);
+    kinetic.printDebug ("KINET   ", &Serial);
+    error.printDebug ("ERROR   ", &Serial);
+    Serial.print (dforward);
+    Serial.print ("   ");
+    Serial.print (dmmtheta);
+    Serial.print ("   ");
+    Serial.print (dwheelL);
+    Serial.print ("   ");
+    Serial.print (dwheelR);
+    Serial.print ("   ");
+    Serial.print (error.angle ());
+    Serial.println (" ");
 
     motorR.setMovement (dwheelR, dt);
     motorL.setMovement (dwheelL, dt);

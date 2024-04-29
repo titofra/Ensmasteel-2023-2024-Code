@@ -29,19 +29,19 @@ VectorOriented& VectorOriented::operator=(const VectorOriented& other) {
 }
 
 VectorOriented VectorOriented::operator+(const VectorOriented& other) const {
-    return VectorOriented(x + other.x, y + other.y, theta + other.theta);
+    return VectorOriented(x + other.x, y + other.y, normalizeAngle (theta + other.theta));
 }
 
 VectorOriented VectorOriented::operator-(const VectorOriented& other) const {
-    return VectorOriented(x - other.x, y - other.y, theta - other.theta);
+    return VectorOriented(x - other.x, y - other.y, normalizeAngle (theta - other.theta));
 }
 
 VectorOriented VectorOriented::operator*(double scalar) const {
-    return VectorOriented(x * scalar, y * scalar, theta * scalar);
+    return VectorOriented(x * scalar, y * scalar, normalizeAngle (theta * scalar));
 }
 
 VectorOriented VectorOriented::operator/(double scalar) const {
-    return VectorOriented(x / scalar, y / scalar, theta / scalar);
+    return VectorOriented(x / scalar, y / scalar, normalizeAngle (theta / scalar));
 }
 
 VectorOriented& VectorOriented::operator+=(const VectorOriented& other) {
