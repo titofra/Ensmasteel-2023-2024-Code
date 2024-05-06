@@ -1,3 +1,6 @@
+> [!CAUTION]
+> The repo has been moved on the [Ensmasteel](https://github.com/Ensmasteel)'s GitHub. Go to [Ensmasteel/Code-2023-2024](https://github.com/Ensmasteel/Code-2023-2024).
+
 Here is the code for [Ensmasteel](https://github.com/Ensmasteel)'s robot, which will be competing in the French Robotics Cup during the 2023-2024 season.
 
 <p align="center">
